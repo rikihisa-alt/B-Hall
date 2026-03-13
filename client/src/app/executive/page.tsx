@@ -81,7 +81,7 @@ const modules = [
     description: 'AIアシスタントに業務を相談',
     icon: Bot,
     href: '/assistant',
-    color: 'from-gray-600 to-gray-700',
+    color: 'from-cyan-500 to-cyan-600',
     isAI: true,
     capabilities: [
       '業務手順の確認・ガイド',
@@ -94,10 +94,10 @@ const modules = [
 
 function getStatusColor(status: string) {
   switch (status) {
-    case '検討中': return 'text-amber-600 bg-amber-50'
-    case '実施決定': return 'text-emerald-600 bg-emerald-50'
-    case '対応中': return 'text-blue-600 bg-blue-50'
-    default: return 'text-gray-600 bg-gray-50'
+    case '検討中': return 'text-[#F5A524] bg-[#F5A524]/10'
+    case '実施決定': return 'text-[#2FBF71] bg-[#2FBF71]/10'
+    case '対応中': return 'text-[#60A5FA] bg-[#60A5FA]/10'
+    default: return 'text-[#6B7280] bg-white/[0.06]'
   }
 }
 
@@ -110,58 +110,58 @@ export default function ExecutivePage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.push('/')}
-          className="p-2 rounded-xl hover:bg-white/60 transition-colors"
+          className="p-2 rounded-xl hover:bg-white/[0.05] transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-gray-500" />
+          <ArrowLeft className="w-5 h-5 text-[#6B7280]" />
         </button>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md">
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">経営・ナレッジ</h1>
-            <p className="text-sm text-gray-500">経営判断・知識共有・改善活動を推進</p>
+            <h1 className="text-xl font-bold text-white/90">経営・ナレッジ</h1>
+            <p className="text-sm text-[#6B7280]">経営判断・知識共有・改善活動を推進</p>
           </div>
         </div>
       </div>
 
       {/* Executive Summary */}
-      <div className="glass rounded-2xl p-5">
-        <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
+        <h2 className="text-[10px] font-semibold text-[#4B5263] uppercase tracking-[0.1em] mb-4">
           経営サマリー
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-white/50 rounded-xl p-4">
+          <div className="bg-white/[0.04] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-2">
-              <PieChart className="w-4 h-4 text-indigo-500" />
-              <span className="text-xs text-gray-400">月間売上</span>
+              <PieChart className="w-4 h-4 text-indigo-400" />
+              <span className="text-xs text-[#5A6070]">月間売上</span>
             </div>
-            <p className="text-xl font-bold text-gray-900">¥8.4M</p>
-            <p className="text-xs text-emerald-600 mt-0.5">↑ 12.3% 前月比</p>
+            <p className="text-xl font-bold text-white/90">¥8.4M</p>
+            <p className="text-xs text-[#2FBF71] mt-0.5">↑ 12.3% 前月比</p>
           </div>
-          <div className="bg-white/50 rounded-xl p-4">
+          <div className="bg-white/[0.04] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Activity className="w-4 h-4 text-emerald-500" />
-              <span className="text-xs text-gray-400">営業利益</span>
+              <Activity className="w-4 h-4 text-emerald-400" />
+              <span className="text-xs text-[#5A6070]">営業利益</span>
             </div>
-            <p className="text-xl font-bold text-gray-900">¥1.53M</p>
-            <p className="text-xs text-emerald-600 mt-0.5">利益率 18.2%</p>
+            <p className="text-xl font-bold text-white/90">¥1.53M</p>
+            <p className="text-xs text-[#2FBF71] mt-0.5">利益率 18.2%</p>
           </div>
-          <div className="bg-white/50 rounded-xl p-4">
+          <div className="bg-white/[0.04] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Target className="w-4 h-4 text-amber-500" />
-              <span className="text-xs text-gray-400">改善提案</span>
+              <Target className="w-4 h-4 text-amber-400" />
+              <span className="text-xs text-[#5A6070]">改善提案</span>
             </div>
-            <p className="text-xl font-bold text-gray-900">7件</p>
-            <p className="text-xs text-blue-600 mt-0.5">3件対応中</p>
+            <p className="text-xl font-bold text-white/90">7件</p>
+            <p className="text-xs text-[#60A5FA] mt-0.5">3件対応中</p>
           </div>
-          <div className="bg-white/50 rounded-xl p-4">
+          <div className="bg-white/[0.04] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-pink-500" />
-              <span className="text-xs text-gray-400">ナレッジ活用</span>
+              <Sparkles className="w-4 h-4 text-pink-400" />
+              <span className="text-xs text-[#5A6070]">ナレッジ活用</span>
             </div>
-            <p className="text-xl font-bold text-gray-900">1.2K</p>
-            <p className="text-xs text-gray-400 mt-0.5">今月の閲覧数</p>
+            <p className="text-xl font-bold text-white/90">1.2K</p>
+            <p className="text-xs text-[#5A6070] mt-0.5">今月の閲覧数</p>
           </div>
         </div>
       </div>
@@ -171,7 +171,7 @@ export default function ExecutivePage() {
         {modules.map((mod) => {
           const ModIcon = mod.icon
           return (
-            <div key={mod.name} className="glass rounded-2xl overflow-hidden">
+            <div key={mod.name} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden">
               <div className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -179,13 +179,13 @@ export default function ExecutivePage() {
                       <ModIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-gray-900">{mod.name}</h3>
-                      <p className="text-sm text-gray-500">{mod.description}</p>
+                      <h3 className="text-base font-bold text-white/90">{mod.name}</h3>
+                      <p className="text-sm text-[#6B7280]">{mod.description}</p>
                     </div>
                   </div>
                   <Link
                     href={mod.href}
-                    className="flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                    className="flex items-center gap-1 text-sm font-medium text-[#7C8CFF] hover:text-[#929FFF] transition-colors"
                   >
                     開く <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -195,9 +195,9 @@ export default function ExecutivePage() {
                 {'stats' in mod && mod.stats && (
                   <div className="grid grid-cols-4 gap-3 mb-4">
                     {mod.stats.map((stat) => (
-                      <div key={stat.label} className="bg-white/50 rounded-lg px-3 py-2 text-center">
-                        <p className="text-lg font-bold text-gray-900">{stat.value}</p>
-                        <p className="text-[11px] text-gray-400">{stat.label}</p>
+                      <div key={stat.label} className="bg-white/[0.04] rounded-lg px-3 py-2 text-center">
+                        <p className="text-lg font-bold text-white/90">{stat.value}</p>
+                        <p className="text-[11px] text-[#5A6070]">{stat.label}</p>
                       </div>
                     ))}
                   </div>
@@ -213,11 +213,11 @@ export default function ExecutivePage() {
                           key={idx}
                           className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs ${
                             h.positive
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60'
-                              : 'bg-amber-50 text-amber-700 border-amber-200/60'
+                              ? 'bg-[#2FBF71]/10 text-[#2FBF71] border-[#2FBF71]/20'
+                              : 'bg-[#F5A524]/10 text-[#F5A524] border-[#F5A524]/20'
                           }`}
                         >
-                          <HIcon className={`w-3.5 h-3.5 shrink-0 ${h.positive ? 'text-emerald-500' : 'text-amber-500'}`} />
+                          <HIcon className={`w-3.5 h-3.5 shrink-0 ${h.positive ? 'text-[#2FBF71]' : 'text-[#F5A524]'}`} />
                           <span>{h.text}</span>
                         </div>
                       )
@@ -230,10 +230,10 @@ export default function ExecutivePage() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {mod.categories.map((cat) => (
                       <Link key={cat.name} href={mod.href}>
-                        <div className="bg-white/50 rounded-lg px-3 py-3 hover:bg-white/70 transition-colors cursor-pointer text-center">
-                          <BookOpen className="w-5 h-5 text-yellow-500 mx-auto mb-1" />
-                          <p className="text-sm font-medium text-gray-700">{cat.name}</p>
-                          <p className="text-xs text-gray-400">{cat.count}件</p>
+                        <div className="bg-white/[0.04] rounded-lg px-3 py-3 hover:bg-white/[0.06] transition-colors cursor-pointer text-center">
+                          <BookOpen className="w-5 h-5 text-yellow-400 mx-auto mb-1" />
+                          <p className="text-sm font-medium text-[#A8B0BD]">{cat.name}</p>
+                          <p className="text-xs text-[#5A6070]">{cat.count}件</p>
                         </div>
                       </Link>
                     ))}
@@ -242,15 +242,15 @@ export default function ExecutivePage() {
 
                 {/* Recent Proposals (改善・目安箱) */}
                 {'recentProposals' in mod && mod.recentProposals && (
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     {mod.recentProposals.map((p, idx) => (
                       <Link key={idx} href={mod.href}>
-                        <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/60 transition-colors cursor-pointer">
-                          <span className="flex-1 text-sm text-gray-700 truncate">{p.title}</span>
+                        <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/[0.03] transition-colors cursor-pointer">
+                          <span className="flex-1 text-sm text-[#A8B0BD] truncate">{p.title}</span>
                           <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${getStatusColor(p.status)}`}>
                             {p.status}
                           </span>
-                          <span className="text-xs text-gray-400">👍 {p.votes}</span>
+                          <span className="text-xs text-[#5A6070]">👍 {p.votes}</span>
                         </div>
                       </Link>
                     ))}
@@ -262,15 +262,15 @@ export default function ExecutivePage() {
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {'capabilities' in mod && mod.capabilities && mod.capabilities.map((cap, idx) => (
-                        <div key={idx} className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white/50 border border-gray-100/60">
-                          <Sparkles className="w-4 h-4 text-gray-400 shrink-0" />
-                          <span className="text-sm text-gray-700">{cap}</span>
+                        <div key={idx} className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+                          <Sparkles className="w-4 h-4 text-[#5A6070] shrink-0" />
+                          <span className="text-sm text-[#A8B0BD]">{cap}</span>
                         </div>
                       ))}
                     </div>
                     <Link
                       href={mod.href}
-                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-gray-700 to-gray-800 text-white text-sm font-medium hover:from-gray-800 hover:to-gray-900 transition-all shadow-sm hover:shadow-md"
+                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-700 text-white text-sm font-medium hover:from-cyan-700 hover:to-cyan-800 transition-all shadow-sm hover:shadow-md"
                     >
                       <Bot className="w-4 h-4" />
                       ジジロボに相談する

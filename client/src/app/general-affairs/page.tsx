@@ -40,10 +40,10 @@ const categoryConfig: Record<AssetCategory, { label: string; icon: typeof Packag
 }
 
 const statusConfig: Record<AssetStatus, { label: string; color: string }> = {
-  active: { label: '使用中', color: 'text-emerald-600 bg-emerald-50' },
-  returning: { label: '返却予定', color: 'text-amber-600 bg-amber-50' },
-  maintenance: { label: 'メンテナンス中', color: 'text-blue-600 bg-blue-50' },
-  disposed: { label: '廃棄済', color: 'text-gray-500 bg-gray-50' },
+  active: { label: '使用中', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
+  returning: { label: '返却予定', color: 'text-[#F5A524] bg-[#F5A524]/10' },
+  maintenance: { label: 'メンテナンス中', color: 'text-[#60A5FA] bg-[#60A5FA]/10' },
+  disposed: { label: '廃棄済', color: 'text-[#6B7280] bg-white/[0.04]' },
 }
 
 const demoAssets: Asset[] = [
@@ -58,10 +58,10 @@ const demoAssets: Asset[] = [
 ]
 
 const summaryStats = [
-  { label: '管理資産', value: '234', icon: Package, color: 'from-blue-500 to-blue-600' },
-  { label: '端末・PC', value: '48', icon: Laptop, color: 'from-violet-500 to-violet-600' },
-  { label: 'アカウント', value: '15', icon: Key, color: 'from-emerald-500 to-emerald-600' },
-  { label: '返却・要対応', value: '3', icon: AlertCircle, color: 'from-amber-500 to-amber-600' },
+  { label: '管理資産', value: '234', icon: Package, color: 'text-[#60A5FA]' },
+  { label: '端末・PC', value: '48', icon: Laptop, color: 'text-[#7C8CFF]' },
+  { label: 'アカウント', value: '15', icon: Key, color: 'text-[#2FBF71]' },
+  { label: '返却・要対応', value: '3', icon: AlertCircle, color: 'text-[#F5A524]' },
 ]
 
 export default function GeneralAffairsPage() {
@@ -72,15 +72,15 @@ export default function GeneralAffairsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">総務</h1>
-          <p className="text-sm text-gray-500 mt-1">備品・貸与物・アカウント管理</p>
+          <h1 className="text-2xl font-bold text-white/90">総務</h1>
+          <p className="text-sm text-[#5A6070] mt-1">備品・貸与物・アカウント管理</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             新規登録
           </button>
@@ -90,18 +90,18 @@ export default function GeneralAffairsPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {summaryStats.map((stat) => (
-          <div key={stat.label} className="glass rounded-2xl p-5">
-            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-3 shadow-sm`}>
-              <stat.icon className="w-5 h-5 text-white" />
+          <div key={stat.label} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
+            <div className={`w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center mb-3`}>
+              <stat.icon className={`w-5 h-5 ${stat.color}`} />
             </div>
-            <p className="text-xs text-gray-400">{stat.label}</p>
-            <p className="text-2xl font-bold text-gray-900 mt-0.5">{stat.value}</p>
+            <p className="text-xs text-[#5A6070]">{stat.label}</p>
+            <p className="text-2xl font-bold text-white/90 mt-0.5">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: '全て' },
           { key: 'device' as const, label: '端末・PC' },
@@ -112,8 +112,8 @@ export default function GeneralAffairsPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#5A6070] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -122,7 +122,7 @@ export default function GeneralAffairsPage() {
       </div>
 
       {/* Asset List */}
-      <div className="glass rounded-2xl divide-y divide-gray-100/50">
+      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.04]">
         {demoAssets
           .filter(a => {
             if (activeTab === 'device') return a.category === 'device'
@@ -136,7 +136,7 @@ export default function GeneralAffairsPage() {
             return (
               <div
                 key={asset.id}
-                className="px-5 py-4 hover:bg-white/50 transition-all cursor-pointer group"
+                className="px-5 py-4 hover:bg-white/[0.03] transition-all cursor-pointer group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -145,15 +145,15 @@ export default function GeneralAffairsPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-xs text-gray-400 font-mono">{asset.id}</span>
+                        <span className="text-xs text-[#4B5263] font-mono">{asset.id}</span>
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium ${status.color}`}>
                           {status.label}
                         </span>
                       </div>
-                      <h4 className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                      <h4 className="text-sm font-semibold text-white/90 group-hover:text-[#7C8CFF] transition-colors">
                         {asset.name}
                       </h4>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-[#5A6070]">
                         <span className="flex items-center gap-1">
                           <User className="w-3 h-3" />
                           {asset.assignee}
@@ -164,12 +164,12 @@ export default function GeneralAffairsPage() {
                           {asset.assignedDate}
                         </span>
                         {asset.note && (
-                          <span className="text-amber-500">{asset.note}</span>
+                          <span className="text-[#F5A524]">{asset.note}</span>
                         )}
                       </div>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="w-4 h-4 text-[#4B5263] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
             )

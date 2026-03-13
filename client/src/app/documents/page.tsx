@@ -45,10 +45,10 @@ const categoryConfig: Record<DocumentCategory, { label: string; icon: typeof Fil
 }
 
 const statusConfig: Record<DocumentStatus, { label: string; color: string }> = {
-  active: { label: '有効', color: 'text-emerald-600 bg-emerald-50' },
-  expiring: { label: '期限間近', color: 'text-amber-600 bg-amber-50' },
-  expired: { label: '期限切れ', color: 'text-red-600 bg-red-50' },
-  draft: { label: '下書き', color: 'text-gray-500 bg-gray-50' },
+  active: { label: '有効', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
+  expiring: { label: '期限間近', color: 'text-[#F5A524] bg-[#F5A524]/10' },
+  expired: { label: '期限切れ', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10' },
+  draft: { label: '下書き', color: 'text-[#6B7280] bg-white/[0.05]' },
 }
 
 const demoDocuments: Document[] = [
@@ -153,17 +153,17 @@ export default function DocumentsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">法務・文書</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            期限注意が <span className="text-amber-600 font-semibold">{expiringCount}件</span> あります
+          <h1 className="text-2xl font-bold text-white/90">法務・文書</h1>
+          <p className="text-sm text-[#6B7280] mt-1">
+            期限注意が <span className="text-[#F5A524] font-semibold">{expiringCount}件</span> あります
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8E9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             アップロード
           </button>
@@ -171,17 +171,17 @@ export default function DocumentsPage() {
       </div>
 
       {/* Search */}
-      <div className="glass rounded-xl px-4 py-2.5 flex items-center gap-3">
-        <Search className="w-4 h-4 text-gray-400" />
+      <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl px-4 py-2.5 flex items-center gap-3">
+        <Search className="w-4 h-4 text-[#5A6070]" />
         <input
           type="text"
           placeholder="文書名・タグ・部署で検索..."
-          className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
+          className="flex-1 bg-transparent text-sm text-white outline-none placeholder-[#5A6070]"
         />
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: '全て' },
           { key: 'folders' as const, label: 'フォルダ' },
@@ -192,8 +192,8 @@ export default function DocumentsPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -206,13 +206,13 @@ export default function DocumentsPage() {
           {folders.map((folder) => (
             <button
               key={folder.name}
-              className="glass rounded-2xl p-5 hover:bg-white/80 transition-all group text-left"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all group text-left"
             >
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${folder.color} flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md transition-shadow`}>
                 <folder.icon className="w-6 h-6 text-white" />
               </div>
-              <p className="text-sm font-semibold text-gray-800">{folder.name}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{folder.count}件</p>
+              <p className="text-sm font-semibold text-[#A8B0BD]">{folder.name}</p>
+              <p className="text-xs text-[#4B5263] mt-0.5">{folder.count}件</p>
             </button>
           ))}
         </div>
@@ -230,7 +230,7 @@ export default function DocumentsPage() {
               return (
                 <div
                   key={doc.id}
-                  className="glass rounded-2xl p-5 hover:bg-white/80 transition-all cursor-pointer group"
+                  className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">
@@ -239,26 +239,26 @@ export default function DocumentsPage() {
                       </div>
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs text-gray-400 font-mono">{doc.id}</span>
-                          <span className="text-xs text-gray-300">{doc.version}</span>
+                          <span className="text-xs text-[#4B5263] font-mono">{doc.id}</span>
+                          <span className="text-xs text-[#4B5263]">{doc.version}</span>
                         </div>
-                        <h3 className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                        <h3 className="text-sm font-semibold text-white/90 group-hover:text-[#7C8CFF] transition-colors">
                           {doc.title}
                         </h3>
                         <div className="flex items-center gap-2 mt-2">
                           {doc.tags.map((tag) => (
-                            <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gray-50 text-[10px] text-gray-500">
+                            <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/[0.05] text-[10px] text-[#6B7280]">
                               <Tag className="w-2.5 h-2.5" />
                               {tag}
                             </span>
                           ))}
                         </div>
-                        <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                        <div className="flex items-center gap-3 mt-2 text-xs text-[#4B5263]">
                           <span>{doc.owner}</span>
                           <span>{doc.department}</span>
                           <span>更新: {doc.updatedAt}</span>
                           {doc.expiresAt && (
-                            <span className={doc.status === 'expired' ? 'text-red-500' : doc.status === 'expiring' ? 'text-amber-500' : ''}>
+                            <span className={doc.status === 'expired' ? 'text-[#FF5D5D]' : doc.status === 'expiring' ? 'text-[#F5A524]' : ''}>
                               期限: {doc.expiresAt}
                             </span>
                           )}
@@ -269,8 +269,8 @@ export default function DocumentsPage() {
                       <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium ${status.color}`}>
                         {status.label}
                       </span>
-                      <button className="p-1.5 rounded-lg hover:bg-gray-100 transition-all opacity-0 group-hover:opacity-100">
-                        <MoreHorizontal className="w-4 h-4 text-gray-400" />
+                      <button className="p-1.5 rounded-lg hover:bg-white/[0.08] transition-all opacity-0 group-hover:opacity-100">
+                        <MoreHorizontal className="w-4 h-4 text-[#6B7280]" />
                       </button>
                     </div>
                   </div>

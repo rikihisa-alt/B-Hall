@@ -1,105 +1,194 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────
+   B-Hall Design System v1.0
+   Workspace OS / Quiet Premium / Dark Glass
+   ───────────────────────────────────────────────── */
+
 @theme {
-  /* ── Color System ── */
-  --color-primary-50: #eef2ff;
-  --color-primary-100: #e0e7ff;
-  --color-primary-200: #c7d2fe;
-  --color-primary-300: #a5b4fc;
-  --color-primary-400: #818cf8;
-  --color-primary-500: #6366f1;
-  --color-primary-600: #4f46e5;
-  --color-primary-700: #4338ca;
-  --color-primary-800: #3730a3;
+  /* ── Background ── */
+  --color-bg: #0F1115;
+  --color-bg-elevated: #161920;
+  --color-bg-subtle: #1A1D25;
 
-  --color-surface: #f8f9fb;
-  --color-surface-card: rgba(255, 255, 255, 0.72);
-  --color-surface-elevated: rgba(255, 255, 255, 0.88);
+  /* ── Surface (glass layers) ── */
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-strong: rgba(255, 255, 255, 0.08);
+  --color-surface-hover: rgba(255, 255, 255, 0.10);
+  --color-surface-active: rgba(255, 255, 255, 0.12);
 
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --color-info: #3b82f6;
+  /* ── Border ── */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-border-hover: rgba(255, 255, 255, 0.20);
 
-  /* ── Typography ── */
-  --font-sans: "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* ── Brand ── */
+  --color-primary: #7C8CFF;
+  --color-primary-soft: rgba(124, 140, 255, 0.15);
+  --color-primary-hover: #929FFF;
+  --color-primary-muted: rgba(124, 140, 255, 0.08);
+
+  /* ── Semantic ── */
+  --color-success: #2FBF71;
+  --color-success-soft: rgba(47, 191, 113, 0.12);
+  --color-warning: #F5A524;
+  --color-warning-soft: rgba(245, 165, 36, 0.12);
+  --color-danger: #FF5D5D;
+  --color-danger-soft: rgba(255, 93, 93, 0.12);
+  --color-info: #60A5FA;
+  --color-info-soft: rgba(96, 165, 250, 0.12);
+
+  /* ── Text ── */
+  --color-text-primary: #F5F7FA;
+  --color-text-secondary: #A8B0BD;
+  --color-text-muted: #6B7280;
+  --color-text-faint: #4B5263;
+
+  /* ── Radius ── */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  /* ── Font ── */
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
 }
 
-/* ── Base ── */
+/* ─── Base ─── */
 body {
   font-family: var(--font-sans);
-  background: #f8f9fb;
+  background: var(--color-bg);
   background-image:
-    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(99, 102, 241, 0.03) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124, 140, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(47, 191, 113, 0.03) 0%, transparent 50%);
   min-height: 100vh;
-  color: #0f172a;
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
 }
 
-/* ── Glass Morphism ── */
+/* ─── Glass Surfaces ─── */
 .glass {
-  background: rgba(255, 255, 255, 0.68);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+}
+.glass:hover {
+  border-color: rgba(255, 255, 255, 0.10);
 }
 
 .glass-subtle {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px) saturate(150%);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  transition: all 0.2s ease;
 }
 
-/* ── Scrollbar ── */
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.16);
 }
 
-/* ── Selection ── */
+/* ─── Selection ─── */
 ::selection {
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(124, 140, 255, 0.3);
+  color: #F5F7FA;
 }
 
-/* ── Focus Ring ── */
+/* ─── Focus ─── */
 *:focus-visible {
-  outline: 2px solid rgba(99, 102, 241, 0.4);
+  outline: 2px solid rgba(124, 140, 255, 0.5);
   outline-offset: 2px;
   border-radius: 8px;
 }
 
-/* ── Module tile hover glow ── */
+/* ─── Tile Glow ─── */
 .tile-glow {
   position: relative;
+  overflow: hidden;
 }
 .tile-glow::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    rgba(124, 140, 255, 0.06) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
 .tile-glow:hover::before {
   opacity: 1;
+}
+
+/* ─── Utility: Soft Button ─── */
+.btn-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-secondary);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.btn-soft:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--color-text-primary);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--color-primary);
+  color: #0F1115;
+  border: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 0 20px rgba(124, 140, 255, 0.2);
+}
+.btn-primary:active {
+  transform: scale(0.97);
 }

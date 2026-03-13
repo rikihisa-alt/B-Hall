@@ -70,22 +70,22 @@ export default function SettingsPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">設定</h1>
-        <p className="text-sm text-gray-500 mt-1">アカウント・組織・システムの設定</p>
+        <h1 className="text-2xl font-bold text-white/90">設定</h1>
+        <p className="text-sm text-[#6B7280] mt-1">アカウント・組織・システムの設定</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Sidebar Navigation */}
         <div className="lg:col-span-1">
-          <div className="glass rounded-2xl p-2 space-y-1">
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-2 space-y-1">
             {settingsSections.map((item) => (
               <button
                 key={item.section}
                 onClick={() => setActiveSection(item.section)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
                   activeSection === item.section
-                    ? 'bg-white shadow-sm text-primary-600'
-                    : 'text-gray-600 hover:bg-white/60'
+                    ? 'bg-white/[0.08] text-white'
+                    : 'text-[#6B7280] hover:text-[#A8B0BD] hover:bg-white/[0.05]'
                 }`}
               >
                 <item.icon className="w-4 h-4 flex-shrink-0" />
@@ -98,20 +98,20 @@ export default function SettingsPage() {
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
           {activeSection === 'profile' && (
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">プロフィール設定</h2>
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white/90 mb-6">プロフィール設定</h2>
               <div className="flex items-center gap-5 mb-8">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7C8CFF] to-[#6366F1] flex items-center justify-center text-[#0F1115] text-2xl font-bold shadow-md">
                   T
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{profileData.name}</h3>
-                  <p className="text-sm text-gray-500">{profileData.email}</p>
+                  <h3 className="text-lg font-semibold text-white/90">{profileData.name}</h3>
+                  <p className="text-sm text-[#6B7280]">{profileData.email}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium text-primary-600 bg-primary-50">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium text-[#7C8CFF] bg-[#7C8CFF]/10">
                       {profileData.role}
                     </span>
-                    <span className="text-xs text-gray-400">{profileData.department}</span>
+                    <span className="text-xs text-[#5A6070]">{profileData.department}</span>
                   </div>
                 </div>
               </div>
@@ -123,46 +123,46 @@ export default function SettingsPage() {
                   { label: '部署', value: profileData.department },
                   { label: 'ロール', value: profileData.role },
                 ].map((field) => (
-                  <div key={field.label} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-                    <span className="text-sm text-gray-500">{field.label}</span>
-                    <span className="text-sm font-medium text-gray-800">{field.value}</span>
+                  <div key={field.label} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
+                    <span className="text-sm text-[#6B7280]">{field.label}</span>
+                    <span className="text-sm font-medium text-[#A8B0BD]">{field.value}</span>
                   </div>
                 ))}
               </div>
-              <button className="mt-6 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+              <button className="mt-6 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8B9AFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
                 編集する
               </button>
             </div>
           )}
 
           {activeSection === 'notifications' && (
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">通知設定</h2>
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white/90 mb-6">通知設定</h2>
               <div className="space-y-1">
                 <div className="flex items-center justify-between py-2 mb-2">
-                  <span className="text-sm font-medium text-gray-500">通知項目</span>
+                  <span className="text-sm font-medium text-[#6B7280]">通知項目</span>
                   <div className="flex items-center gap-8">
-                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                    <span className="text-xs text-[#5A6070] flex items-center gap-1">
                       <Mail className="w-3 h-3" />
                       メール
                     </span>
-                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                    <span className="text-xs text-[#5A6070] flex items-center gap-1">
                       <Smartphone className="w-3 h-3" />
                       アプリ
                     </span>
                   </div>
                 </div>
                 {notificationSettings.map((setting) => (
-                  <div key={setting.label} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-                    <span className="text-sm text-gray-700">{setting.label}</span>
+                  <div key={setting.label} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
+                    <span className="text-sm text-[#A8B0BD]">{setting.label}</span>
                     <div className="flex items-center gap-8">
                       <div className={`w-8 h-5 rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
-                        setting.email ? 'bg-primary-500 justify-end' : 'bg-gray-200 justify-start'
+                        setting.email ? 'bg-[#7C8CFF] justify-end' : 'bg-white/[0.10] justify-start'
                       }`}>
                         <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
                       </div>
                       <div className={`w-8 h-5 rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
-                        setting.app ? 'bg-primary-500 justify-end' : 'bg-gray-200 justify-start'
+                        setting.app ? 'bg-[#7C8CFF] justify-end' : 'bg-white/[0.10] justify-start'
                       }`}>
                         <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
                       </div>
@@ -174,8 +174,8 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'organization' && (
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">組織設定</h2>
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white/90 mb-6">組織設定</h2>
               <div className="space-y-4">
                 {[
                   { label: '会社名', value: '株式会社サンプル' },
@@ -184,9 +184,9 @@ export default function SettingsPage() {
                   { label: '部署数', value: '6部署' },
                   { label: 'プラン', value: 'ビジネスプラン' },
                 ].map((field) => (
-                  <div key={field.label} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-                    <span className="text-sm text-gray-500">{field.label}</span>
-                    <span className="text-sm font-medium text-gray-800">{field.value}</span>
+                  <div key={field.label} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
+                    <span className="text-sm text-[#6B7280]">{field.label}</span>
+                    <span className="text-sm font-medium text-[#A8B0BD]">{field.value}</span>
                   </div>
                 ))}
               </div>
@@ -194,34 +194,34 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'security' && (
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">セキュリティ設定</h2>
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white/90 mb-6">セキュリティ設定</h2>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/50">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-800">パスワード</h4>
-                    <p className="text-xs text-gray-400 mt-0.5">最終変更: 2026年1月15日</p>
+                    <h4 className="text-sm font-medium text-[#A8B0BD]">パスワード</h4>
+                    <p className="text-xs text-[#5A6070] mt-0.5">最終変更: 2026年1月15日</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 transition-all">
+                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#7C8CFF] bg-[#7C8CFF]/10 hover:bg-[#7C8CFF]/20 transition-all">
                     変更
                   </button>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/50">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-800">二要素認証</h4>
-                    <p className="text-xs text-gray-400 mt-0.5">認証アプリを使用した二要素認証</p>
+                    <h4 className="text-sm font-medium text-[#A8B0BD]">二要素認証</h4>
+                    <p className="text-xs text-[#5A6070] mt-0.5">認証アプリを使用した二要素認証</p>
                   </div>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium text-emerald-600 bg-emerald-50">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium text-[#2FBF71] bg-[#2FBF71]/10">
                     <Check className="w-3 h-3" />
                     有効
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/50">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-800">アクティブセッション</h4>
-                    <p className="text-xs text-gray-400 mt-0.5">現在1デバイスからログイン中</p>
+                    <h4 className="text-sm font-medium text-[#A8B0BD]">アクティブセッション</h4>
+                    <p className="text-xs text-[#5A6070] mt-0.5">現在1デバイスからログイン中</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 transition-all">
+                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8B0BD] bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
                     管理
                   </button>
                 </div>
@@ -230,23 +230,23 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'appearance' && (
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">表示・テーマ設定</h2>
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white/90 mb-6">表示・テーマ設定</h2>
               <div className="space-y-6">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">テーマ</h4>
+                  <h4 className="text-sm font-medium text-[#A8B0BD] mb-3">テーマ</h4>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { name: 'ライト', active: true },
-                      { name: 'ダーク', active: false },
+                      { name: 'ライト', active: false },
+                      { name: 'ダーク', active: true },
                       { name: 'システム', active: false },
                     ].map((theme) => (
                       <button
                         key={theme.name}
                         className={`p-4 rounded-xl text-center text-sm font-medium transition-all ${
                           theme.active
-                            ? 'bg-primary-50 text-primary-600 ring-2 ring-primary-200'
-                            : 'bg-white/50 text-gray-600 hover:bg-white/70'
+                            ? 'bg-[#7C8CFF]/15 text-[#7C8CFF] ring-2 ring-[#7C8CFF]/30'
+                            : 'bg-white/[0.03] border border-white/[0.06] text-[#6B7280] hover:bg-white/[0.05] hover:text-[#A8B0BD]'
                         }`}
                       >
                         {theme.name}
@@ -255,10 +255,10 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">言語</h4>
-                  <div className="glass rounded-xl px-4 py-3 flex items-center justify-between">
-                    <span className="text-sm text-gray-700">日本語</span>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
+                  <h4 className="text-sm font-medium text-[#A8B0BD] mb-3">言語</h4>
+                  <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 flex items-center justify-between hover:bg-white/[0.05] transition-colors cursor-pointer">
+                    <span className="text-sm text-[#A8B0BD]">日本語</span>
+                    <ChevronRight className="w-4 h-4 text-[#5A6070]" />
                   </div>
                 </div>
               </div>
@@ -266,20 +266,20 @@ export default function SettingsPage() {
           )}
 
           {/* Advanced Settings */}
-          <div className="glass rounded-2xl p-6">
-            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">管理者設定</h2>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+            <h2 className="text-sm font-semibold text-[#5A6070] uppercase tracking-wider mb-4">管理者設定</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {advancedSettings.map((item) => (
                 <button
                   key={item.title}
-                  className="flex items-center gap-3 p-4 rounded-xl bg-white/50 hover:bg-white/70 transition-all group text-left"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all group text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 transition-colors">
-                    <item.icon className="w-4 h-4 text-gray-500" />
+                  <div className="w-9 h-9 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0 group-hover:bg-white/[0.08] transition-colors">
+                    <item.icon className="w-4 h-4 text-[#6B7280]" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-800">{item.title}</h4>
-                    <p className="text-[11px] text-gray-400">{item.description}</p>
+                    <h4 className="text-sm font-medium text-[#A8B0BD]">{item.title}</h4>
+                    <p className="text-[11px] text-[#5A6070]">{item.description}</p>
                   </div>
                 </button>
               ))}

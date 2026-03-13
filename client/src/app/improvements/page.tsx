@@ -40,12 +40,12 @@ interface Proposal {
 }
 
 const statusConfig: Record<ProposalStatus, { label: string; color: string }> = {
-  new: { label: '新規', color: 'text-blue-600 bg-blue-50' },
-  reviewing: { label: '検討中', color: 'text-amber-600 bg-amber-50' },
-  approved: { label: '承認済', color: 'text-emerald-600 bg-emerald-50' },
-  in_progress: { label: '実行中', color: 'text-violet-600 bg-violet-50' },
-  completed: { label: '完了', color: 'text-gray-600 bg-gray-50' },
-  rejected: { label: '見送り', color: 'text-red-600 bg-red-50' },
+  new: { label: '新規', color: 'text-blue-400 bg-blue-500/10' },
+  reviewing: { label: '検討中', color: 'text-amber-400 bg-amber-500/10' },
+  approved: { label: '承認済', color: 'text-emerald-400 bg-emerald-500/10' },
+  in_progress: { label: '実行中', color: 'text-violet-400 bg-violet-500/10' },
+  completed: { label: '完了', color: 'text-[#6B7280] bg-white/[0.05]' },
+  rejected: { label: '見送り', color: 'text-red-400 bg-red-500/10' },
 }
 
 const categoryConfig: Record<ProposalCategory, { label: string; color: string }> = {
@@ -171,15 +171,15 @@ export default function ImprovementsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">改善・目安箱</h1>
-          <p className="text-sm text-gray-500 mt-1">改善提案・匿名投稿で会社をより良くする</p>
+          <h1 className="text-2xl font-bold text-white/90">改善・目安箱</h1>
+          <p className="text-sm text-[#6B7280] mt-1">改善提案・匿名投稿で会社をより良くする</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             提案する
           </button>
@@ -189,14 +189,14 @@ export default function ImprovementsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="glass rounded-2xl p-5">
+          <div key={stat.label} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-sm`}>
                 <stat.icon className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-xs text-gray-400">{stat.label}</p>
-                <p className="text-xl font-bold text-gray-900">{stat.value}</p>
+                <p className="text-xs text-[#5A6070]">{stat.label}</p>
+                <p className="text-xl font-bold text-white/90">{stat.value}</p>
               </div>
             </div>
           </div>
@@ -208,7 +208,7 @@ export default function ImprovementsPage() {
         {Object.entries(categoryConfig).map(([key, config]) => (
           <button
             key={key}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass text-xs font-medium text-gray-600 hover:bg-white/80 transition-all"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] border border-white/[0.06] text-xs font-medium text-[#6B7280] hover:bg-white/[0.08] hover:border-white/[0.10] transition-all"
           >
             <div className={`w-2 h-2 rounded-full bg-gradient-to-br ${config.color}`} />
             {config.label}
@@ -217,7 +217,7 @@ export default function ImprovementsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: '全て' },
           { key: 'popular' as const, label: '人気順' },
@@ -228,8 +228,8 @@ export default function ImprovementsPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -248,36 +248,36 @@ export default function ImprovementsPage() {
             return (
               <div
                 key={proposal.id}
-                className="glass rounded-2xl p-6 hover:bg-white/80 transition-all cursor-pointer group"
+                className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400 font-mono">{proposal.id}</span>
+                    <span className="text-xs text-[#5A6070] font-mono">{proposal.id}</span>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium ${status.color}`}>
                       {status.label}
                     </span>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-gray-50 text-gray-500">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-white/[0.05] text-[#6B7280]">
                       <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${category.color}`} />
                       {category.label}
                     </span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="w-4 h-4 text-[#4B5263] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
 
-                <h3 className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
+                <h3 className="text-sm font-semibold text-white/90 group-hover:text-[#7C8CFF] transition-colors mb-2">
                   {proposal.title}
                 </h3>
-                <p className="text-xs text-gray-500 line-clamp-2 mb-3">{proposal.description}</p>
+                <p className="text-xs text-[#6B7280] line-clamp-2 mb-3">{proposal.description}</p>
 
                 {proposal.impact && (
-                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-xs text-emerald-600 mb-3">
+                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 text-xs text-emerald-400 mb-3">
                     <Target className="w-3 h-3" />
                     {proposal.impact}
                   </div>
                 )}
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-xs text-gray-400">
+                  <div className="flex items-center gap-3 text-xs text-[#5A6070]">
                     {proposal.anonymous ? (
                       <span className="flex items-center gap-1">
                         <EyeOff className="w-3 h-3" />
@@ -295,8 +295,8 @@ export default function ImprovementsPage() {
                       {proposal.date}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-gray-400">
-                    <button className="flex items-center gap-1 hover:text-primary-600 transition-colors">
+                  <div className="flex items-center gap-4 text-xs text-[#5A6070]">
+                    <button className="flex items-center gap-1 hover:text-[#7C8CFF] transition-colors">
                       <ThumbsUp className="w-3.5 h-3.5" />
                       {proposal.likes}
                     </button>

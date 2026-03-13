@@ -30,12 +30,12 @@ interface Notification {
 }
 
 const typeConfig: Record<NotificationType, { icon: typeof Bell; color: string }> = {
-  task: { icon: CheckCircle2, color: 'text-blue-500 bg-blue-50' },
-  approval: { icon: Stamp, color: 'text-amber-500 bg-amber-50' },
-  comment: { icon: MessageSquare, color: 'text-violet-500 bg-violet-50' },
-  deadline: { icon: Clock, color: 'text-red-500 bg-red-50' },
-  alert: { icon: AlertTriangle, color: 'text-orange-500 bg-orange-50' },
-  system: { icon: Settings, color: 'text-gray-500 bg-gray-50' },
+  task: { icon: CheckCircle2, color: 'text-blue-400 bg-blue-500/10' },
+  approval: { icon: Stamp, color: 'text-amber-400 bg-amber-500/10' },
+  comment: { icon: MessageSquare, color: 'text-violet-400 bg-violet-500/10' },
+  deadline: { icon: Clock, color: 'text-red-400 bg-red-500/10' },
+  alert: { icon: AlertTriangle, color: 'text-orange-400 bg-orange-500/10' },
+  system: { icon: Settings, color: 'text-[#6B7280] bg-white/[0.05]' },
 }
 
 const demoNotifications: Notification[] = [
@@ -139,19 +139,19 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">通知</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            未読が <span className="text-primary-600 font-semibold">{unreadCount}件</span> あります
+          <h1 className="text-2xl font-bold text-white/90">通知</h1>
+          <p className="text-sm text-[#6B7280] mt-1">
+            未読が <span className="text-[#7C8CFF] font-semibold">{unreadCount}件</span> あります
           </p>
         </div>
-        <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+        <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
           <CheckCheck className="w-4 h-4" />
           すべて既読にする
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: 'すべて' },
           { key: 'unread' as const, label: `未読 (${unreadCount})` },
@@ -161,8 +161,8 @@ export default function NotificationsPage() {
             onClick={() => setFilter(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               filter === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -171,7 +171,7 @@ export default function NotificationsPage() {
       </div>
 
       {/* Notifications List */}
-      <div className="glass rounded-2xl divide-y divide-gray-100/50">
+      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.06]">
         {filteredNotifications.map((notification) => {
           const type = typeConfig[notification.type]
           const Icon = type.icon
@@ -179,8 +179,8 @@ export default function NotificationsPage() {
           return (
             <div
               key={notification.id}
-              className={`px-5 py-4 hover:bg-white/50 transition-all cursor-pointer group ${
-                !notification.read ? 'bg-primary-50/30' : ''
+              className={`px-5 py-4 hover:bg-white/[0.05] transition-all cursor-pointer group ${
+                !notification.read ? 'bg-white/[0.04]' : 'bg-white/[0.02]'
               }`}
             >
               <div className="flex items-start gap-4">
@@ -191,16 +191,16 @@ export default function NotificationsPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <h3 className={`text-sm font-medium ${
-                        !notification.read ? 'text-gray-900 font-semibold' : 'text-gray-700'
-                      } group-hover:text-primary-600 transition-colors`}>
+                        !notification.read ? 'text-white/90 font-semibold' : 'text-[#A8B0BD]'
+                      } group-hover:text-[#7C8CFF] transition-colors`}>
                         {notification.title}
                       </h3>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">{notification.description}</p>
+                      <p className="text-xs text-[#6B7280] mt-1 line-clamp-2">{notification.description}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-xs text-gray-400">{notification.time}</span>
+                      <span className="text-xs text-[#5A6070]">{notification.time}</span>
                       {!notification.read && (
-                        <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
+                        <div className="w-2 h-2 rounded-full bg-[#7C8CFF] flex-shrink-0" />
                       )}
                     </div>
                   </div>

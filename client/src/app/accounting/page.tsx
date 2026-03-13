@@ -25,7 +25,8 @@ const summaryCards = [
     change: '+2.3%',
     trend: 'up' as const,
     icon: Wallet,
-    color: 'from-emerald-500 to-emerald-600',
+    iconColor: 'text-[#2FBF71]',
+    iconBg: 'bg-[#2FBF71]/10',
   },
   {
     title: '月次収入',
@@ -33,7 +34,8 @@ const summaryCards = [
     change: '+5.1%',
     trend: 'up' as const,
     icon: TrendingUp,
-    color: 'from-blue-500 to-blue-600',
+    iconColor: 'text-[#7C8CFF]',
+    iconBg: 'bg-[#7C8CFF]/10',
   },
   {
     title: '月次支出',
@@ -41,7 +43,8 @@ const summaryCards = [
     change: '+1.8%',
     trend: 'up' as const,
     icon: TrendingDown,
-    color: 'from-rose-500 to-rose-600',
+    iconColor: 'text-[#FF5D5D]',
+    iconBg: 'bg-[#FF5D5D]/10',
   },
   {
     title: '未収金',
@@ -49,7 +52,8 @@ const summaryCards = [
     change: '4件',
     trend: 'neutral' as const,
     icon: AlertCircle,
-    color: 'from-amber-500 to-amber-600',
+    iconColor: 'text-[#F5A524]',
+    iconBg: 'bg-[#F5A524]/10',
   },
 ]
 
@@ -75,9 +79,9 @@ const recentTransactions: Transaction[] = [
 ]
 
 const statusConfig = {
-  confirmed: { label: '確認済', color: 'text-emerald-600 bg-emerald-50' },
-  pending: { label: '未確認', color: 'text-amber-600 bg-amber-50' },
-  unmatched: { label: '未消込', color: 'text-red-600 bg-red-50' },
+  confirmed: { label: '確認済', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
+  pending: { label: '未確認', color: 'text-[#F5A524] bg-[#F5A524]/10' },
+  unmatched: { label: '未消込', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10' },
 }
 
 const cashFlowMonths = [
@@ -97,15 +101,15 @@ export default function AccountingPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">経理・財務</h1>
-          <p className="text-sm text-gray-500 mt-1">取引・請求・支払・資金管理</p>
+          <h1 className="text-2xl font-bold text-white/90">経理・財務</h1>
+          <p className="text-sm text-[#6B7280] mt-1">取引・請求・支払・資金管理</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8E9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Receipt className="w-4 h-4" />
             取引登録
           </button>
@@ -115,29 +119,29 @@ export default function AccountingPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {summaryCards.map((card) => (
-          <div key={card.title} className="glass rounded-2xl p-5">
+          <div key={card.title} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
             <div className="flex items-start justify-between mb-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center shadow-sm`}>
-                <card.icon className="w-5 h-5 text-white" />
+              <div className={`w-10 h-10 rounded-xl ${card.iconBg} flex items-center justify-center`}>
+                <card.icon className={`w-5 h-5 ${card.iconColor}`} />
               </div>
               {card.trend === 'up' && (
-                <span className="flex items-center gap-0.5 text-xs text-emerald-600">
+                <span className="flex items-center gap-0.5 text-xs text-[#2FBF71]">
                   <ArrowUpRight className="w-3 h-3" />
                   {card.change}
                 </span>
               )}
               {card.trend === 'neutral' && (
-                <span className="text-xs text-amber-600">{card.change}</span>
+                <span className="text-xs text-[#F5A524]">{card.change}</span>
               )}
             </div>
-            <p className="text-xs text-gray-400">{card.title}</p>
-            <p className="text-xl font-bold text-gray-900 mt-0.5">{card.value}</p>
+            <p className="text-xs text-[#6B7280]">{card.title}</p>
+            <p className="text-xl font-bold text-white/90 mt-0.5">{card.value}</p>
           </div>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'overview' as const, label: '概要' },
           { key: 'transactions' as const, label: '取引一覧' },
@@ -148,8 +152,8 @@ export default function AccountingPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white shadow-sm'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -158,32 +162,32 @@ export default function AccountingPage() {
       </div>
 
       {(activeTab === 'overview' || activeTab === 'transactions') && (
-        <div className="glass rounded-2xl divide-y divide-gray-100/50">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.06]">
           <div className="px-5 py-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-gray-700">最近の取引</h3>
-            <button className="text-xs text-primary-600 hover:text-primary-700 font-medium">すべて表示</button>
+            <h3 className="text-sm font-semibold text-[#A8B0BD]">最近の取引</h3>
+            <button className="text-xs text-[#7C8CFF] hover:text-[#8E9BFF] font-medium">すべて表示</button>
           </div>
           {recentTransactions.map((txn) => {
             const status = statusConfig[txn.status]
             return (
               <div
                 key={txn.id}
-                className="px-5 py-4 hover:bg-white/50 transition-all cursor-pointer group"
+                className="px-5 py-4 hover:bg-white/[0.03] transition-all cursor-pointer group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                      txn.type === 'income' ? 'bg-emerald-50' : 'bg-gray-50'
+                      txn.type === 'income' ? 'bg-[#2FBF71]/10' : 'bg-white/[0.06]'
                     }`}>
                       {txn.type === 'income' ? (
-                        <ArrowDownRight className="w-4 h-4 text-emerald-500" />
+                        <ArrowDownRight className="w-4 h-4 text-[#2FBF71]" />
                       ) : (
-                        <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                        <ArrowUpRight className="w-4 h-4 text-[#5A6070]" />
                       )}
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-gray-900">{txn.description}</h4>
-                      <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-400">
+                      <h4 className="text-sm font-medium text-white/90">{txn.description}</h4>
+                      <div className="flex items-center gap-2 mt-0.5 text-xs text-[#5A6070]">
                         <span>{txn.counterparty}</span>
                         <span>{txn.category}</span>
                         <span>{txn.date}</span>
@@ -192,7 +196,7 @@ export default function AccountingPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className={`text-sm font-semibold ${
-                      txn.type === 'income' ? 'text-emerald-600' : 'text-gray-700'
+                      txn.type === 'income' ? 'text-[#2FBF71]' : 'text-[#A8B0BD]'
                     }`}>
                       {txn.type === 'income' ? '+' : '-'}
                       {txn.amount.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' })}
@@ -209,42 +213,42 @@ export default function AccountingPage() {
       )}
 
       {activeTab === 'cashflow' && (
-        <div className="glass rounded-2xl p-6">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">月別キャッシュフロー（単位: 万円）</h3>
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+          <h3 className="text-sm font-semibold text-[#A8B0BD] mb-4">月別キャッシュフロー（単位: 万円）</h3>
           <div className="space-y-3">
             {cashFlowMonths.map((month) => {
               const maxVal = 15000
               return (
                 <div key={month.month} className="flex items-center gap-4">
-                  <span className="text-xs text-gray-500 w-8 text-right">{month.month}</span>
+                  <span className="text-xs text-[#6B7280] w-8 text-right">{month.month}</span>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-2">
                       <div
-                        className="h-5 rounded-lg bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all"
+                        className="h-5 rounded-lg bg-gradient-to-r from-[#2FBF71]/80 to-[#2FBF71] transition-all"
                         style={{ width: `${(month.income / maxVal) * 100}%` }}
                       />
-                      <span className="text-xs text-gray-500">{(month.income / 10).toFixed(0)}万</span>
+                      <span className="text-xs text-[#6B7280]">{(month.income / 10).toFixed(0)}万</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div
-                        className="h-5 rounded-lg bg-gradient-to-r from-rose-300 to-rose-400 transition-all"
+                        className="h-5 rounded-lg bg-gradient-to-r from-[#FF5D5D]/60 to-[#FF5D5D]/80 transition-all"
                         style={{ width: `${(month.expense / maxVal) * 100}%` }}
                       />
-                      <span className="text-xs text-gray-500">{(month.expense / 10).toFixed(0)}万</span>
+                      <span className="text-xs text-[#6B7280]">{(month.expense / 10).toFixed(0)}万</span>
                     </div>
                   </div>
                 </div>
               )
             })}
           </div>
-          <div className="flex items-center gap-6 mt-4 pt-4 border-t border-gray-100">
+          <div className="flex items-center gap-6 mt-4 pt-4 border-t border-white/[0.06]">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-emerald-500" />
-              <span className="text-xs text-gray-500">収入</span>
+              <div className="w-3 h-3 rounded bg-[#2FBF71]" />
+              <span className="text-xs text-[#6B7280]">収入</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-rose-400" />
-              <span className="text-xs text-gray-500">支出</span>
+              <div className="w-3 h-3 rounded bg-[#FF5D5D]/80" />
+              <span className="text-xs text-[#6B7280]">支出</span>
             </div>
           </div>
         </div>

@@ -30,34 +30,34 @@ export default function TasksPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">タスク</h1>
-          <p className="text-sm text-gray-500 mt-1">全 {demoTasks.length} 件のタスク</p>
+          <h1 className="text-2xl font-bold text-white/90">タスク</h1>
+          <p className="text-sm text-[#A8B0BD] mt-1">全 {demoTasks.length} 件のタスク</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center glass rounded-xl p-1">
+          <div className="flex items-center bg-white/[0.05] border border-white/[0.06] backdrop-blur-xl rounded-xl p-1">
             <button
               onClick={() => setView('board')}
-              className={`p-2 rounded-lg transition-all ${view === 'board' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`p-2 rounded-lg transition-all ${view === 'board' ? 'bg-white/[0.10] text-[#7C8CFF]' : 'text-[#6B7280] hover:text-[#A8B0BD]'}`}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => setView('list')}
-              className={`p-2 rounded-lg transition-all ${view === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`p-2 rounded-lg transition-all ${view === 'list' ? 'bg-white/[0.10] text-[#7C8CFF]' : 'text-[#6B7280] hover:text-[#A8B0BD]'}`}
             >
               <List className="w-4 h-4" />
             </button>
             <button
-              className="p-2 rounded-lg text-gray-400 hover:text-gray-600 transition-all"
+              className="p-2 rounded-lg text-[#6B7280] hover:text-[#A8B0BD] transition-all"
             >
               <Clock className="w-4 h-4" />
             </button>
           </div>
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.06] backdrop-blur-xl text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.10] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             新規タスク
           </button>
@@ -73,8 +73,8 @@ export default function TasksPage() {
               <div key={column.key} className="space-y-3">
                 <div className="flex items-center gap-2 px-1">
                   <div className={`w-2.5 h-2.5 rounded-full ${column.color}`} />
-                  <span className="text-sm font-semibold text-gray-700">{column.label}</span>
-                  <span className="text-xs text-gray-400 font-medium">{tasks.length}</span>
+                  <span className="text-sm font-semibold text-[#F5F7FA]/80">{column.label}</span>
+                  <span className="text-xs text-[#5A6070] font-medium">{tasks.length}</span>
                 </div>
                 <div className="space-y-3 min-h-[200px]">
                   {tasks.map((task) => (
@@ -89,7 +89,7 @@ export default function TasksPage() {
 
       {/* List View */}
       {view === 'list' && (
-        <div className="glass rounded-2xl divide-y divide-gray-100">
+        <div className="bg-white/[0.04] border border-white/[0.06] backdrop-blur-xl rounded-2xl divide-y divide-white/[0.06]">
           {demoTasks.map((task) => (
             <TaskCard key={task.id} task={task} variant="list" />
           ))}

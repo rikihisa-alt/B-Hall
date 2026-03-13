@@ -134,22 +134,22 @@ export default function KnowledgePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">ナレッジ</h1>
-          <p className="text-sm text-gray-500 mt-1">マニュアル・手順書・テンプレート</p>
+          <h1 className="text-2xl font-bold text-white/90">ナレッジ</h1>
+          <p className="text-sm text-[#6B7280] mt-1">マニュアル・手順書・テンプレート</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+        <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#9BA6FF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
           <Plus className="w-4 h-4" />
           新規作成
         </button>
       </div>
 
       {/* Search */}
-      <div className="glass rounded-xl px-4 py-2.5 flex items-center gap-3">
-        <Search className="w-4 h-4 text-gray-400" />
+      <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl px-4 py-2.5 flex items-center gap-3">
+        <Search className="w-4 h-4 text-[#5A6070]" />
         <input
           type="text"
           placeholder="マニュアル・手順書・テンプレートを検索..."
-          className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
+          className="flex-1 bg-transparent text-sm text-white outline-none placeholder-[#5A6070]"
         />
       </div>
 
@@ -161,20 +161,20 @@ export default function KnowledgePage() {
           return (
             <button
               key={item.type}
-              className="glass rounded-2xl p-4 hover:bg-white/80 transition-all group text-left"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all group text-left"
             >
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${config.color} flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md transition-shadow`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-sm font-medium text-gray-800">{config.label}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{item.count}件</p>
+              <p className="text-sm font-medium text-white/90">{config.label}</p>
+              <p className="text-xs text-[#5A6070] mt-0.5">{item.count}件</p>
             </button>
           )
         })}
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: '全て' },
           { key: 'popular' as const, label: '人気' },
@@ -185,8 +185,8 @@ export default function KnowledgePage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -202,7 +202,7 @@ export default function KnowledgePage() {
           return (
             <div
               key={item.id}
-              className="glass rounded-2xl p-5 hover:bg-white/80 transition-all cursor-pointer group"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
             >
               <div className="flex items-start gap-4">
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${type.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
@@ -211,26 +211,26 @@ export default function KnowledgePage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-gray-50 text-gray-500">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-white/[0.05] text-[#6B7280]">
                         {type.label}
                       </span>
-                      <span className="text-xs text-gray-400">{item.department}</span>
+                      <span className="text-xs text-[#5A6070]">{item.department}</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ChevronRight className="w-4 h-4 text-[#4B5263] opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-sm font-semibold text-white/90 group-hover:text-[#7C8CFF] transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">{item.summary}</p>
+                  <p className="text-xs text-[#6B7280] mt-1 line-clamp-2">{item.summary}</p>
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
                     {item.tags.map((tag) => (
-                      <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gray-50 text-[10px] text-gray-500">
+                      <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/[0.05] text-[10px] text-[#6B7280]">
                         <Tag className="w-2.5 h-2.5" />
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                  <div className="flex items-center gap-4 mt-2 text-xs text-[#5A6070]">
                     <span className="flex items-center gap-1">
                       <User className="w-3 h-3" />
                       {item.author}

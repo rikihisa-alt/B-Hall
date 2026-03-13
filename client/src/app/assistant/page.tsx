@@ -68,27 +68,27 @@ export default function AssistantPage() {
     <div className="max-w-4xl mx-auto h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/executive" className="p-2 rounded-xl hover:bg-white/60 transition-colors">
-          <ArrowLeft className="w-5 h-5 text-gray-500" />
+        <Link href="/executive" className="p-2 rounded-xl hover:bg-white/[0.05] transition-colors">
+          <ArrowLeft className="w-5 h-5 text-[#6B7280]" />
         </Link>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center shadow-md">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C8CFF] to-[#6366F1] flex items-center justify-center shadow-md">
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">ジジロボ</h1>
-            <p className="text-sm text-gray-500">AIアシスタント</p>
+            <h1 className="text-xl font-bold text-white/90">ジジロボ</h1>
+            <p className="text-sm text-[#6B7280]">AIアシスタント</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#2FBF71]/10 text-[#2FBF71] text-xs font-medium">
+          <span className="w-2 h-2 rounded-full bg-[#2FBF71] animate-pulse" />
           オンライン
         </div>
       </div>
 
       {/* Suggested Questions */}
-      <div className="glass rounded-2xl p-4 mb-4">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 mb-4">
+        <h3 className="text-xs font-semibold text-[#5A6070] uppercase tracking-wider mb-3">
           よくある質問
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -100,12 +100,12 @@ export default function AssistantPage() {
                 onClick={() => {
                   setMessage(q.text)
                 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/60 border border-gray-100/60 hover:bg-white hover:shadow-sm transition-all text-left"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.10] transition-all text-left"
               >
-                <QIcon className="w-4 h-4 text-gray-400 shrink-0" />
+                <QIcon className="w-4 h-4 text-[#5A6070] shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-sm text-gray-700 truncate">{q.text}</p>
-                  <p className="text-[11px] text-gray-400">{q.category}</p>
+                  <p className="text-sm text-[#A8B0BD] truncate">{q.text}</p>
+                  <p className="text-[11px] text-[#5A6070]">{q.category}</p>
                 </div>
               </button>
             )
@@ -114,7 +114,7 @@ export default function AssistantPage() {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 glass rounded-2xl flex flex-col overflow-hidden min-h-0">
+      <div className="flex-1 bg-white/[0.03] border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden min-h-0">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {messages.map((msg, idx) => (
@@ -122,15 +122,15 @@ export default function AssistantPage() {
               <div className={`max-w-[80%] ${msg.role === 'user' ? 'order-1' : ''}`}>
                 <div className="flex items-end gap-2">
                   {msg.role === 'assistant' && (
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center shrink-0 mb-0.5">
+                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#7C8CFF] to-[#6366F1] flex items-center justify-center shrink-0 mb-0.5">
                       <Bot className="w-3.5 h-3.5 text-white" />
                     </div>
                   )}
                   <div
                     className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-primary-500 text-white rounded-br-md'
-                        : 'bg-white/80 border border-gray-100/60 text-gray-700 rounded-bl-md'
+                        ? 'bg-[#7C8CFF]/15 text-white/90 rounded-br-md'
+                        : 'bg-white/[0.04] border border-white/[0.06] text-[#A8B0BD] rounded-bl-md'
                     }`}
                   >
                     {msg.content.split('\n').map((line, i) => (
@@ -142,8 +142,8 @@ export default function AssistantPage() {
                   </div>
                 </div>
                 <div className={`flex items-center gap-1 mt-1 ${msg.role === 'user' ? 'justify-end' : 'ml-9'}`}>
-                  <Clock className="w-3 h-3 text-gray-300" />
-                  <span className="text-[11px] text-gray-300">{msg.time}</span>
+                  <Clock className="w-3 h-3 text-[#4B5263]" />
+                  <span className="text-[11px] text-[#4B5263]">{msg.time}</span>
                 </div>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function AssistantPage() {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-gray-100/60">
+        <div className="p-4 border-t border-white/[0.06]">
           <div className="flex items-end gap-3">
             <div className="flex-1 relative">
               <textarea
@@ -160,18 +160,18 @@ export default function AssistantPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="メッセージを入力..."
                 rows={1}
-                className="w-full resize-none rounded-xl bg-white/60 border border-gray-200/50 px-4 py-3 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-300 transition-all"
+                className="w-full resize-none rounded-xl bg-white/[0.04] border border-white/[0.06] px-4 py-3 text-sm text-white placeholder-[#5A6070] focus:outline-none focus:ring-2 focus:ring-[#7C8CFF]/20 focus:border-[#7C8CFF]/30 transition-all"
               />
             </div>
             <button
               onClick={handleSend}
               disabled={!message.trim()}
-              className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white shadow-sm hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
+              className="w-10 h-10 rounded-xl bg-[#7C8CFF] flex items-center justify-center text-[#0F1115] shadow-sm hover:bg-[#8B9AFF] hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
             >
               <Send className="w-4 h-4" />
             </button>
           </div>
-          <p className="text-[11px] text-gray-400 mt-2 ml-1 flex items-center gap-1">
+          <p className="text-[11px] text-[#5A6070] mt-2 ml-1 flex items-center gap-1">
             <Sparkles className="w-3 h-3" />
             ジジロボは社内情報に基づいて回答します。機密情報の取り扱いにご注意ください。
           </p>

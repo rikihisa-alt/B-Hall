@@ -31,17 +31,17 @@ interface Ringi {
 }
 
 const statusConfig: Record<RingiStatus, { label: string; color: string }> = {
-  draft: { label: '下書き', color: 'text-gray-500 bg-gray-50' },
-  pending: { label: '決裁待ち', color: 'text-amber-600 bg-amber-50' },
-  approved: { label: '決裁済み', color: 'text-emerald-600 bg-emerald-50' },
-  rejected: { label: '差戻し', color: 'text-red-600 bg-red-50' },
-  executing: { label: '実行中', color: 'text-blue-600 bg-blue-50' },
+  draft: { label: '下書き', color: 'text-[#6B7280] bg-white/[0.06]' },
+  pending: { label: '決裁待ち', color: 'text-[#F5A524] bg-[#F5A524]/10' },
+  approved: { label: '決裁済み', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
+  rejected: { label: '差戻し', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10' },
+  executing: { label: '実行中', color: 'text-[#7C8CFF] bg-[#7C8CFF]/10' },
 }
 
 const priorityConfig = {
-  high: { label: '高', color: 'text-red-600 bg-red-50' },
-  medium: { label: '中', color: 'text-amber-600 bg-amber-50' },
-  low: { label: '低', color: 'text-gray-500 bg-gray-50' },
+  high: { label: '高', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10' },
+  medium: { label: '中', color: 'text-[#F5A524] bg-[#F5A524]/10' },
+  low: { label: '低', color: 'text-[#6B7280] bg-white/[0.06]' },
 }
 
 const demoRingis: Ringi[] = [
@@ -133,17 +133,17 @@ export default function RingiPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">稟議</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            決裁待ちが <span className="text-amber-600 font-semibold">{pendingCount}件</span> あります
+          <h1 className="text-2xl font-bold text-white/90">稟議</h1>
+          <p className="text-sm text-[#6B7280] mt-1">
+            決裁待ちが <span className="text-[#F5A524] font-semibold">{pendingCount}件</span> あります
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             新規稟議
           </button>
@@ -152,43 +152,43 @@ export default function RingiPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass rounded-2xl p-5">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-amber-600" />
+            <div className="w-10 h-10 rounded-xl bg-[#F5A524]/10 flex items-center justify-center">
+              <Clock className="w-5 h-5 text-[#F5A524]" />
             </div>
             <div>
-              <p className="text-xs text-gray-400">決裁待ち</p>
-              <p className="text-xl font-bold text-gray-900">{pendingCount}件</p>
+              <p className="text-xs text-[#5A6070]">決裁待ち</p>
+              <p className="text-xl font-bold text-[#F5F7FA]">{pendingCount}件</p>
             </div>
           </div>
         </div>
-        <div className="glass rounded-2xl p-5">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-              <Banknote className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-xl bg-[#7C8CFF]/10 flex items-center justify-center">
+              <Banknote className="w-5 h-5 text-[#7C8CFF]" />
             </div>
             <div>
-              <p className="text-xs text-gray-400">今月の稟議総額</p>
-              <p className="text-xl font-bold text-gray-900">{totalAmount}</p>
+              <p className="text-xs text-[#5A6070]">今月の稟議総額</p>
+              <p className="text-xl font-bold text-[#F5F7FA]">{totalAmount}</p>
             </div>
           </div>
         </div>
-        <div className="glass rounded-2xl p-5">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-emerald-600" />
+            <div className="w-10 h-10 rounded-xl bg-[#2FBF71]/10 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-[#2FBF71]" />
             </div>
             <div>
-              <p className="text-xs text-gray-400">今月承認率</p>
-              <p className="text-xl font-bold text-gray-900">75%</p>
+              <p className="text-xs text-[#5A6070]">今月承認率</p>
+              <p className="text-xl font-bold text-[#F5F7FA]">75%</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: '全て' },
           { key: 'pending' as const, label: '決裁待ち' },
@@ -199,8 +199,8 @@ export default function RingiPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -217,7 +217,7 @@ export default function RingiPage() {
           return (
             <div
               key={ringi.id}
-              className="glass rounded-2xl p-6 hover:bg-white/80 transition-all cursor-pointer group"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start gap-4">
@@ -226,19 +226,19 @@ export default function RingiPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs text-gray-400 font-mono">{ringi.id}</span>
+                      <span className="text-xs text-[#5A6070] font-mono">{ringi.id}</span>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium ${priority.color}`}>
                         {priority.label}
                       </span>
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="text-sm font-semibold text-[#F5F7FA] group-hover:text-[#7C8CFF] transition-colors">
                       {ringi.title}
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1 line-clamp-1">{ringi.purpose}</p>
+                    <p className="text-xs text-[#5A6070] mt-1 line-clamp-1">{ringi.purpose}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-gray-800">{ringi.amount}</span>
+                  <span className="text-lg font-bold text-[#A8B0BD]">{ringi.amount}</span>
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium ${status.color}`}>
                     {status.label}
                   </span>
@@ -247,16 +247,16 @@ export default function RingiPage() {
 
               {/* Approval Flow */}
               <div className="flex items-center gap-2 ml-15 pl-15">
-                <span className="text-xs text-gray-400 mr-2">承認フロー:</span>
+                <span className="text-xs text-[#5A6070] mr-2">承認フロー:</span>
                 {ringi.approvers.map((approver, idx) => (
                   <div key={idx} className="flex items-center gap-1">
-                    {idx > 0 && <ArrowRight className="w-3 h-3 text-gray-300 mx-1" />}
+                    {idx > 0 && <ArrowRight className="w-3 h-3 text-[#4B5263] mx-1" />}
                     <div className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-xs ${
                       approver.status === 'approved'
-                        ? 'bg-emerald-50 text-emerald-600'
+                        ? 'bg-[#2FBF71]/10 text-[#2FBF71]'
                         : approver.status === 'rejected'
-                        ? 'bg-red-50 text-red-600'
-                        : 'bg-gray-50 text-gray-500'
+                        ? 'bg-[#FF5D5D]/10 text-[#FF5D5D]'
+                        : 'bg-white/[0.06] text-[#6B7280]'
                     }`}>
                       {approver.status === 'approved' && <CheckCircle2 className="w-3 h-3" />}
                       {approver.status === 'rejected' && <XCircle className="w-3 h-3" />}
@@ -267,12 +267,12 @@ export default function RingiPage() {
                 ))}
               </div>
 
-              <div className="flex items-center gap-3 mt-3 text-xs text-gray-400 ml-15 pl-15">
+              <div className="flex items-center gap-3 mt-3 text-xs text-[#5A6070] ml-15 pl-15">
                 <span>申請者: {ringi.applicant}</span>
                 <span>{ringi.department}</span>
                 <span>{ringi.date}</span>
                 {ringi.status === 'executing' && (
-                  <span className="flex items-center gap-1 text-blue-500">
+                  <span className="flex items-center gap-1 text-[#7C8CFF]">
                     <FileText className="w-3 h-3" />
                     実行タスクあり
                   </span>

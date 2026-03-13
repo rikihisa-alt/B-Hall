@@ -14,260 +14,261 @@ import {
   Lightbulb,
   MessageSquare,
   Bot,
-  AlertTriangle,
-  ArrowRight,
-  Clock,
   Zap,
+  ArrowRight,
 } from 'lucide-react'
 
-interface ModuleTile {
+/* ─── Tile data ─── */
+interface AppTile {
   name: string
-  description: string
+  sub: string
   href: string
   icon: React.ComponentType<{ className?: string }>
-  gradient: string
+  accent: string       // gradient for icon bg
+  glow: string         // hover glow color
   badge?: number
-  badgeColor?: string
+  urgent?: boolean
 }
 
-const operationsModules: ModuleTile[] = [
+const workTiles: AppTile[] = [
   {
     name: 'タスク',
-    description: '業務の進捗を管理',
+    sub: '進捗・期限を管理',
     href: '/tasks',
     icon: CheckSquare,
-    gradient: 'from-blue-500 to-blue-600',
+    accent: 'from-blue-500 to-blue-600',
+    glow: 'rgba(59,130,246,0.10)',
     badge: 5,
   },
   {
     name: '申請・承認',
-    description: '各種申請のワークフロー',
+    sub: 'ワークフローを処理',
     href: '/applications',
     icon: FileText,
-    gradient: 'from-indigo-500 to-indigo-600',
+    accent: 'from-indigo-500 to-indigo-600',
+    glow: 'rgba(99,102,241,0.10)',
     badge: 3,
   },
   {
     name: '稟議',
-    description: '決裁プロセスを可視化',
+    sub: '決裁プロセスを可視化',
     href: '/ringi',
     icon: Stamp,
-    gradient: 'from-amber-500 to-amber-600',
+    accent: 'from-amber-500 to-amber-600',
+    glow: 'rgba(245,158,11,0.10)',
     badge: 1,
-    badgeColor: 'bg-amber-500',
+    urgent: true,
   },
   {
-    name: '日報・報告',
-    description: '報告・改善活動を記録',
+    name: '報告・改善',
+    sub: '日報・インシデントを記録',
     href: '/reports',
     icon: ClipboardList,
-    gradient: 'from-teal-500 to-teal-600',
+    accent: 'from-teal-500 to-teal-600',
+    glow: 'rgba(20,184,166,0.10)',
   },
 ]
 
-const departmentModules: ModuleTile[] = [
+const deptTiles: AppTile[] = [
   {
     name: '人事・労務',
-    description: '従業員・手続き管理',
+    sub: '従業員・手続き管理',
     href: '/hr',
     icon: Users,
-    gradient: 'from-violet-500 to-violet-600',
+    accent: 'from-violet-500 to-violet-600',
+    glow: 'rgba(139,92,246,0.10)',
   },
   {
     name: '総務',
-    description: '備品・貸与物・設備',
+    sub: '備品・設備・貸与物',
     href: '/general-affairs',
     icon: Building2,
-    gradient: 'from-sky-500 to-sky-600',
+    accent: 'from-sky-500 to-sky-600',
+    glow: 'rgba(14,165,233,0.10)',
   },
   {
     name: '法務・文書',
-    description: '契約書・規程を一元管理',
+    sub: '契約・規程を一元管理',
     href: '/documents',
     icon: FolderOpen,
-    gradient: 'from-rose-500 to-rose-600',
+    accent: 'from-rose-500 to-rose-600',
+    glow: 'rgba(244,63,94,0.10)',
     badge: 2,
-    badgeColor: 'bg-rose-500',
   },
   {
     name: '経理・財務',
-    description: '会計・資金の管理',
+    sub: '会計・資金フローを管理',
     href: '/accounting',
     icon: Calculator,
-    gradient: 'from-emerald-500 to-emerald-600',
+    accent: 'from-emerald-500 to-emerald-600',
+    glow: 'rgba(16,185,129,0.10)',
   },
 ]
 
-const executiveModules: ModuleTile[] = [
+const mgmtTiles: AppTile[] = [
   {
     name: '経営管理',
-    description: '会社の状態を俯瞰',
+    sub: '会社全体を俯瞰',
     href: '/management',
     icon: BarChart3,
-    gradient: 'from-orange-500 to-orange-600',
+    accent: 'from-orange-500 to-orange-600',
+    glow: 'rgba(249,115,22,0.10)',
   },
   {
     name: 'ナレッジ',
-    description: '手順書・テンプレート',
+    sub: '手順書・テンプレート',
     href: '/knowledge',
     icon: Lightbulb,
-    gradient: 'from-yellow-500 to-yellow-600',
+    accent: 'from-yellow-500 to-yellow-600',
+    glow: 'rgba(234,179,8,0.10)',
   },
   {
     name: '改善・目安箱',
-    description: '提案・ヒヤリハットを共有',
+    sub: '提案・ヒヤリハットを共有',
     href: '/improvements',
     icon: MessageSquare,
-    gradient: 'from-pink-500 to-pink-600',
+    accent: 'from-pink-500 to-pink-600',
+    glow: 'rgba(236,72,153,0.10)',
   },
   {
     name: 'ジジロボ',
-    description: 'AIアシスタントに相談',
+    sub: 'AIアシスタントに相談',
     href: '/assistant',
     icon: Bot,
-    gradient: 'from-cyan-500 to-cyan-600',
+    accent: 'from-cyan-500 to-cyan-600',
+    glow: 'rgba(6,182,212,0.10)',
   },
 ]
 
-const urgentItems = [
-  { text: '経費申請の承認期限が超過しています', href: '/applications', type: '承認' },
-  { text: '稟議 RNG-2026-001 の確認待ち', href: '/ringi', type: '稟議' },
-  { text: 'NDA契約書の期限が今月末です', href: '/documents', type: '文書' },
+/* ─── Urgent strip items ─── */
+const alerts = [
+  { label: '承認', text: '経費申請の承認期限が超過', href: '/applications' },
+  { label: '稟議', text: 'RNG-2026-001 の確認待ち', href: '/ringi' },
+  { label: '文書', text: 'NDA契約の期限が今月末', href: '/documents' },
 ]
 
-function TileCard({ tile }: { tile: ModuleTile }) {
+/* ─── Components ─── */
+function Tile({ tile }: { tile: AppTile }) {
   const Icon = tile.icon
   return (
     <Link href={tile.href}>
-      <div className="group relative glass rounded-2xl p-5 hover:bg-white/90 transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-200/50 hover:-translate-y-0.5 active:scale-[0.98]">
-        {/* Glow */}
-        <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${tile.gradient} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
-
-        <div className="relative flex items-start gap-4">
-          <div className={`w-11 h-11 rounded-[14px] bg-gradient-to-br ${tile.gradient} flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300 shrink-0`}>
-            <Icon className="w-[22px] h-[22px] text-white" />
+      <div
+        className="tile-glow group rounded-[18px] bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.12] p-5 transition-all duration-300 cursor-pointer hover:-translate-y-0.5"
+        style={{ ['--tile-glow' as string]: tile.glow }}
+      >
+        {/* Icon */}
+        <div className="flex items-start justify-between mb-4">
+          <div className={`w-10 h-10 rounded-[12px] bg-gradient-to-br ${tile.accent} flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300`}>
+            <Icon className="w-[18px] h-[18px] text-white" />
           </div>
-          <div className="flex-1 min-w-0 pt-0.5">
-            <div className="flex items-center gap-2">
-              <h3 className="text-[15px] font-semibold text-gray-900 group-hover:text-gray-800 transition-colors">
-                {tile.name}
-              </h3>
-              {tile.badge && tile.badge > 0 && (
-                <span className={`min-w-[20px] h-5 flex items-center justify-center rounded-full ${tile.badgeColor || 'bg-primary-500'} text-white text-[10px] font-bold px-1.5`}>
-                  {tile.badge}
-                </span>
-              )}
-            </div>
-            <p className="text-[13px] text-gray-400 mt-0.5">{tile.description}</p>
-          </div>
-          <ArrowRight className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300 mt-1.5" />
+          {tile.badge && (
+            <span className={`min-w-[20px] h-5 flex items-center justify-center rounded-full text-[10px] font-bold px-1.5 ${
+              tile.urgent
+                ? 'bg-[#FF5D5D]/15 text-[#FF5D5D]'
+                : 'bg-[#7C8CFF]/15 text-[#7C8CFF]'
+            }`}>
+              {tile.badge}
+            </span>
+          )}
         </div>
+
+        {/* Text */}
+        <h3 className="text-[14px] font-semibold text-white/90 group-hover:text-white transition-colors">
+          {tile.name}
+        </h3>
+        <p className="text-[12px] text-[#5A6070] mt-0.5 group-hover:text-[#7B8392] transition-colors">
+          {tile.sub}
+        </p>
       </div>
     </Link>
   )
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 mb-3">
-      <h2 className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.08em]">{children}</h2>
-      <div className="flex-1 h-px bg-gradient-to-r from-gray-200/60 to-transparent" />
-    </div>
+    <section>
+      <div className="flex items-center gap-3 mb-3 px-0.5">
+        <h2 className="text-[10px] font-semibold text-[#4B5263] uppercase tracking-[0.12em]">{label}</h2>
+        <div className="flex-1 h-px bg-white/[0.04]" />
+      </div>
+      {children}
+    </section>
   )
 }
 
+/* ─── Page ─── */
 export default function HomePage() {
-  const today = new Date()
-  const hour = today.getHours()
-  const greeting = hour < 12 ? 'おはようございます' : hour < 18 ? 'お疲れ様です' : 'お疲れ様です'
-
-  const dateStr = today.toLocaleDateString('ja-JP', {
-    year: 'numeric',
+  const now = new Date()
+  const hour = now.getHours()
+  const greeting = hour < 12 ? 'おはようございます' : 'お疲れ様です'
+  const dateStr = now.toLocaleDateString('ja-JP', {
     month: 'long',
     day: 'numeric',
     weekday: 'short',
   })
 
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* Header Area */}
+    <div className="max-w-4xl mx-auto">
+      {/* Greeting */}
       <div className="mb-8">
-        <p className="text-[13px] text-gray-400 font-medium mb-1">{dateStr}</p>
-        <h1 className="text-[26px] font-bold text-gray-900 tracking-tight">
+        <p className="text-[12px] text-[#4B5263] font-medium mb-1">{dateStr}</p>
+        <h1 className="text-[24px] font-semibold text-white tracking-tight">
           {greeting}、田中さん
         </h1>
       </div>
 
-      {/* Today's Focus */}
-      {urgentItems.length > 0 && (
-        <div className="mb-8">
-          <div className="glass rounded-2xl overflow-hidden border border-amber-100/80">
-            <div className="px-5 py-3 border-b border-amber-100/60 flex items-center gap-2.5">
-              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-                <Zap className="w-3.5 h-3.5 text-white" />
-              </div>
-              <span className="text-[13px] font-semibold text-gray-700">対応が必要な項目</span>
-              <span className="text-[11px] font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">{urgentItems.length}件</span>
-            </div>
-            <div className="divide-y divide-gray-100/50">
-              {urgentItems.map((item, idx) => (
-                <Link key={idx} href={item.href}>
-                  <div className="px-5 py-3 flex items-center gap-3 hover:bg-white/60 transition-colors cursor-pointer group">
-                    <span className="text-[10px] font-medium text-gray-400 bg-gray-100/80 px-2 py-0.5 rounded-md shrink-0">{item.type}</span>
-                    <span className="text-[13px] text-gray-600 flex-1">{item.text}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                </Link>
-              ))}
-            </div>
+      {/* Alert strip */}
+      {alerts.length > 0 && (
+        <div className="mb-8 rounded-[14px] bg-white/[0.03] border border-[#FF5D5D]/10 overflow-hidden">
+          <div className="px-4 py-2.5 border-b border-white/[0.04] flex items-center gap-2">
+            <Zap className="w-3.5 h-3.5 text-[#F5A524]" />
+            <span className="text-[12px] font-medium text-[#A8B0BD]">対応が必要</span>
+            <span className="text-[10px] font-semibold text-[#FF5D5D] bg-[#FF5D5D]/10 px-1.5 py-0.5 rounded-full">{alerts.length}</span>
           </div>
+          {alerts.map((a, i) => (
+            <Link key={i} href={a.href}>
+              <div className="px-4 py-2.5 flex items-center gap-3 hover:bg-white/[0.02] transition-colors group border-b border-white/[0.03] last:border-0">
+                <span className="text-[10px] font-medium text-[#5A6070] bg-white/[0.05] px-2 py-0.5 rounded-[4px] shrink-0">{a.label}</span>
+                <span className="text-[12px] text-[#7B8392] group-hover:text-[#A8B0BD] flex-1 transition-colors">{a.text}</span>
+                <ArrowRight className="w-3 h-3 text-[#3B3F4A] group-hover:text-[#5A6070] transition-colors" />
+              </div>
+            </Link>
+          ))}
         </div>
       )}
 
-      {/* Module Grid */}
+      {/* App tiles */}
       <div className="space-y-8">
-        {/* Operations */}
-        <section>
-          <SectionLabel>業務統制</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {operationsModules.map((tile) => (
-              <TileCard key={tile.href} tile={tile} />
-            ))}
+        <Section label="業務">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {workTiles.map((t) => <Tile key={t.href} tile={t} />)}
           </div>
-        </section>
+        </Section>
 
-        {/* Department */}
-        <section>
-          <SectionLabel>部門管理</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {departmentModules.map((tile) => (
-              <TileCard key={tile.href} tile={tile} />
-            ))}
+        <Section label="部門">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {deptTiles.map((t) => <Tile key={t.href} tile={t} />)}
           </div>
-        </section>
+        </Section>
 
-        {/* Executive */}
-        <section>
-          <SectionLabel>経営・ナレッジ</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {executiveModules.map((tile) => (
-              <TileCard key={tile.href} tile={tile} />
-            ))}
+        <Section label="経営・ナレッジ">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {mgmtTiles.map((t) => <Tile key={t.href} tile={t} />)}
           </div>
-        </section>
+        </Section>
       </div>
 
-      {/* Quick Stats Footer */}
+      {/* Quick stats row */}
       <div className="mt-10 grid grid-cols-4 gap-3">
         {[
-          { label: '本日のタスク', value: '5', accent: 'text-blue-600' },
-          { label: '承認待ち', value: '3', accent: 'text-amber-600' },
-          { label: '今月経費', value: '¥284K', accent: 'text-emerald-600' },
-          { label: '未読通知', value: '8', accent: 'text-rose-600' },
-        ].map((stat) => (
-          <div key={stat.label} className="glass-subtle rounded-xl px-4 py-3 text-center">
-            <p className="text-[11px] text-gray-400">{stat.label}</p>
-            <p className={`text-lg font-bold ${stat.accent} mt-0.5`}>{stat.value}</p>
+          { label: '本日のタスク', value: '5', color: 'text-blue-400' },
+          { label: '承認待ち', value: '3', color: 'text-[#F5A524]' },
+          { label: '今月経費', value: '¥284K', color: 'text-[#2FBF71]' },
+          { label: '未読通知', value: '8', color: 'text-[#FF5D5D]' },
+        ].map((s) => (
+          <div key={s.label} className="rounded-[12px] bg-white/[0.03] border border-white/[0.04] px-4 py-3 text-center">
+            <p className="text-[10px] text-[#4B5263] font-medium">{s.label}</p>
+            <p className={`text-[18px] font-bold ${s.color} mt-0.5`}>{s.value}</p>
           </div>
         ))}
       </div>

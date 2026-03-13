@@ -33,10 +33,10 @@ interface Application {
 }
 
 const statusConfig: Record<ApplicationStatus, { label: string; color: string; icon: typeof Clock }> = {
-  pending: { label: '承認待ち', color: 'text-amber-600 bg-amber-50', icon: Clock },
-  approved: { label: '承認済み', color: 'text-emerald-600 bg-emerald-50', icon: CheckCircle2 },
-  rejected: { label: '差戻し', color: 'text-red-600 bg-red-50', icon: XCircle },
-  draft: { label: '下書き', color: 'text-gray-500 bg-gray-50', icon: AlertCircle },
+  pending: { label: '承認待ち', color: 'text-[#F5A524] bg-[#F5A524]/10', icon: Clock },
+  approved: { label: '承認済み', color: 'text-[#2FBF71] bg-[#2FBF71]/10', icon: CheckCircle2 },
+  rejected: { label: '差戻し', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10', icon: XCircle },
+  draft: { label: '下書き', color: 'text-[#6B7280] bg-white/[0.06]', icon: AlertCircle },
 }
 
 const demoApplications: Application[] = [
@@ -124,17 +124,17 @@ export default function ApplicationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">申請・承認</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            承認待ちが <span className="text-amber-600 font-semibold">{pendingCount}件</span> あります
+          <h1 className="text-2xl font-bold text-white/90">申請・承認</h1>
+          <p className="text-sm text-[#6B7280] mt-1">
+            承認待ちが <span className="text-[#F5A524] font-semibold">{pendingCount}件</span> あります
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl glass text-sm text-gray-600 hover:bg-white/80 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
             <Filter className="w-4 h-4" />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             新規申請
           </button>
@@ -146,19 +146,19 @@ export default function ApplicationsPage() {
         {applicationTypes.map((type) => (
           <button
             key={type.name}
-            className="glass rounded-2xl p-4 hover:bg-white/80 transition-all group text-left"
+            className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all group text-left"
           >
             <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${type.color} flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md transition-shadow`}>
               <type.icon className="w-5 h-5 text-white" />
             </div>
-            <p className="text-sm font-medium text-gray-800">{type.name}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{type.count}件</p>
+            <p className="text-sm font-medium text-[#F5F7FA]">{type.name}</p>
+            <p className="text-xs text-[#5A6070] mt-0.5">{type.count}件</p>
           </button>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 glass rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
         {[
           { key: 'all' as const, label: '全て' },
           { key: 'mine' as const, label: '自分の申請' },
@@ -169,8 +169,8 @@ export default function ApplicationsPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white shadow-sm text-primary-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white/[0.08] text-white'
+                : 'text-[#6B7280] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -187,23 +187,23 @@ export default function ApplicationsPage() {
           return (
             <div
               key={app.id}
-              className="glass rounded-2xl p-5 hover:bg-white/80 transition-all cursor-pointer group"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center flex-shrink-0">
-                    <app.icon className="w-5 h-5 text-gray-500" />
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+                    <app.icon className="w-5 h-5 text-[#6B7280]" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs text-gray-400 font-mono">{app.id}</span>
-                      <span className="text-xs text-gray-300">|</span>
-                      <span className="text-xs text-gray-500">{app.type}</span>
+                      <span className="text-xs text-[#5A6070] font-mono">{app.id}</span>
+                      <span className="text-xs text-[#4B5263]">|</span>
+                      <span className="text-xs text-[#6B7280]">{app.type}</span>
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="text-sm font-semibold text-[#F5F7FA] group-hover:text-[#7C8CFF] transition-colors">
                       {app.title}
                     </h3>
-                    <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                    <div className="flex items-center gap-3 mt-2 text-xs text-[#5A6070]">
                       <span>申請者: {app.applicant}</span>
                       <span>承認者: {app.approver}</span>
                       <span>{app.date}</span>
@@ -212,13 +212,13 @@ export default function ApplicationsPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   {app.amount && (
-                    <span className="text-sm font-semibold text-gray-700">{app.amount}</span>
+                    <span className="text-sm font-semibold text-[#A8B0BD]">{app.amount}</span>
                   )}
                   <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium ${status.color}`}>
                     <StatusIcon className="w-3.5 h-3.5" />
                     {status.label}
                   </span>
-                  <ArrowRight className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight className="w-4 h-4 text-[#4B5263] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
             </div>

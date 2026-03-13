@@ -102,21 +102,21 @@ const quickActions = [
 
 function getPriorityColor(priority: string) {
   switch (priority) {
-    case '高': return 'text-red-600 bg-red-50'
-    case '中': return 'text-amber-600 bg-amber-50'
-    case '低': return 'text-gray-500 bg-gray-50'
-    default: return 'text-gray-500 bg-gray-50'
+    case '高': return 'text-[#FF5D5D] bg-[#FF5D5D]/10'
+    case '中': return 'text-[#F5A524] bg-[#F5A524]/10'
+    case '低': return 'text-[#6B7280] bg-white/[0.06]'
+    default: return 'text-[#6B7280] bg-white/[0.06]'
   }
 }
 
 function getStatusColor(status: string) {
   switch (status) {
-    case '進行中': case '回覧中': case '対応中': return 'text-blue-600 bg-blue-50'
-    case '未着手': case '未提出': return 'text-gray-600 bg-gray-50'
-    case '確認待ち': case '承認待ち': case '決裁待ち': return 'text-amber-600 bg-amber-50'
-    case '差戻し': return 'text-red-600 bg-red-50'
-    case '完了': case '提出済': case '承認済': case '決裁済': return 'text-emerald-600 bg-emerald-50'
-    default: return 'text-gray-600 bg-gray-50'
+    case '進行中': case '回覧中': case '対応中': return 'text-[#60A5FA] bg-[#60A5FA]/10'
+    case '未着手': case '未提出': return 'text-[#6B7280] bg-white/[0.06]'
+    case '確認待ち': case '承認待ち': case '決裁待ち': return 'text-[#F5A524] bg-[#F5A524]/10'
+    case '差戻し': return 'text-[#FF5D5D] bg-[#FF5D5D]/10'
+    case '完了': case '提出済': case '承認済': case '決裁済': return 'text-[#2FBF71] bg-[#2FBF71]/10'
+    default: return 'text-[#6B7280] bg-white/[0.06]'
   }
 }
 
@@ -129,24 +129,24 @@ export default function OperationsPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.push('/')}
-          className="p-2 rounded-xl hover:bg-white/60 transition-colors"
+          className="p-2 rounded-xl hover:bg-white/[0.05] transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-gray-500" />
+          <ArrowLeft className="w-5 h-5 text-[#6B7280]" />
         </button>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md">
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">業務統制</h1>
-            <p className="text-sm text-gray-500">タスク・申請・承認・稟議・報告を一元管理</p>
+            <h1 className="text-xl font-bold text-white/90">業務統制</h1>
+            <p className="text-sm text-[#6B7280]">タスク・申請・承認・稟議・報告を一元管理</p>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="glass rounded-2xl p-5">
-        <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
+        <h2 className="text-[10px] font-semibold text-[#4B5263] uppercase tracking-[0.1em] mb-3">
           クイックアクション
         </h2>
         <div className="flex flex-wrap gap-3">
@@ -156,7 +156,7 @@ export default function OperationsPage() {
               <Link
                 key={action.label}
                 href={action.href}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/80 border border-gray-200/50 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm hover:border-gray-300/50 transition-all duration-200 active:scale-[0.98]"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm font-medium text-[#A8B0BD] hover:bg-white/[0.07] hover:border-white/[0.10] transition-all duration-200 active:scale-[0.98]"
               >
                 <div className={`w-6 h-6 rounded-lg ${action.color} flex items-center justify-center`}>
                   <Icon className="w-3.5 h-3.5 text-white" />
@@ -170,33 +170,33 @@ export default function OperationsPage() {
 
       {/* Overview Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="glass rounded-xl p-4">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="w-4 h-4 text-red-500" />
-            <span className="text-xs text-gray-400 font-medium">緊急対応</span>
+            <AlertTriangle className="w-4 h-4 text-[#FF5D5D]" />
+            <span className="text-xs text-[#5A6070] font-medium">緊急対応</span>
           </div>
-          <p className="text-2xl font-bold text-red-600">2</p>
+          <p className="text-2xl font-bold text-[#FF5D5D]">2</p>
         </div>
-        <div className="glass rounded-xl p-4">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="w-4 h-4 text-amber-500" />
-            <span className="text-xs text-gray-400 font-medium">承認待ち</span>
+            <Clock className="w-4 h-4 text-[#F5A524]" />
+            <span className="text-xs text-[#5A6070] font-medium">承認待ち</span>
           </div>
-          <p className="text-2xl font-bold text-amber-600">4</p>
+          <p className="text-2xl font-bold text-[#F5A524]">4</p>
         </div>
-        <div className="glass rounded-xl p-4">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-blue-500" />
-            <span className="text-xs text-gray-400 font-medium">進行中</span>
+            <TrendingUp className="w-4 h-4 text-[#60A5FA]" />
+            <span className="text-xs text-[#5A6070] font-medium">進行中</span>
           </div>
-          <p className="text-2xl font-bold text-blue-600">10</p>
+          <p className="text-2xl font-bold text-[#60A5FA]">10</p>
         </div>
-        <div className="glass rounded-xl p-4">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <CheckSquare className="w-4 h-4 text-emerald-500" />
-            <span className="text-xs text-gray-400 font-medium">今週完了</span>
+            <CheckSquare className="w-4 h-4 text-[#2FBF71]" />
+            <span className="text-xs text-[#5A6070] font-medium">今週完了</span>
           </div>
-          <p className="text-2xl font-bold text-emerald-600">12</p>
+          <p className="text-2xl font-bold text-[#2FBF71]">12</p>
         </div>
       </div>
 
@@ -205,8 +205,7 @@ export default function OperationsPage() {
         {modules.map((mod) => {
           const ModIcon = mod.icon
           return (
-            <div key={mod.name} className="glass rounded-2xl overflow-hidden">
-              {/* Module Header */}
+            <div key={mod.name} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden">
               <div className="p-5 pb-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -215,50 +214,48 @@ export default function OperationsPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-base font-bold text-gray-900">{mod.name}</h3>
+                        <h3 className="text-base font-bold text-white/90">{mod.name}</h3>
                         {mod.badge && mod.badge > 0 && (
-                          <span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold px-1.5">
+                          <span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-[#FF5D5D]/15 text-[#FF5D5D] text-[10px] font-bold px-1.5">
                             {mod.badge}
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-500">{mod.description}</p>
+                      <p className="text-sm text-[#6B7280]">{mod.description}</p>
                     </div>
                   </div>
                   <Link
                     href={mod.href}
-                    className="flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                    className="flex items-center gap-1 text-sm font-medium text-[#7C8CFF] hover:text-[#929FFF] transition-colors"
                   >
                     開く <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
 
-                {/* Stats Grid */}
                 <div className="grid grid-cols-4 gap-3">
                   {mod.stats.map((stat) => (
-                    <div key={stat.label} className="bg-white/50 rounded-lg px-3 py-2 text-center">
-                      <p className="text-lg font-bold text-gray-900">{stat.value}</p>
-                      <p className="text-[11px] text-gray-400">{stat.label}</p>
+                    <div key={stat.label} className="bg-white/[0.04] rounded-lg px-3 py-2 text-center">
+                      <p className="text-lg font-bold text-white/90">{stat.value}</p>
+                      <p className="text-[11px] text-[#5A6070]">{stat.label}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Recent Items */}
-              <div className="border-t border-gray-100/60 px-5 py-3">
-                <p className="text-xs font-medium text-gray-400 mb-2">最近の項目</p>
-                <div className="space-y-2">
+              <div className="border-t border-white/[0.06] px-5 py-3">
+                <p className="text-xs font-medium text-[#4B5263] mb-2">最近の項目</p>
+                <div className="space-y-1">
                   {mod.recentItems.map((item, idx) => (
                     <Link key={idx} href={mod.href}>
-                      <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/60 transition-colors cursor-pointer">
-                        <span className="flex-1 text-sm text-gray-700 truncate">{item.title}</span>
+                      <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/[0.03] transition-colors cursor-pointer">
+                        <span className="flex-1 text-sm text-[#A8B0BD] truncate">{item.title}</span>
                         <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${getStatusColor(item.status)}`}>
                           {item.status}
                         </span>
                         <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${getPriorityColor(item.priority)}`}>
                           {item.priority}
                         </span>
-                        <span className="text-xs text-gray-400">{item.dueDate}</span>
+                        <span className="text-xs text-[#5A6070]">{item.dueDate}</span>
                       </div>
                     </Link>
                   ))}
