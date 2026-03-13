@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
 import {
   FileText,
   Receipt,
@@ -37,113 +38,126 @@ const types = [
 ]
 
 const recent = [
-  { title: '中途採用申請 - エンジニア1名',     status: '承認済', date: '3/08', color: '#34d399' },
-  { title: '有給休暇申請（3/20-3/21）',        status: '承認済', date: '3/11', color: '#34d399' },
-  { title: 'リモートワーク端末貸与申請',        status: '下書き', date: '3/07', color: '#64748b' },
+  { title: '中途採用申請 - エンジニア1名',     status: '承認済', date: '3/08', statusType: 'success' as const },
+  { title: '有給休暇申請（3/20-3/21）',        status: '承認済', date: '3/11', statusType: 'success' as const },
+  { title: 'リモートワーク端末貸与申請',        status: '下書き', date: '3/07', statusType: 'muted' as const },
 ]
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 30 } },
+const statusStyles = {
+  success: { color: 'text-success', bg: 'bg-[rgba(34,197,94,0.15)]' },
+  muted: { color: 'text-text-muted', bg: 'bg-[rgba(240,246,252,0.06)]' },
 }
 
 export default function ApplicationsPage() {
   return (
-    <div className="max-w-[680px] mx-auto px-10 py-10">
+    <motion.div {...pageTransition}>
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-[13px] mb-4">
+        <Link href="/" className="text-text-muted hover:text-text-primary transition-colors">ホーム</Link>
+        <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
+        <span className="text-text-secondary font-medium">申請・承認</span>
+      </nav>
 
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
-        className="mb-8"
-      >
-        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">申請</h1>
-        <p className="text-[13px] text-[#94a3b8] mt-1">ワークフロー・承認処理</p>
-      </motion.div>
+      <div className="mb-8">
+        <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">申請・承認</h1>
+        <p className="text-[13px] text-text-secondary mt-1">ワークフロー・承認処理</p>
+      </div>
 
       {/* 承認待ち */}
       {pending.length > 0 && (
-        <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.08 }} className="mb-8">
-          <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1 flex items-center gap-2">
+        <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
+          <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4 flex items-center gap-2">
             <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
             <span>承認待ち</span>
-            <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">{pending.length}</span>
+            <span className="text-[12px] font-semibold text-warning tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{pending.length}</span>
           </h2>
-          <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
+          <motion.div
+            className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+            variants={fadeUp}
+          >
             {pending.map(item => (
-              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.title}</p>
-                  <p className="text-[12px] text-[#94a3b8] mt-0.5">{item.type} · {item.applicant}</p>
+                  <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.title}</p>
+                  <p className="text-[12px] text-text-secondary mt-0.5">{item.type} · {item.applicant}</p>
                 </div>
-                <span className="text-[13px] font-semibold text-[#cbd5e1] tabular-nums">{item.amount}</span>
-                <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <span className="text-[13px] font-semibold text-text-primary tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{item.amount}</span>
+                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
               </div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
       )}
 
       {/* 差戻し */}
       {rejected.length > 0 && (
-        <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.14 }} className="mb-8">
-          <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1 flex items-center gap-2">
+        <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
+          <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4 flex items-center gap-2">
             <XCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
             <span>差戻し</span>
-            <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">{rejected.length}</span>
+            <span className="text-[12px] font-semibold text-danger tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{rejected.length}</span>
           </h2>
-          <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
+          <motion.div
+            className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+            variants={fadeUp}
+          >
             {rejected.map(item => (
-              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.title}</p>
-                  <p className="text-[12px] text-[#fb7185]/70 mt-0.5">{item.reason}</p>
+                  <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.title}</p>
+                  <p className="text-[12px] text-danger/70 mt-0.5">{item.reason}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
               </div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
       )}
 
       {/* 新規申請 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.2 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">新規申請</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
+      <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
+        <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">新規申請</h2>
+        <motion.div
+          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          variants={fadeUp}
+        >
           {types.map(type => {
             const Icon = type.icon
             return (
               <Link key={type.name} href={type.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
-                  <p className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{type.name}</p>
-                  <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
+                  <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{type.name}</p>
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
                 </div>
               </Link>
             )
           })}
-        </div>
+        </motion.div>
       </motion.section>
 
       {/* 最近の申請 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.28 }}>
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">最近の申請</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
-          {recent.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <p className="flex-1 text-[14px] text-[#64748b] group-hover:text-[#f1f5f9] transition-colors truncate font-medium tracking-tight">{item.title}</p>
-              <span
-                className="text-[12px] font-semibold px-2.5 py-1 rounded-lg"
-                style={{ color: item.color, backgroundColor: `${item.color}10` }}
-              >
-                {item.status}
-              </span>
-              <span className="text-[12px] text-[#94a3b8] tabular-nums">{item.date}</span>
-            </div>
-          ))}
-        </div>
+      <motion.section variants={staggerContainer} initial="hidden" animate="show">
+        <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">最近の申請</h2>
+        <motion.div
+          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          variants={fadeUp}
+        >
+          {recent.map((item, idx) => {
+            const style = statusStyles[item.statusType]
+            return (
+              <div key={idx} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                <p className="flex-1 text-[14px] text-text-secondary group-hover:text-text-primary transition-colors truncate font-medium tracking-tight">{item.title}</p>
+                <span className={`text-[12px] font-semibold px-2.5 py-1 rounded-lg ${style.color} ${style.bg}`}>
+                  {item.status}
+                </span>
+                <span className="text-[12px] text-text-secondary tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{item.date}</span>
+              </div>
+            )
+          })}
+        </motion.div>
       </motion.section>
-    </div>
+    </motion.div>
   )
 }

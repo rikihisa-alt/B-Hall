@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -18,9 +19,12 @@ import {
   Bell,
   Settings,
   Search,
+  PanelLeftClose,
+  PanelLeftOpen,
+  ChevronUp,
 } from 'lucide-react'
 
-const sections = [
+const workspaceItems = [
   { name: '経理',        href: '/accounting',       icon: Calculator },
   { name: '人事',        href: '/hr',               icon: Users },
   { name: '総務',        href: '/general-affairs',   icon: Building2 },
@@ -33,7 +37,7 @@ const sections = [
   { name: '改善',        href: '/improvements',     icon: MessageSquare },
 ]
 
-const utilities = [
+const toolsItems: Array<{ name: string; href: string; icon: typeof CheckSquare; count?: number }> = [
   { name: 'タスク',   href: '/tasks',          icon: CheckSquare },
   { name: '通知',     href: '/notifications',  icon: Bell, count: 3 },
   { name: 'ジジロボ', href: '/assistant',      icon: Bot },
@@ -42,65 +46,91 @@ const utilities = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const [collapsed, setCollapsed] = useState(false)
+
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <aside className="w-[252px] h-screen flex flex-col shrink-0 select-none bg-white/[0.02] backdrop-blur-3xl border-r border-white/[0.06]">
-
-      {/* Logo */}
-      <div className="h-[56px] flex items-center px-5 shrink-0">
+    <aside
+      className={`h-screen flex flex-col shrink-0 select-none bg-bg-base border-r border-border z-[100] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        collapsed ? 'w-[68px]' : 'w-[260px]'
+      }`}
+    >
+      {/* ── Brand area ── */}
+      <div className="h-16 flex items-center justify-between px-3 shrink-0">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#34d399] flex items-center justify-center">
-            <span className="text-[11px] font-black text-[#0f172a] leading-none">B</span>
+          <div className="w-8 h-8 rounded-[10px] bg-accent flex items-center justify-center shrink-0">
+            <span className="text-[12px] font-black text-white leading-none">B</span>
           </div>
-          <span className="text-[15px] font-semibold text-[#f1f5f9] tracking-tight">B-Hall</span>
+          {!collapsed && (
+            <span className="text-[15px] font-semibold text-text-primary tracking-tight">
+              B-Hall
+            </span>
+          )}
         </Link>
-      </div>
-
-      {/* Search */}
-      <div className="px-3 mb-2">
-        <button className="w-full flex items-center gap-2.5 h-9 px-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.06] transition-colors cursor-pointer">
-          <Search className="w-[14px] h-[14px] text-[#64748b]" />
-          <span className="text-[13px] text-[#64748b] flex-1 text-left">検索</span>
-          <kbd className="text-[10px] text-[#475569] font-mono px-1.5 py-0.5 rounded bg-white/[0.06]">⌘K</kbd>
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="w-8 h-8 flex items-center justify-center rounded-[8px] text-text-muted hover:text-text-primary hover:bg-bg-elevated transition-colors cursor-pointer shrink-0"
+        >
+          {collapsed ? (
+            <PanelLeftOpen className="w-4 h-4" strokeWidth={1.75} />
+          ) : (
+            <PanelLeftClose className="w-4 h-4" strokeWidth={1.75} />
+          )}
         </button>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-2.5 pt-1 pb-4">
-
-        {/* Home */}
-        <div className="mb-4 px-0.5">
-          <Link href="/">
-            <div className={`flex items-center gap-2.5 px-2.5 h-9 rounded-lg text-[13px] font-semibold tracking-tight transition-all duration-150 ${
-              isActive('/')
-                ? 'bg-[#34d399]/[0.10] text-[#34d399]'
-                : 'text-[#cbd5e1] hover:bg-white/[0.06]'
-            }`}>
-              ホーム
-            </div>
-          </Link>
+      {/* ── Search box ── */}
+      {!collapsed ? (
+        <div className="px-3 mb-3">
+          <button className="w-full flex items-center gap-2.5 h-9 px-3 rounded-[10px] bg-bg-elevated border border-border hover:border-border-strong transition-colors cursor-pointer">
+            <Search className="w-[14px] h-[14px] text-text-muted shrink-0" strokeWidth={1.75} />
+            <span className="text-[13px] text-text-muted flex-1 text-left">検索</span>
+            <kbd className="text-[10px] text-text-muted font-mono px-1.5 py-0.5 rounded-[6px] bg-bg-base border border-border">
+              ⌘K
+            </kbd>
+          </button>
         </div>
+      ) : (
+        <div className="px-3 mb-3 flex justify-center">
+          <button className="w-10 h-9 flex items-center justify-center rounded-[10px] bg-bg-elevated border border-border hover:border-border-strong transition-colors cursor-pointer">
+            <Search className="w-[14px] h-[14px] text-text-muted" strokeWidth={1.75} />
+          </button>
+        </div>
+      )}
 
-        {/* Sections */}
-        <div className="mb-4">
-          <p className="text-[10px] font-semibold text-[#475569] uppercase px-3 mb-1.5 tracking-[0.06em]">
-            Workspace
-          </p>
+      {/* ── Navigation ── */}
+      <nav className="flex-1 overflow-y-auto pb-2">
+        {/* Workspace section */}
+        <div className="mb-3">
+          {!collapsed && (
+            <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] px-5 mb-1">
+              Workspace
+            </p>
+          )}
           <div className="space-y-px">
-            {sections.map(item => {
+            {workspaceItems.map((item) => {
               const Icon = item.icon
-              const on = isActive(item.href)
+              const active = isActive(item.href)
               return (
                 <Link key={item.href} href={item.href}>
-                  <div className={`flex items-center gap-2.5 px-2.5 h-9 rounded-lg text-[13px] tracking-tight transition-all duration-150 ${
-                    on
-                      ? 'bg-[#34d399]/[0.10] text-[#34d399] font-semibold'
-                      : 'text-[#94a3b8] hover:text-[#f1f5f9] hover:bg-white/[0.06]'
-                  }`}>
-                    <Icon className={`w-4 h-4 shrink-0 ${on ? 'text-[#34d399]' : 'text-[#64748b]'}`} strokeWidth={1.75} />
-                    {item.name}
+                  <div
+                    className={`flex items-center gap-3 h-10 rounded-[10px] mx-2 transition-all duration-150 text-[14px] ${
+                      collapsed ? 'justify-center px-0' : 'px-3'
+                    } ${
+                      active
+                        ? 'bg-accent-muted text-accent border-l-[3px] border-accent font-semibold'
+                        : 'text-text-secondary hover:bg-bg-elevated hover:text-text-primary'
+                    }`}
+                  >
+                    <Icon
+                      className={`w-[18px] h-[18px] shrink-0 transition-colors duration-150 ${
+                        active ? 'text-accent' : 'text-text-muted group-hover:text-accent'
+                      }`}
+                      strokeWidth={1.75}
+                    />
+                    {!collapsed && <span>{item.name}</span>}
                   </div>
                 </Link>
               )
@@ -108,28 +138,46 @@ export function Sidebar() {
           </div>
         </div>
 
-        {/* Tools */}
+        {/* Tools section */}
         <div>
-          <p className="text-[10px] font-semibold text-[#475569] uppercase px-3 mb-1.5 tracking-[0.06em]">
-            Tools
-          </p>
+          {!collapsed && (
+            <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] px-5 mb-1">
+              Tools
+            </p>
+          )}
           <div className="space-y-px">
-            {utilities.map(item => {
+            {toolsItems.map((item) => {
               const Icon = item.icon
-              const on = isActive(item.href)
+              const active = isActive(item.href)
               return (
                 <Link key={item.href} href={item.href}>
-                  <div className={`flex items-center gap-2.5 px-2.5 h-9 rounded-lg text-[13px] tracking-tight transition-all duration-150 ${
-                    on
-                      ? 'bg-[#34d399]/[0.10] text-[#34d399] font-semibold'
-                      : 'text-[#94a3b8] hover:text-[#f1f5f9] hover:bg-white/[0.06]'
-                  }`}>
-                    <Icon className={`w-4 h-4 shrink-0 ${on ? 'text-[#34d399]' : 'text-[#64748b]'}`} strokeWidth={1.75} />
-                    <span className="flex-1">{item.name}</span>
-                    {'count' in item && item.count && (
-                      <span className="min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#fb7185] text-white text-[10px] font-bold px-1">
-                        {item.count}
-                      </span>
+                  <div
+                    className={`relative flex items-center gap-3 h-10 rounded-[10px] mx-2 transition-all duration-150 text-[14px] ${
+                      collapsed ? 'justify-center px-0' : 'px-3'
+                    } ${
+                      active
+                        ? 'bg-accent-muted text-accent border-l-[3px] border-accent font-semibold'
+                        : 'text-text-secondary hover:bg-bg-elevated hover:text-text-primary'
+                    }`}
+                  >
+                    <Icon
+                      className={`w-[18px] h-[18px] shrink-0 transition-colors duration-150 ${
+                        active ? 'text-accent' : 'text-text-muted'
+                      }`}
+                      strokeWidth={1.75}
+                    />
+                    {!collapsed && (
+                      <>
+                        <span className="flex-1">{item.name}</span>
+                        {item.count && (
+                          <span className="min-w-[18px] h-[18px] rounded-full bg-danger text-white text-[10px] font-bold flex items-center justify-center px-1">
+                            {item.count}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    {collapsed && item.count && (
+                      <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-danger" />
                     )}
                   </div>
                 </Link>
@@ -138,6 +186,28 @@ export function Sidebar() {
           </div>
         </div>
       </nav>
+
+      {/* ── User area ── */}
+      <div className="border-t border-border p-3">
+        <div
+          className={`flex items-center gap-3 rounded-[10px] cursor-pointer hover:bg-bg-elevated transition-colors p-2 ${
+            collapsed ? 'justify-center' : ''
+          }`}
+        >
+          <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-[12px] font-bold shrink-0">
+            田
+          </div>
+          {!collapsed && (
+            <>
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] font-medium text-text-primary truncate">田中 太郎</p>
+                <p className="text-[12px] text-text-muted truncate">管理者</p>
+              </div>
+              <ChevronUp className="w-4 h-4 text-text-muted shrink-0" strokeWidth={1.75} />
+            </>
+          )}
+        </div>
+      </div>
     </aside>
   )
 }

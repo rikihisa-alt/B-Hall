@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
 import {
   Calculator,
   Receipt,
@@ -33,92 +34,97 @@ const analysis = [
   { name: '収支分析',     meta: '費目別・部門別',   icon: BarChart3, href: '/accounting' },
 ]
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 30 } },
-}
-
 export default function AccountingPage() {
   return (
-    <div className="max-w-[680px] mx-auto px-10 py-10">
+    <motion.div {...pageTransition}>
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-[13px] mb-4">
+        <Link href="/" className="text-text-muted hover:text-text-primary transition-colors">ホーム</Link>
+        <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
+        <span className="text-text-secondary font-medium">経理・財務</span>
+      </nav>
 
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
-        className="mb-8"
-      >
-        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">経理</h1>
-        <p className="text-[13px] text-[#94a3b8] mt-1">経費・請求・支払・資金管理</p>
-      </motion.div>
+      <div className="mb-8">
+        <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">経理・財務</h1>
+        <p className="text-[13px] text-text-secondary mt-1">経費・請求・支払・資金管理</p>
+      </div>
 
       {/* 今日の処理 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.08 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">今日の処理</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
+      <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
+        <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">今日の処理</h2>
+        <motion.div
+          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          variants={fadeUp}
+        >
           {today.map(item => {
             const Icon = item.icon
             return (
               <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.name}</p>
-                    <p className="text-[12px] text-[#94a3b8] mt-0.5">{item.desc}</p>
+                    <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
+                    <p className="text-[12px] text-text-secondary mt-0.5">{item.desc}</p>
                   </div>
                   {item.count > 0 && (
-                    <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">
+                    <span className="text-[12px] font-semibold text-accent tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
                       {item.count}
                     </span>
                   )}
-                  <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
                 </div>
               </Link>
             )
           })}
-        </div>
+        </motion.div>
       </motion.section>
 
       {/* 管理 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.16 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">管理</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
+      <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
+        <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">管理</h2>
+        <motion.div
+          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          variants={fadeUp}
+        >
           {manage.map(item => {
             const Icon = item.icon
             return (
               <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
-                  <p className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.name}</p>
-                  <span className="text-[12px] text-[#94a3b8]">{item.meta}</span>
-                  <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
+                  <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
+                  <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>{item.meta}</span>
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
                 </div>
               </Link>
             )
           })}
-        </div>
+        </motion.div>
       </motion.section>
 
       {/* 分析 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.24 }}>
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">分析</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
+      <motion.section variants={staggerContainer} initial="hidden" animate="show">
+        <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">分析</h2>
+        <motion.div
+          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          variants={fadeUp}
+        >
           {analysis.map(item => {
             const Icon = item.icon
             return (
               <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
-                  <p className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.name}</p>
-                  <span className="text-[12px] text-[#94a3b8]">{item.meta}</span>
-                  <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
+                  <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
+                  <span className="text-[12px] text-text-secondary">{item.meta}</span>
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
                 </div>
               </Link>
             )
           })}
-        </div>
+        </motion.div>
       </motion.section>
-    </div>
+    </motion.div>
   )
 }

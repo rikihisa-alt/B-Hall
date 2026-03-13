@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
 import {
   Bot,
   Send,
@@ -11,7 +13,10 @@ import {
   Users,
   HelpCircle,
   Clock,
+  ChevronRight,
 } from 'lucide-react'
+
+/* ── Mock Data ── */
 
 const suggestedQuestions = [
   { icon: FileText, text: '経費申請の手順を教えて', category: '申請・承認' },
@@ -37,24 +42,6 @@ const chatHistory = [
     time: '10:02',
   },
 ]
-
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 10 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring' as const, stiffness: 300, damping: 30 },
-  },
-}
 
 export default function AssistantPage() {
   const [message, setMessage] = useState('')
@@ -82,35 +69,49 @@ export default function AssistantPage() {
   }
 
   return (
-    <div className="max-w-[680px] mx-auto px-10 py-10 h-full flex flex-col">
+    <motion.div
+      className="h-full flex flex-col"
+      initial={pageTransition.initial}
+      animate={pageTransition.animate}
+      transition={pageTransition.transition}
+    >
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-[13px] mb-4">
+        <Link href="/" className="text-text-muted hover:text-text-primary transition-colors">ホーム</Link>
+        <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
+        <span className="text-text-secondary font-medium">AIアシスタント</span>
+      </nav>
+
       {/* Header */}
       <motion.div
         className="flex items-center gap-3 mb-6"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
       >
         <div className="flex items-center gap-3">
-          <Bot className="w-6 h-6 text-[#34d399]" strokeWidth={1.75} />
+          <div className="w-10 h-10 rounded-[10px] bg-[rgba(37,99,235,0.15)] flex items-center justify-center">
+            <Bot className="w-5 h-5 text-accent" strokeWidth={1.75} />
+          </div>
           <div>
-            <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">ジジロボ</h1>
-            <p className="text-[13px] text-[#94a3b8] mt-0.5">AIアシスタント</p>
+            <h1 className="text-[22px] font-bold text-text-primary tracking-tight">ジジロボ</h1>
+            <p className="text-[13px] text-text-secondary mt-0.5">AIアシスタント</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#059669]/10 text-[#059669] text-[12px] font-semibold">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse" />
+        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(37,99,235,0.12)] text-accent text-[12px] font-semibold">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           オンライン
         </div>
       </motion.div>
 
       {/* Suggested Questions */}
       <motion.div
-        className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] p-4 mb-4"
-        variants={containerVariants}
+        className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] mb-4"
+        variants={staggerContainer}
         initial="hidden"
         animate="show"
       >
-        <h3 className="text-[12px] font-semibold text-[#64748b] uppercase tracking-wider mb-3">
+        <h3 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">
           よくある質問
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -123,12 +124,12 @@ export default function AssistantPage() {
                 onClick={() => {
                   setMessage(q.text)
                 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-all text-left"
+                className="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(37,99,235,0.3)] transition-all text-left group"
               >
-                <QIcon className="w-5 h-5 text-[#64748b] shrink-0" strokeWidth={1.75} />
+                <QIcon className="w-5 h-5 text-text-muted group-hover:text-accent shrink-0 transition-colors" strokeWidth={1.75} />
                 <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight truncate">{q.text}</p>
-                  <p className="text-[12px] text-[#94a3b8]">{q.category}</p>
+                  <p className="text-[13px] font-medium text-text-primary tracking-tight truncate">{q.text}</p>
+                  <p className="text-[11px] text-text-muted">{q.category}</p>
                 </div>
               </motion.button>
             )
@@ -138,10 +139,11 @@ export default function AssistantPage() {
 
       {/* Chat Area */}
       <motion.div
-        className="flex-1 rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] flex flex-col overflow-hidden min-h-0"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 30, delay: 0.2 }}
+        className="flex-1 bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] flex flex-col overflow-hidden min-h-0"
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        transition={{ delay: 0.15 }}
       >
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
@@ -150,13 +152,13 @@ export default function AssistantPage() {
               <div className={`max-w-[80%] ${msg.role === 'user' ? 'order-1' : ''}`}>
                 <div className="flex items-end gap-2">
                   {msg.role === 'assistant' && (
-                    <Bot className="w-4 h-4 text-[#34d399] shrink-0 mb-1" strokeWidth={1.75} />
+                    <Bot className="w-4 h-4 text-accent shrink-0 mb-1" strokeWidth={1.75} />
                   )}
                   <div
                     className={`px-4 py-3 text-[14px] leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-[#34d399] text-[#0f172a] rounded-2xl rounded-br-sm'
-                        : 'bg-white/[0.04] text-[#cbd5e1] rounded-2xl rounded-bl-sm'
+                        ? 'bg-accent text-white rounded-2xl rounded-br-sm'
+                        : 'bg-bg-elevated border border-border text-text-secondary rounded-2xl rounded-bl-sm'
                     }`}
                   >
                     {msg.content.split('\n').map((line, i) => (
@@ -168,8 +170,8 @@ export default function AssistantPage() {
                   </div>
                 </div>
                 <div className={`flex items-center gap-1 mt-1 ${msg.role === 'user' ? 'justify-end' : 'ml-6'}`}>
-                  <Clock className="w-3 h-3 text-[#475569]" strokeWidth={1.75} />
-                  <span className="text-[11px] text-[#475569]">{msg.time}</span>
+                  <Clock className="w-3 h-3 text-text-muted" strokeWidth={1.75} />
+                  <span className="text-[11px] text-text-muted" style={{ fontFamily: 'var(--font-inter)' }}>{msg.time}</span>
                 </div>
               </div>
             </div>
@@ -177,7 +179,7 @@ export default function AssistantPage() {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-white/[0.06]">
+        <div className="p-4 border-t border-border">
           <div className="flex items-end gap-3">
             <div className="flex-1 relative">
               <textarea
@@ -186,23 +188,23 @@ export default function AssistantPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="メッセージを入力..."
                 rows={1}
-                className="w-full resize-none rounded-lg bg-white/[0.04] border-none px-4 py-3 text-[14px] text-[#f1f5f9] placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 transition-all"
+                className="w-full resize-none rounded-[10px] bg-bg-elevated border border-border px-4 py-3 text-[14px] text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"
               />
             </div>
             <button
               onClick={handleSend}
               disabled={!message.trim()}
-              className="w-10 h-10 rounded-lg bg-[#34d399] flex items-center justify-center text-[#0f172a] hover:bg-[#6ee7b7] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0"
+              className="w-10 h-10 rounded-[10px] bg-accent flex items-center justify-center text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0 shadow-[0_0_16px_rgba(37,99,235,0.3)]"
             >
               <Send className="w-4 h-4" />
             </button>
           </div>
-          <p className="text-[12px] text-[#94a3b8] mt-2 ml-1 flex items-center gap-1">
+          <p className="text-[12px] text-text-muted mt-2 ml-1 flex items-center gap-1">
             <Sparkles className="w-3.5 h-3.5" strokeWidth={1.75} />
             ジジロボは社内情報に基づいて回答します。機密情報の取り扱いにご注意ください。
           </p>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   )
 }

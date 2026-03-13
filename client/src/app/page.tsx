@@ -1,118 +1,277 @@
 'use client'
 
-import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
-  Calculator,
-  Users,
-  Building2,
-  FolderOpen,
+  ListTodo,
+  Clock,
+  Wallet,
+  Bell,
+  TrendingUp,
+  TrendingDown,
+  ArrowUpRight,
   FileText,
-  Stamp,
-  ClipboardList,
-  BookOpen,
-  BarChart3,
-  MessageSquare,
-  Bot,
+  Users,
+  CheckCircle2,
+  AlertCircle,
   ChevronRight,
 } from 'lucide-react'
+import Link from 'next/link'
+import {
+  AreaChart, Area, XAxis, YAxis, Tooltip as RechartsTooltip,
+  ResponsiveContainer, CartesianGrid,
+} from 'recharts'
+import { useCountUp } from '@/lib/use-count-up'
+import { fadeUp, staggerContainer } from '@/lib/animation'
 
-/* ── Panel sections — NOT a uniform grid ── */
+/* ── Mock Data ── */
 
-const primary = [
-  { name: '経理',  desc: '経費・請求・支払',       href: '/accounting',     icon: Calculator,   count: 4 },
-  { name: '人事',  desc: '従業員・社保・手続き',    href: '/hr',             icon: Users,        count: 3 },
-  { name: '申請',  desc: 'ワークフロー・承認',      href: '/applications',   icon: FileText,     count: 5 },
+const metrics = [
+  { label: '未処理タスク', value: 12, change: -3, up: false, icon: ListTodo, color: '#2563EB' },
+  { label: '承認待ち', value: 5, change: 2, up: true, icon: Clock, color: '#F59E0B' },
+  { label: '今月の経費', value: 320, prefix: '¥', suffix: '万', change: 8.4, up: true, icon: Wallet, color: '#22C55E' },
+  { label: '未読通知', value: 3, change: 0, up: false, icon: Bell, color: '#3B82F6' },
 ]
 
-const operations = [
-  { name: '総務',          desc: '備品・設備・オフィス',    href: '/general-affairs', icon: Building2,     count: 2 },
-  { name: '契約',          desc: '契約書・規程・文書',     href: '/documents',       icon: FolderOpen,    count: 1 },
-  { name: '稟議',          desc: '決裁プロセス',           href: '/ringi',           icon: Stamp,         count: 1 },
-  { name: '報告',          desc: '日報・インシデント',     href: '/reports',         icon: ClipboardList          },
+const chartData = [
+  { month: '10月', revenue: 4200, expense: 2800 },
+  { month: '11月', revenue: 3800, expense: 2600 },
+  { month: '12月', revenue: 5100, expense: 3200 },
+  { month: '1月', revenue: 4600, expense: 2900 },
+  { month: '2月', revenue: 4900, expense: 3100 },
+  { month: '3月', revenue: 5400, expense: 3400 },
 ]
 
-const insight = [
-  { name: '経営',          desc: '分析・投資判断',         href: '/management',      icon: BarChart3              },
-  { name: '改善',          desc: '提案・フィードバック',   href: '/improvements',    icon: MessageSquare          },
-  { name: 'ドキュメント',  desc: 'テンプレート・手順書',   href: '/knowledge',       icon: BookOpen               },
-  { name: 'ジジロボ',      desc: 'AIアシスタント',         href: '/assistant',       icon: Bot                    },
+const activities = [
+  { time: '14:32', text: '田中太郎が経費申請を提出', type: 'info' as const },
+  { time: '13:15', text: '稟議 #RG-042 が承認されました', type: 'success' as const },
+  { time: '11:40', text: '新入社員の入社手続きを開始', type: 'info' as const },
+  { time: '10:20', text: '月次レポートの締切が近づいています', type: 'warning' as const },
+  { time: '09:05', text: '契約書 NDA-2024-03 が更新期限', type: 'danger' as const },
 ]
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 30 } },
+const recentTasks = [
+  { title: '3月度経費精算の確認', category: '経理', assignee: '鈴木一郎', due: '3/18', status: '進行中' as const, priority: '高' as const },
+  { title: '新入社員オンボーディング', category: '人事', assignee: '佐藤花子', due: '3/20', status: '未着手' as const, priority: '中' as const },
+  { title: '備品発注書の承認', category: '総務', assignee: '山田太郎', due: '3/15', status: '承認待ち' as const, priority: '高' as const },
+  { title: 'NDA契約書レビュー', category: '法務', assignee: '高橋美咲', due: '3/22', status: '進行中' as const, priority: '中' as const },
+  { title: '月次報告書作成', category: '報告', assignee: '田中次郎', due: '3/25', status: '未着手' as const, priority: '低' as const },
+]
+
+const statusColors: Record<string, string> = {
+  '進行中': '#3B82F6',
+  '未着手': 'rgba(240,246,252,0.4)',
+  '承認待ち': '#F59E0B',
+  '完了': '#22C55E',
 }
 
-type PanelItem = {
-  name: string
-  desc: string
-  href: string
-  icon: typeof Calculator
-  count?: number
+const priorityStyles: Record<string, string> = {
+  '高': 'bg-[rgba(239,68,68,0.15)] text-[#EF4444] border-[rgba(239,68,68,0.3)]',
+  '中': 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border-[rgba(59,130,246,0.3)]',
+  '低': 'bg-[rgba(240,246,252,0.08)] text-text-muted border-border',
 }
 
-function PanelRow({ item }: { item: PanelItem }) {
-  const Icon = item.icon
+/* ── Metric Card ── */
+function MetricCard({ label, value, prefix, suffix, change, up, icon: Icon, color, delay }: {
+  label: string; value: number; prefix?: string; suffix?: string;
+  change: number; up: boolean; icon: typeof ListTodo; color: string; delay: number
+}) {
+  const count = useCountUp(value, 1200, delay)
   return (
-    <Link href={item.href}>
-      <div className="group flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] transition-all duration-150 cursor-pointer">
-        <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
-        <div className="flex-1 min-w-0">
-          <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.name}</p>
-          <p className="text-[12px] text-[#94a3b8] mt-px">{item.desc}</p>
+    <motion.div
+      variants={fadeUp}
+      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] cursor-default"
+      style={{ borderLeftWidth: 3, borderLeftColor: color }}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="w-9 h-9 rounded-[10px] flex items-center justify-center" style={{ background: `${color}20` }}>
+          <Icon className="w-[18px] h-[18px]" style={{ color }} strokeWidth={1.75} />
         </div>
-        {item.count && item.count > 0 && (
-          <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">{item.count}</span>
+        {change !== 0 && (
+          <div className={`flex items-center gap-1 text-[12px] font-semibold ${up ? 'text-success' : 'text-danger'}`}>
+            {up ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+            {up ? '+' : ''}{change}{typeof change === 'number' && change % 1 !== 0 ? '%' : ''}
+          </div>
         )}
-        <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" />
       </div>
-    </Link>
+      <p className="text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+        {prefix}{count}{suffix}
+      </p>
+      <p className="text-[13px] text-text-muted">{label}</p>
+    </motion.div>
   )
 }
 
-export default function HomePage() {
+/* ── Custom Chart Tooltip ── */
+function ChartTooltipContent({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; name: string }>; label?: string }) {
+  if (!active || !payload) return null
   return (
-    <div className="max-w-[680px] mx-auto px-10 py-10">
-
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
-        className="mb-10"
-      >
-        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">
-          ワークスペース
-        </h1>
-        <p className="text-[13px] text-[#94a3b8] mt-1">
-          業務セクションを選んでください
+    <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 shadow-lg">
+      <p className="text-[12px] text-text-muted mb-1.5">{label}</p>
+      {payload.map((p, i) => (
+        <p key={i} className="text-[13px] font-semibold" style={{ fontFamily: 'var(--font-inter)' }}>
+          <span className="text-text-secondary">{p.name === 'revenue' ? '収入' : '支出'}: </span>
+          <span className="text-text-primary">¥{p.value.toLocaleString()}万</span>
         </p>
+      ))}
+    </div>
+  )
+}
+
+/* ── Page ── */
+export default function HomePage() {
+  const today = new Date()
+  const dateStr = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: 'spring' as const, stiffness: 280, damping: 28 }}
+    >
+      {/* Page Header */}
+      <div className="flex items-end justify-between mb-8">
+        <div>
+          <p className="text-[13px] text-text-muted mb-1">{dateStr}</p>
+          <h1 className="text-[28px] font-bold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
+          <p className="text-[15px] text-text-secondary mt-1">業務全体の状況を確認できます</p>
+        </div>
+        <Link href="/tasks" className="inline-flex items-center gap-2 bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white font-semibold px-5 h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(37,99,235,0.35)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(37,99,235,0.5)] active:translate-y-0 transition-all duration-200">
+          <ListTodo className="w-4 h-4" strokeWidth={2} />
+          タスク一覧
+        </Link>
+      </div>
+
+      {/* Metric Cards — 4 columns */}
+      <motion.div
+        className="grid grid-cols-4 gap-5 mb-8"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
+        {metrics.map((m, i) => (
+          <MetricCard key={m.label} {...m} delay={i * 150} />
+        ))}
       </motion.div>
 
-      {/* Primary — 主要業務 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.04 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">主要業務</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06] overflow-hidden">
-          {primary.map(item => <PanelRow key={item.href} item={item} />)}
-        </div>
-      </motion.section>
+      {/* Chart + Activity — 2 columns */}
+      <div className="grid grid-cols-3 gap-5 mb-8">
+        {/* Area Chart */}
+        <motion.div
+          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          transition={{ delay: 0.2 }}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-[18px] font-bold text-text-primary tracking-tight">収支推移</h2>
+            <span className="text-[12px] text-text-muted">過去6ヶ月</span>
+          </div>
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+              <defs>
+                <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#2563EB" stopOpacity={0.25} />
+                  <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="fillExpense" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.15} />
+                  <stop offset="100%" stopColor="#F59E0B" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" />
+              <XAxis dataKey="month" tick={{ fill: 'rgba(240,246,252,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: 'rgba(240,246,252,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <RechartsTooltip content={<ChartTooltipContent />} />
+              <Area type="monotone" dataKey="revenue" name="revenue" stroke="#2563EB" strokeWidth={2} fill="url(#fillRevenue)" />
+              <Area type="monotone" dataKey="expense" name="expense" stroke="#F59E0B" strokeWidth={2} fill="url(#fillExpense)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </motion.div>
 
-      {/* Operations — 管理業務 */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.08 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">管理業務</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06] overflow-hidden">
-          {operations.map(item => <PanelRow key={item.href} item={item} />)}
-        </div>
-      </motion.section>
+        {/* Activity Timeline */}
+        <motion.div
+          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          transition={{ delay: 0.25 }}
+        >
+          <h2 className="text-[18px] font-bold text-text-primary tracking-tight mb-5">最近の活動</h2>
+          <div className="space-y-4">
+            {activities.map((a, i) => {
+              const dotColor = a.type === 'success' ? '#22C55E' : a.type === 'warning' ? '#F59E0B' : a.type === 'danger' ? '#EF4444' : '#3B82F6'
+              return (
+                <div key={i} className="flex gap-3 items-start">
+                  <div className="flex flex-col items-center mt-1">
+                    <div className="w-2 h-2 rounded-full shrink-0" style={{ background: dotColor }} />
+                    {i < activities.length - 1 && <div className="w-px h-8 bg-border mt-1" />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[13px] text-text-primary leading-snug">{a.text}</p>
+                    <p className="text-[11px] text-text-muted mt-0.5" style={{ fontFamily: 'var(--font-inter)' }}>{a.time}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </motion.div>
+      </div>
 
-      {/* Insight — 分析・ナレッジ */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.12 }}>
-        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">分析・ナレッジ</h2>
-        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06] overflow-hidden">
-          {insight.map(item => <PanelRow key={item.href} item={item} />)}
+      {/* Recent Tasks Table */}
+      <motion.div
+        className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        transition={{ delay: 0.3 }}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+          <h2 className="text-[18px] font-bold text-text-primary tracking-tight">直近のタスク</h2>
+          <Link href="/tasks" className="flex items-center gap-1 text-[13px] font-semibold text-accent hover:text-accent-hover transition-colors">
+            すべて表示
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
-      </motion.section>
-    </div>
+
+        <table className="w-full">
+          <thead>
+            <tr className="bg-bg-base">
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">タスク名</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">カテゴリ</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">期限</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">優先度</th>
+              <th className="px-6 py-3 w-10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {recentTasks.map((task, i) => (
+              <tr key={i} className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] group transition-colors cursor-pointer" style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}>
+                <td className="px-6 py-3.5">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: statusColors[task.status] || 'rgba(240,246,252,0.4)' }} />
+                    <span className="text-[13px] text-text-secondary">{task.status}</span>
+                  </div>
+                </td>
+                <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{task.title}</td>
+                <td className="px-6 py-3.5 text-[13px] text-text-muted">{task.category}</td>
+                <td className="px-6 py-3.5 text-[13px] text-text-secondary">{task.assignee}</td>
+                <td className="px-6 py-3.5 text-[13px] text-text-muted tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{task.due}</td>
+                <td className="px-6 py-3.5">
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${priorityStyles[task.priority]}`}>
+                    {task.priority}
+                  </span>
+                </td>
+                <td className="px-6 py-3.5">
+                  <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </motion.div>
+    </motion.div>
   )
 }
