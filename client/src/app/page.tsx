@@ -15,7 +15,6 @@ import {
   MessageSquare,
   Bot,
   ChevronRight,
-  ArrowRight,
 } from 'lucide-react'
 
 /* ── Panel sections — NOT a uniform grid ── */
@@ -57,16 +56,16 @@ function PanelRow({ item }: { item: PanelItem }) {
   const Icon = item.icon
   return (
     <Link href={item.href}>
-      <div className="group flex items-center gap-4 px-5 py-4 hover:bg-white/50 transition-all duration-150 cursor-pointer hover:-translate-y-px">
-        <Icon className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors shrink-0" strokeWidth={1.75} />
+      <div className="group flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] transition-all duration-150 cursor-pointer">
+        <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
         <div className="flex-1 min-w-0">
-          <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">{item.name}</p>
+          <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.name}</p>
           <p className="text-[12px] text-[#94a3b8] mt-px">{item.desc}</p>
         </div>
         {item.count && item.count > 0 && (
-          <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">{item.count}</span>
+          <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">{item.count}</span>
         )}
-        <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" />
+        <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" />
       </div>
     </Link>
   )
@@ -83,7 +82,7 @@ export default function HomePage() {
         transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
         className="mb-10"
       >
-        <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">
+        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">
           ワークスペース
         </h1>
         <p className="text-[13px] text-[#94a3b8] mt-1">
@@ -93,24 +92,24 @@ export default function HomePage() {
 
       {/* Primary — 主要業務 */}
       <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.04 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">主要業務</h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] divide-y divide-black/[0.04] overflow-hidden">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">主要業務</h2>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06] overflow-hidden">
           {primary.map(item => <PanelRow key={item.href} item={item} />)}
         </div>
       </motion.section>
 
       {/* Operations — 管理業務 */}
       <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.08 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">管理業務</h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] divide-y divide-black/[0.04] overflow-hidden">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">管理業務</h2>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06] overflow-hidden">
           {operations.map(item => <PanelRow key={item.href} item={item} />)}
         </div>
       </motion.section>
 
       {/* Insight — 分析・ナレッジ */}
       <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.12 }}>
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">分析・ナレッジ</h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] divide-y divide-black/[0.04] overflow-hidden">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">分析・ナレッジ</h2>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06] overflow-hidden">
           {insight.map(item => <PanelRow key={item.href} item={item} />)}
         </div>
       </motion.section>

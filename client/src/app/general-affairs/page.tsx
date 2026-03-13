@@ -30,7 +30,7 @@ export default function GeneralAffairsPage() {
         transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
         className="mb-8"
       >
-        <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">総務</h1>
+        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">総務</h1>
         <p className="text-[13px] text-[#94a3b8] mt-1">備品・設備・オフィス管理</p>
       </motion.div>
 
@@ -42,52 +42,52 @@ export default function GeneralAffairsPage() {
         animate="show"
         transition={{ delay: 0.08 }}
       >
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">
           今日の処理
         </h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]">
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Package className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Package className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">備品管理</p>
+                <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">備品管理</p>
                 <p className="text-[12px] text-[#94a3b8]">備品の在庫確認・登録</p>
               </div>
-              <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">2</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">2</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Monitor className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Monitor className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">貸出管理</p>
+                <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">貸出管理</p>
                 <p className="text-[12px] text-[#94a3b8]">端末・備品の貸出・返却</p>
               </div>
-              <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">1</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">1</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <ShoppingCart className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <ShoppingCart className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">発注処理</p>
+                <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">発注処理</p>
                 <p className="text-[12px] text-[#94a3b8]">購買申請・発注の確認</p>
               </div>
-              <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">4</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">4</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Wrench className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Wrench className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">修理・メンテ</p>
+                <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">修理・メンテ</p>
                 <p className="text-[12px] text-[#94a3b8]">設備の修理・点検依頼</p>
               </div>
-              <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">2</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">2</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
         </div>
@@ -100,31 +100,31 @@ export default function GeneralAffairsPage() {
         animate="show"
         transition={{ delay: 0.16 }}
       >
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">
           管理
         </h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]">
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <ClipboardList className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">備品台帳</span>
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <ClipboardList className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">備品台帳</span>
               <span className="text-[12px] text-[#94a3b8]">156件</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <ArrowLeftRight className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">貸出一覧</span>
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <ArrowLeftRight className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">貸出一覧</span>
               <span className="text-[12px] text-[#94a3b8]">23件</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/general-affairs">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Settings className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">設備管理</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Settings className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">設備管理</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
         </div>

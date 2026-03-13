@@ -1,31 +1,32 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────
-   B-Hall v4 — "Quiet OS"
-   Linear / Arc / Raycast に学ぶ。
-   微グラデーション。Glass Panel。2層Shadow。
+   B-Hall v5 — "Crystalline Future"
+   Dark glassmorphism. Emerald accent.
+   Extreme transparency. Light-refraction edges.
+   SF映画のコックピット。ガラスの回廊。
    ───────────────────────────────────────── */
 
 @theme {
-  --color-canvas: #f8fafc;
-  --color-surface: rgba(255, 255, 255, 0.6);
-  --color-surface-solid: #ffffff;
-  --color-surface-hover: rgba(255, 255, 255, 0.85);
+  --color-canvas: #0f1419;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-solid: rgba(255, 255, 255, 0.06);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
 
-  --color-ink: #0f172a;
-  --color-ink-2: #334155;
-  --color-ink-3: #64748b;
-  --color-ink-4: #94a3b8;
-  --color-ink-5: #cbd5e1;
+  --color-ink: #f1f5f9;
+  --color-ink-2: #cbd5e1;
+  --color-ink-3: #94a3b8;
+  --color-ink-4: #64748b;
+  --color-ink-5: #475569;
 
-  --color-accent: #6366f1;
-  --color-accent-soft: rgba(99, 102, 241, 0.08);
-  --color-accent-hover: #818cf8;
+  --color-accent: #34d399;
+  --color-accent-soft: rgba(52, 211, 153, 0.10);
+  --color-accent-hover: #6ee7b7;
 
-  --color-emerald: #059669;
-  --color-amber: #d97706;
-  --color-rose: #e11d48;
-  --color-sky: #0284c7;
+  --color-emerald: #34d399;
+  --color-amber: #fbbf24;
+  --color-rose: #fb7185;
+  --color-sky: #38bdf8;
 
   --font-sans: var(--font-geist-sans), "Hiragino Sans", "Hiragino Kaku Gothic ProN", -apple-system, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), "SF Mono", monospace;
@@ -33,8 +34,7 @@
 
 body {
   font-family: var(--font-sans);
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
-  background-attachment: fixed;
+  background: #0f1419;
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -43,21 +43,21 @@ body {
 }
 
 ::selection {
-  background: rgba(99, 102, 241, 0.12);
-  color: #0f172a;
+  background: rgba(52, 211, 153, 0.20);
+  color: #f1f5f9;
 }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 *:focus-visible {
-  outline: 2px solid rgba(99, 102, 241, 0.4);
+  outline: 2px solid rgba(52, 211, 153, 0.4);
   outline-offset: 2px;
 }

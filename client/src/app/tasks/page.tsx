@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion'
 
 const statusColors: Record<string, string> = {
-  '未着手': '#94A3B8',
-  '進行中': '#0284C7',
-  '確認待ち': '#D97706',
-  '完了': '#059669',
+  '未着手': '#64748b',
+  '進行中': '#38bdf8',
+  '確認待ち': '#fbbf24',
+  '完了': '#34d399',
 }
 
 const tasks = [
@@ -45,12 +45,12 @@ export default function TasksPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
       >
-        <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">タスク</h1>
+        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">タスク</h1>
         <p className="text-[13px] text-[#94a3b8] mt-1">6件のタスク</p>
       </motion.div>
 
       <motion.div
-        className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]"
+        className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -59,13 +59,13 @@ export default function TasksPage() {
           <motion.div
             key={i}
             variants={fadeUp}
-            className="flex items-center gap-3 px-5 py-3.5 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer"
+            className="flex items-center gap-3 px-5 py-3.5 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer"
           >
             <div
               className="w-2 h-2 rounded-full flex-shrink-0"
               style={{ backgroundColor: statusColors[task.status] }}
             />
-            <span className="text-[14px] font-semibold text-[#0f172a] tracking-tight flex-1 min-w-0 truncate">
+            <span className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight flex-1 min-w-0 truncate">
               {task.title}
             </span>
             <span className="text-[12px] text-[#94a3b8] flex-shrink-0">

@@ -28,7 +28,7 @@ export default function ImprovementsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
       >
-        <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">改善</h1>
+        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">改善</h1>
         <p className="text-[13px] text-[#94a3b8] mt-1">提案・目安箱・フィードバック</p>
       </motion.div>
 
@@ -40,38 +40,38 @@ export default function ImprovementsPage() {
         animate="show"
         transition={{ delay: 0.08 }}
       >
-        <p className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">今日の処理</p>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] divide-y divide-black/[0.04]">
+        <p className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">今日の処理</p>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06]">
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Lightbulb className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">新規提案</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Lightbulb className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">新規提案</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <EyeOff className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">匿名投稿</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <EyeOff className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">匿名投稿</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Clock className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">対応中の提案</span>
-              <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">3</span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Clock className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">対応中の提案</span>
+              <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">3</span>
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <CheckCircle2 className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <CheckCircle2 className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
-                <span className="text-[14px] font-semibold text-[#0f172a] tracking-tight block">実施済確認</span>
+                <span className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight block">実施済確認</span>
                 <span className="text-[12px] text-[#94a3b8]">効果を振り返る</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
         </div>
@@ -85,48 +85,48 @@ export default function ImprovementsPage() {
         animate="show"
         transition={{ delay: 0.16 }}
       >
-        <p className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">最近の提案</p>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] divide-y divide-black/[0.04]">
+        <p className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">最近の提案</p>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] divide-y divide-white/[0.06]">
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Lightbulb className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">リモートワーク申請フローの簡素化</span>
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Lightbulb className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">リモートワーク申請フローの簡素化</span>
               <span
                 className="rounded-md px-2 py-0.5 text-[11px] font-medium"
-                style={{ color: '#D97706', backgroundColor: '#D9770610' }}
+                style={{ color: '#fbbf24', backgroundColor: '#fbbf2410' }}
               >検討中</span>
               <span className="flex items-center gap-1 text-[12px] text-[#94a3b8]">
                 <ThumbsUp className="w-3.5 h-3.5" strokeWidth={1.75} />8票
               </span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Lightbulb className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">社内勉強会の月次開催</span>
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Lightbulb className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">社内勉強会の月次開催</span>
               <span
                 className="rounded-md px-2 py-0.5 text-[11px] font-medium"
-                style={{ color: '#059669', backgroundColor: '#05966910' }}
+                style={{ color: '#34d399', backgroundColor: '#34d39910' }}
               >実施決定</span>
               <span className="flex items-center gap-1 text-[12px] text-[#94a3b8]">
                 <ThumbsUp className="w-3.5 h-3.5" strokeWidth={1.75} />15票
               </span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <Lightbulb className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors" strokeWidth={1.75} />
-              <span className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">経費精算のモバイル対応</span>
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <Lightbulb className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors" strokeWidth={1.75} />
+              <span className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">経費精算のモバイル対応</span>
               <span
                 className="rounded-md px-2 py-0.5 text-[11px] font-medium"
-                style={{ color: '#0284C7', backgroundColor: '#0284C710' }}
+                style={{ color: '#38bdf8', backgroundColor: '#38bdf810' }}
               >対応中</span>
               <span className="flex items-center gap-1 text-[12px] text-[#94a3b8]">
                 <ThumbsUp className="w-3.5 h-3.5" strokeWidth={1.75} />12票
               </span>
-              <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+              <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
         </div>

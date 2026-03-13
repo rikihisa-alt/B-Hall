@@ -37,9 +37,9 @@ const types = [
 ]
 
 const recent = [
-  { title: '中途採用申請 - エンジニア1名',     status: '承認済', date: '3/08', color: '#059669' },
-  { title: '有給休暇申請（3/20-3/21）',        status: '承認済', date: '3/11', color: '#059669' },
-  { title: 'リモートワーク端末貸与申請',        status: '下書き', date: '3/07', color: '#94a3b8' },
+  { title: '中途採用申請 - エンジニア1名',     status: '承認済', date: '3/08', color: '#34d399' },
+  { title: '有給休暇申請（3/20-3/21）',        status: '承認済', date: '3/11', color: '#34d399' },
+  { title: 'リモートワーク端末貸与申請',        status: '下書き', date: '3/07', color: '#64748b' },
 ]
 
 const fadeUp = {
@@ -58,27 +58,27 @@ export default function ApplicationsPage() {
         transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
         className="mb-8"
       >
-        <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">申請</h1>
+        <h1 className="text-[24px] font-semibold text-[#f1f5f9] tracking-tight">申請</h1>
         <p className="text-[13px] text-[#94a3b8] mt-1">ワークフロー・承認処理</p>
       </motion.div>
 
       {/* 承認待ち */}
       {pending.length > 0 && (
         <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.08 }} className="mb-8">
-          <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1 flex items-center gap-2">
+          <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1 flex items-center gap-2">
             <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
             <span>承認待ち</span>
-            <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">{pending.length}</span>
+            <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">{pending.length}</span>
           </h2>
-          <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]">
+          <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
             {pending.map(item => (
-              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">{item.title}</p>
+                  <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.title}</p>
                   <p className="text-[12px] text-[#94a3b8] mt-0.5">{item.type} · {item.applicant}</p>
                 </div>
-                <span className="text-[13px] font-semibold text-[#334155] tabular-nums">{item.amount}</span>
-                <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <span className="text-[13px] font-semibold text-[#cbd5e1] tabular-nums">{item.amount}</span>
+                <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
               </div>
             ))}
           </div>
@@ -88,19 +88,19 @@ export default function ApplicationsPage() {
       {/* 差戻し */}
       {rejected.length > 0 && (
         <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.14 }} className="mb-8">
-          <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1 flex items-center gap-2">
+          <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1 flex items-center gap-2">
             <XCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
             <span>差戻し</span>
-            <span className="text-[12px] font-semibold text-[#6366f1] tabular-nums">{rejected.length}</span>
+            <span className="text-[12px] font-semibold text-[#34d399] tabular-nums">{rejected.length}</span>
           </h2>
-          <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]">
+          <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
             {rejected.map(item => (
-              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight">{item.title}</p>
-                  <p className="text-[12px] text-[#e11d48]/70 mt-0.5">{item.reason}</p>
+                  <p className="text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{item.title}</p>
+                  <p className="text-[12px] text-[#fb7185]/70 mt-0.5">{item.reason}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
               </div>
             ))}
           </div>
@@ -109,16 +109,16 @@ export default function ApplicationsPage() {
 
       {/* 新規申請 */}
       <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.2 }} className="mb-8">
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">新規申請</h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">新規申請</h2>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
           {types.map(type => {
             const Icon = type.icon
             return (
               <Link key={type.name} href={type.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-[#94a3b8] group-hover:text-[#6366f1] transition-colors shrink-0" strokeWidth={1.75} />
-                  <p className="flex-1 text-[14px] font-semibold text-[#0f172a] tracking-tight">{type.name}</p>
-                  <ChevronRight className="w-4 h-4 text-[#e2e8f0] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+                  <Icon className="w-[18px] h-[18px] text-[#64748b] group-hover:text-[#34d399] transition-colors shrink-0" strokeWidth={1.75} />
+                  <p className="flex-1 text-[14px] font-semibold text-[#f1f5f9] tracking-tight">{type.name}</p>
+                  <ChevronRight className="w-4 h-4 text-[#475569] group-hover:text-[#94a3b8] transition-colors" strokeWidth={1.75} />
                 </div>
               </Link>
             )
@@ -128,11 +128,11 @@ export default function ApplicationsPage() {
 
       {/* 最近の申請 */}
       <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.28 }}>
-        <h2 className="text-[11px] font-semibold text-[#94a3b8] uppercase tracking-[0.06em] mb-3 px-1">最近の申請</h2>
-        <div className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]">
+        <h2 className="text-[11px] font-semibold text-[#64748b] uppercase tracking-[0.06em] mb-3 px-1">最近の申請</h2>
+        <div className="rounded-xl bg-white/[0.04] backdrop-blur-3xl ring-1 ring-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden divide-y divide-white/[0.06]">
           {recent.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-5 px-5 py-4 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer group">
-              <p className="flex-1 text-[14px] text-[#64748b] group-hover:text-[#0f172a] transition-colors truncate font-medium tracking-tight">{item.title}</p>
+            <div key={idx} className="flex items-center gap-5 px-5 py-4 hover:bg-white/[0.06] hover:-translate-y-px transition-all duration-150 cursor-pointer group">
+              <p className="flex-1 text-[14px] text-[#64748b] group-hover:text-[#f1f5f9] transition-colors truncate font-medium tracking-tight">{item.title}</p>
               <span
                 className="text-[12px] font-semibold px-2.5 py-1 rounded-lg"
                 style={{ color: item.color, backgroundColor: `${item.color}10` }}
