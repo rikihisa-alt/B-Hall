@@ -2,16 +2,11 @@
 
 import { useState } from 'react'
 import {
-  Bell,
   CheckCircle2,
   Clock,
-  FileText,
-  Users,
-  AlertTriangle,
   MessageSquare,
+  AlertTriangle,
   Stamp,
-  Calendar,
-  CreditCard,
   Settings,
   CheckCheck,
 } from 'lucide-react'
@@ -25,17 +20,16 @@ interface Notification {
   type: NotificationType
   time: string
   read: boolean
-  actionUrl?: string
   sender?: string
 }
 
-const typeConfig: Record<NotificationType, { icon: typeof Bell; color: string }> = {
-  task: { icon: CheckCircle2, color: 'text-blue-400 bg-blue-500/10' },
-  approval: { icon: Stamp, color: 'text-amber-400 bg-amber-500/10' },
-  comment: { icon: MessageSquare, color: 'text-violet-400 bg-violet-500/10' },
-  deadline: { icon: Clock, color: 'text-red-400 bg-red-500/10' },
-  alert: { icon: AlertTriangle, color: 'text-orange-400 bg-orange-500/10' },
-  system: { icon: Settings, color: 'text-[#6B7280] bg-white/[0.05]' },
+const typeConfig: Record<NotificationType, { icon: typeof CheckCircle2; color: string; bg: string }> = {
+  task: { icon: CheckCircle2, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  approval: { icon: Stamp, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+  comment: { icon: MessageSquare, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+  deadline: { icon: Clock, color: 'text-red-400', bg: 'bg-red-500/10' },
+  alert: { icon: AlertTriangle, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+  system: { icon: Settings, color: 'text-[#5A6070]', bg: 'bg-white/[0.03]' },
 }
 
 const demoNotifications: Notification[] = [
@@ -77,7 +71,7 @@ const demoNotifications: Notification[] = [
   {
     id: 'N-005',
     title: 'キャッシュフロー注意',
-    description: '来月の固定支出が通常より¥2,000,000高く、資金繰りに注意が必要です。',
+    description: '来月の固定支出が通常より高く、資金繰りに注意が必要です。',
     type: 'alert',
     time: '3時間前',
     read: true,
@@ -111,7 +105,7 @@ const demoNotifications: Notification[] = [
   {
     id: 'N-009',
     title: 'システムメンテナンス予定',
-    description: '3月16日(日) 2:00-5:00にシステムメンテナンスを実施します。一時的にアクセスできません。',
+    description: '3月16日(日) 2:00-5:00にシステムメンテナンスを実施します。',
     type: 'system',
     time: '2日前',
     read: true,
@@ -135,34 +129,36 @@ export default function NotificationsPage() {
     : demoNotifications
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white/90">通知</h1>
-          <p className="text-sm text-[#6B7280] mt-1">
-            未読が <span className="text-[#7C8CFF] font-semibold">{unreadCount}件</span> あります
-          </p>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <h1 className="text-[20px] font-semibold text-white/90">通知</h1>
+          {unreadCount > 0 && (
+            <span className="text-[12px] font-medium text-[#7C8CFF] bg-[#7C8CFF]/10 px-2 py-0.5 rounded-md">
+              {unreadCount}件未読
+            </span>
+          )}
         </div>
-        <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
-          <CheckCheck className="w-4 h-4" />
+        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] text-[#5A6070] hover:text-[#A8B0BD] hover:bg-white/[0.03] transition-all">
+          <CheckCheck className="w-3.5 h-3.5" />
           すべて既読にする
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
+      <div className="flex items-center gap-1 mb-5">
         {[
           { key: 'all' as const, label: 'すべて' },
-          { key: 'unread' as const, label: `未読 (${unreadCount})` },
+          { key: 'unread' as const, label: '未読' },
         ].map((tab) => (
           <button
             key={tab.key}
             onClick={() => setFilter(tab.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all ${
               filter === tab.key
-                ? 'bg-white/[0.08] text-white'
-                : 'text-[#6B7280] hover:text-[#A8B0BD]'
+                ? 'bg-white/[0.06] text-white/90'
+                : 'text-[#5A6070] hover:text-[#A8B0BD]'
             }`}
           >
             {tab.label}
@@ -171,44 +167,53 @@ export default function NotificationsPage() {
       </div>
 
       {/* Notifications List */}
-      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.06]">
-        {filteredNotifications.map((notification) => {
-          const type = typeConfig[notification.type]
-          const Icon = type.icon
+      <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden divide-y divide-white/[0.06]">
+        {filteredNotifications.length === 0 ? (
+          <div className="px-5 py-12 text-center">
+            <p className="text-[13px] text-[#5A6070]">通知はありません</p>
+          </div>
+        ) : (
+          filteredNotifications.map((notification) => {
+            const config = typeConfig[notification.type]
+            const Icon = config.icon
 
-          return (
-            <div
-              key={notification.id}
-              className={`px-5 py-4 hover:bg-white/[0.05] transition-all cursor-pointer group ${
-                !notification.read ? 'bg-white/[0.04]' : 'bg-white/[0.02]'
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${type.color}`}>
-                  <Icon className="w-4 h-4" />
+            return (
+              <div
+                key={notification.id}
+                className={`flex items-start gap-3.5 px-4 py-3.5 cursor-pointer transition-colors hover:bg-white/[0.02] ${
+                  !notification.read ? 'bg-white/[0.02]' : ''
+                }`}
+              >
+                {/* Icon */}
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${config.bg}`}>
+                  <Icon className={`w-3.5 h-3.5 ${config.color}`} />
                 </div>
+
+                {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className={`text-sm font-medium ${
-                        !notification.read ? 'text-white/90 font-semibold' : 'text-[#A8B0BD]'
-                      } group-hover:text-[#7C8CFF] transition-colors`}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className={`text-[13px] leading-snug truncate ${
+                        !notification.read ? 'text-white/90 font-medium' : 'text-[#A8B0BD]'
+                      }`}>
                         {notification.title}
-                      </h3>
-                      <p className="text-xs text-[#6B7280] mt-1 line-clamp-2">{notification.description}</p>
+                      </p>
+                      <p className="text-[11px] text-[#5A6070] mt-1 line-clamp-1">
+                        {notification.description}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-xs text-[#5A6070]">{notification.time}</span>
+                    <div className="flex items-center gap-2 flex-shrink-0 pt-0.5">
+                      <span className="text-[11px] text-[#3A3F4B]">{notification.time}</span>
                       {!notification.read && (
-                        <div className="w-2 h-2 rounded-full bg-[#7C8CFF] flex-shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#7C8CFF]" />
                       )}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })
+        )}
       </div>
     </div>
   )

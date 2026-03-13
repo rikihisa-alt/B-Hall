@@ -68,7 +68,7 @@ export default function AssistantPage() {
     <div className="max-w-4xl mx-auto h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/executive" className="p-2 rounded-xl hover:bg-white/[0.05] transition-colors">
+        <Link href="/" className="p-2 rounded-xl hover:bg-white/[0.05] transition-colors">
           <ArrowLeft className="w-5 h-5 text-[#6B7280]" />
         </Link>
         <div className="flex items-center gap-3">

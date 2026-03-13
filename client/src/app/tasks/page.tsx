@@ -1,64 +1,133 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Filter, LayoutGrid, List, Clock } from 'lucide-react'
-import { TaskCard } from '@/components/ui/task-card'
+import { Plus, LayoutGrid, List } from 'lucide-react'
 
 type ViewMode = 'board' | 'list'
+type TaskStatus = 'todo' | 'in_progress' | 'reviewing' | 'done'
 
-const statusColumns = [
-  { key: 'todo', label: '未着手', color: 'bg-gray-400' },
-  { key: 'in_progress', label: '進行中', color: 'bg-blue-500' },
-  { key: 'reviewing', label: '確認待ち', color: 'bg-amber-500' },
-  { key: 'done', label: '完了', color: 'bg-emerald-500' },
-] as const
+interface Task {
+  id: string
+  title: string
+  category: string
+  assignee: string
+  dueDate: string
+  status: TaskStatus
+  overdue?: boolean
+}
 
-const demoTasks = [
-  { id: '1', title: '月次経費レポート作成', assignee: '田中', priority: 'high' as const, dueDate: '3/15', status: 'todo', category: '経理' },
-  { id: '2', title: '新入社員オンボーディング準備', assignee: '佐藤', priority: 'urgent' as const, dueDate: '3/14', status: 'todo', category: '人事' },
-  { id: '3', title: '就業規則改定案のレビュー', assignee: '鈴木', priority: 'medium' as const, dueDate: '3/20', status: 'in_progress', category: '法務' },
-  { id: '4', title: '備品発注リスト確認', assignee: '高橋', priority: 'low' as const, dueDate: '3/18', status: 'in_progress', category: '総務' },
-  { id: '5', title: '3月度請求書発行', assignee: '田中', priority: 'high' as const, dueDate: '3/25', status: 'reviewing', category: '経理' },
-  { id: '6', title: 'NDA契約書最終確認', assignee: '鈴木', priority: 'medium' as const, dueDate: '3/13', status: 'done', category: '法務' },
+const statusConfig: Record<TaskStatus, { label: string; color: string }> = {
+  todo: { label: '未着手', color: '#5A6070' },
+  in_progress: { label: '進行中', color: '#60A5FA' },
+  reviewing: { label: '確認待ち', color: '#F5A524' },
+  done: { label: '完了', color: '#2FBF71' },
+}
+
+const demoTasks: Task[] = [
+  {
+    id: 'T-001',
+    title: '新入社員オンボーディング準備',
+    category: '人事',
+    assignee: '佐藤花子',
+    dueDate: '3/14',
+    status: 'in_progress',
+  },
+  {
+    id: 'T-002',
+    title: '月次経費レポート作成',
+    category: '経理',
+    assignee: '高橋美咲',
+    dueDate: '3/10',
+    status: 'reviewing',
+    overdue: true,
+  },
+  {
+    id: 'T-003',
+    title: 'NDA契約書最終確認',
+    category: '法務',
+    assignee: '鈴木一郎',
+    dueDate: '3/12',
+    status: 'done',
+  },
+  {
+    id: 'T-004',
+    title: '社内研修プログラム企画',
+    category: '人事',
+    assignee: '田中太郎',
+    dueDate: '3/20',
+    status: 'todo',
+  },
+  {
+    id: 'T-005',
+    title: 'オフィス備品発注',
+    category: '総務',
+    assignee: '伊藤恵',
+    dueDate: '3/15',
+    status: 'in_progress',
+  },
+  {
+    id: 'T-006',
+    title: '決算準備チェックリスト',
+    category: '経理',
+    assignee: '高橋美咲',
+    dueDate: '3/31',
+    status: 'todo',
+  },
+  {
+    id: 'T-007',
+    title: '就業規則改定案レビュー',
+    category: '法務',
+    assignee: '鈴木一郎',
+    dueDate: '3/18',
+    status: 'reviewing',
+  },
+  {
+    id: 'T-008',
+    title: '3月度請求書発行',
+    category: '経理',
+    assignee: '高橋美咲',
+    dueDate: '3/25',
+    status: 'todo',
+  },
 ]
+
+const statusOrder: TaskStatus[] = ['todo', 'in_progress', 'reviewing', 'done']
 
 export default function TasksPage() {
   const [view, setView] = useState<ViewMode>('board')
 
   return (
-    <div className="max-w-full mx-auto space-y-6">
+    <div className="max-w-full mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white/90">タスク</h1>
-          <p className="text-sm text-[#A8B0BD] mt-1">全 {demoTasks.length} 件のタスク</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center bg-white/[0.05] border border-white/[0.06] backdrop-blur-xl rounded-xl p-1">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-[20px] font-semibold text-white/90">タスク</h1>
+        <div className="flex items-center gap-2.5">
+          {/* View Toggle */}
+          <div className="flex items-center bg-white/[0.03] border border-white/[0.06] rounded-lg p-0.5">
             <button
               onClick={() => setView('board')}
-              className={`p-2 rounded-lg transition-all ${view === 'board' ? 'bg-white/[0.10] text-[#7C8CFF]' : 'text-[#6B7280] hover:text-[#A8B0BD]'}`}
+              className={`p-1.5 rounded-md transition-all ${
+                view === 'board'
+                  ? 'bg-white/[0.06] text-[#7C8CFF]'
+                  : 'text-[#3A3F4B] hover:text-[#5A6070]'
+              }`}
             >
-              <LayoutGrid className="w-4 h-4" />
+              <LayoutGrid className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setView('list')}
-              className={`p-2 rounded-lg transition-all ${view === 'list' ? 'bg-white/[0.10] text-[#7C8CFF]' : 'text-[#6B7280] hover:text-[#A8B0BD]'}`}
+              className={`p-1.5 rounded-md transition-all ${
+                view === 'list'
+                  ? 'bg-white/[0.06] text-[#7C8CFF]'
+                  : 'text-[#3A3F4B] hover:text-[#5A6070]'
+              }`}
             >
-              <List className="w-4 h-4" />
-            </button>
-            <button
-              className="p-2 rounded-lg text-[#6B7280] hover:text-[#A8B0BD] transition-all"
-            >
-              <Clock className="w-4 h-4" />
+              <List className="w-3.5 h-3.5" />
             </button>
           </div>
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.06] backdrop-blur-xl text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.10] transition-all">
-            <Filter className="w-4 h-4" />
-            フィルタ
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
-            <Plus className="w-4 h-4" />
+
+          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-[12px] text-[#5A6070] hover:text-[#A8B0BD] hover:bg-white/[0.05] transition-all">
+            <Plus className="w-3.5 h-3.5" />
             新規タスク
           </button>
         </div>
@@ -66,19 +135,50 @@ export default function TasksPage() {
 
       {/* Board View */}
       {view === 'board' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-          {statusColumns.map((column) => {
-            const tasks = demoTasks.filter((t) => t.status === column.key)
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          {statusOrder.map((statusKey) => {
+            const config = statusConfig[statusKey]
+            const tasks = demoTasks.filter((t) => t.status === statusKey)
+
             return (
-              <div key={column.key} className="space-y-3">
-                <div className="flex items-center gap-2 px-1">
-                  <div className={`w-2.5 h-2.5 rounded-full ${column.color}`} />
-                  <span className="text-sm font-semibold text-[#F5F7FA]/80">{column.label}</span>
-                  <span className="text-xs text-[#5A6070] font-medium">{tasks.length}</span>
+              <div key={statusKey} className="space-y-2.5">
+                {/* Column Header */}
+                <div className="flex items-center gap-2 px-1 mb-1">
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: config.color }}
+                  />
+                  <span className="text-[12px] font-medium text-[#A8B0BD]">
+                    {config.label}
+                  </span>
+                  <span className="text-[11px] text-[#3A3F4B]">{tasks.length}</span>
                 </div>
-                <div className="space-y-3 min-h-[200px]">
+
+                {/* Task Cards */}
+                <div className="space-y-2 min-h-[120px]">
                   {tasks.map((task) => (
-                    <TaskCard key={task.id} task={task} />
+                    <div
+                      key={task.id}
+                      className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 cursor-pointer hover:bg-white/[0.05] hover:border-white/[0.08] transition-all"
+                    >
+                      <p className="text-[13px] text-white/90 leading-snug mb-2">
+                        {task.title}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] text-[#5A6070]">{task.category}</span>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[11px] ${task.overdue ? 'text-red-400' : 'text-[#3A3F4B]'}`}>
+                            {task.dueDate}
+                          </span>
+                          <div
+                            className="w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center text-[10px] text-[#5A6070] font-medium"
+                            title={task.assignee}
+                          >
+                            {task.assignee.charAt(0)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -89,10 +189,46 @@ export default function TasksPage() {
 
       {/* List View */}
       {view === 'list' && (
-        <div className="bg-white/[0.04] border border-white/[0.06] backdrop-blur-xl rounded-2xl divide-y divide-white/[0.06]">
-          {demoTasks.map((task) => (
-            <TaskCard key={task.id} task={task} variant="list" />
-          ))}
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden divide-y divide-white/[0.06]">
+          {demoTasks.map((task) => {
+            const config = statusConfig[task.status]
+
+            return (
+              <div
+                key={task.id}
+                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/[0.02] transition-colors"
+              >
+                {/* Status Dot */}
+                <div
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: config.color }}
+                />
+
+                {/* Title */}
+                <span className="text-[13px] text-white/90 flex-1 min-w-0 truncate">
+                  {task.title}
+                </span>
+
+                {/* Category */}
+                <span className="text-[11px] text-[#5A6070] w-12 text-right flex-shrink-0">
+                  {task.category}
+                </span>
+
+                {/* Assignee */}
+                <div
+                  className="w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center text-[10px] text-[#5A6070] font-medium flex-shrink-0"
+                  title={task.assignee}
+                >
+                  {task.assignee.charAt(0)}
+                </div>
+
+                {/* Date */}
+                <span className={`text-[11px] w-10 text-right flex-shrink-0 ${task.overdue ? 'text-red-400' : 'text-[#3A3F4B]'}`}>
+                  {task.dueDate}
+                </span>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

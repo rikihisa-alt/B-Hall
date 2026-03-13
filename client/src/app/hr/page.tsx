@@ -1,238 +1,201 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import {
   Users,
-  Plus,
-  Filter,
-  Search,
-  UserCircle,
-  Building2,
-  Calendar,
-  Shield,
-  TrendingUp,
-  TrendingDown,
   UserPlus,
   UserMinus,
-  Clock,
+  UserCheck,
+  FileText,
+  Shield,
+  Heart,
+  Calendar,
+  ArrowRight,
   AlertCircle,
+  Clock,
+  ClipboardList,
 } from 'lucide-react'
 
-interface Employee {
-  id: string
-  name: string
-  department: string
-  position: string
-  joinDate: string
-  employmentType: string
-  status: 'active' | 'leave' | 'probation'
-  avatar: string
-}
+/* ─────────────────────────────────
+   Workspace: 人事・労務
+   3セクション構成:
+     今日の処理 → 入退社・手続き・届出・勤怠
+     管理       → 従業員・組織・契約
+     制度       → 社保・年調・健診・規程
+───────────────────────────────── */
 
-const demoEmployees: Employee[] = [
-  { id: 'EMP-001', name: '田中太郎', department: '開発部', position: 'シニアエンジニア', joinDate: '2022-04-01', employmentType: '正社員', status: 'active', avatar: 'T' },
-  { id: 'EMP-002', name: '佐藤花子', department: '人事部', position: '部長', joinDate: '2020-01-15', employmentType: '正社員', status: 'active', avatar: 'S' },
-  { id: 'EMP-003', name: '鈴木一郎', department: '営業部', position: '課長', joinDate: '2021-07-01', employmentType: '正社員', status: 'active', avatar: 'S' },
-  { id: 'EMP-004', name: '高橋美咲', department: '経理部', position: '担当', joinDate: '2024-04-01', employmentType: '正社員', status: 'probation', avatar: 'T' },
-  { id: 'EMP-005', name: '山田健太', department: '開発部', position: 'エンジニア', joinDate: '2023-10-01', employmentType: '契約社員', status: 'active', avatar: 'Y' },
-  { id: 'EMP-006', name: '伊藤恵', department: '総務部', position: '担当', joinDate: '2022-09-01', employmentType: '正社員', status: 'leave', avatar: 'I' },
-  { id: 'EMP-007', name: '渡辺翔', department: '開発部', position: 'リードエンジニア', joinDate: '2021-04-01', employmentType: '正社員', status: 'active', avatar: 'W' },
-  { id: 'EMP-008', name: '中村優子', department: '法務部', position: '担当', joinDate: '2024-01-15', employmentType: '正社員', status: 'active', avatar: 'N' },
+const todayActions = [
+  {
+    name: '入退社手続き',
+    sub: '佐藤太郎 入社（3/15期限）',
+    icon: UserPlus,
+    gradient: 'from-violet-500 to-violet-600',
+    badge: 2,
+    href: '/hr',
+  },
+  {
+    name: '届出・申請',
+    sub: '社保届出・雇保手続き',
+    icon: FileText,
+    gradient: 'from-blue-500 to-blue-600',
+    badge: 3,
+    href: '/hr',
+  },
+  {
+    name: '勤怠確認',
+    sub: '月次勤怠の確認・承認',
+    icon: Calendar,
+    gradient: 'from-emerald-500 to-emerald-600',
+    badge: 0,
+    href: '/hr',
+  },
+  {
+    name: '異動・評価',
+    sub: '人事異動・昇格管理',
+    icon: UserCheck,
+    gradient: 'from-amber-500 to-amber-600',
+    badge: 1,
+    href: '/hr',
+  },
 ]
 
-const statusConfig = {
-  active: { label: '在籍', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
-  leave: { label: '休職中', color: 'text-[#F5A524] bg-[#F5A524]/10' },
-  probation: { label: '試用期間', color: 'text-[#60A5FA] bg-[#60A5FA]/10' },
-}
-
-const upcomingEvents = [
-  { type: '入社', name: '新入社員2名', date: '2026-04-01', icon: UserPlus, color: 'text-[#2FBF71]' },
-  { type: '契約更新', name: '山田健太', date: '2026-03-31', icon: Calendar, color: 'text-[#F5A524]' },
-  { type: '有休付与', name: '全社員', date: '2026-04-01', icon: Calendar, color: 'text-[#60A5FA]' },
-  { type: '健康診断', name: '対象者15名', date: '2026-04-15', icon: AlertCircle, color: 'text-[#FF5D5D]' },
+const management = [
+  { name: '従業員一覧', sub: '42名 在籍', icon: Users, href: '/hr' },
+  { name: '組織図', sub: '部署・チーム構成', icon: ClipboardList, href: '/hr' },
+  { name: '雇用契約', sub: '契約更新 1件期限近', icon: FileText, href: '/hr' },
 ]
+
+const systems = [
+  { name: '社会保険', sub: '加入・喪失管理', icon: Shield, href: '/hr' },
+  { name: '年末調整', sub: '次回 12月', icon: Calendar, href: '/hr' },
+  { name: '健康診断', sub: '4月実施 未受診5名', icon: Heart, href: '/hr' },
+  { name: '就業規則', sub: 'v3.2 最新', icon: FileText, href: '/hr' },
+]
+
+const alerts = [
+  { text: '佐藤太郎の入社手続き — 3/15 期限', type: 'warning' as const },
+  { text: '年度末健康診断 未受診者 5名', type: 'info' as const },
+  { text: '山田健太 契約更新 3/31 期限', type: 'warning' as const },
+]
+
+function getAlertStyle(type: 'danger' | 'warning' | 'info') {
+  switch (type) {
+    case 'danger': return 'bg-[#FF5D5D]/8 text-[#FF5D5D] border-[#FF5D5D]/15'
+    case 'warning': return 'bg-[#F5A524]/8 text-[#F5A524] border-[#F5A524]/15'
+    case 'info': return 'bg-[#60A5FA]/8 text-[#60A5FA] border-[#60A5FA]/15'
+  }
+}
 
 export default function HRPage() {
-  const [activeTab, setActiveTab] = useState<'employees' | 'events' | 'procedures'>('employees')
-
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="max-w-4xl mx-auto space-y-8 py-2">
+
+      {/* ── Workspace Header ── */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
+          <Users className="w-6 h-6 text-white" />
+        </div>
         <div>
-          <h1 className="text-2xl font-bold text-white/90">人事・労務</h1>
-          <p className="text-sm text-[#5A6070] mt-1">従業員情報・手続き・イベント管理</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
-            <Filter className="w-4 h-4" />
-            フィルタ
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
-            <Plus className="w-4 h-4" />
-            従業員追加
-          </button>
+          <h1 className="text-lg font-bold text-white/90 tracking-tight">人事・労務</h1>
+          <p className="text-[13px] text-[#5A6070]">従業員管理・入退社・社保・手続き</p>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
-              <Users className="w-5 h-5 text-[#7C8CFF]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">総従業員数</p>
-              <p className="text-xl font-bold text-white/90">42名</p>
-            </div>
+      {/* ── Alerts ── */}
+      <div className="space-y-2">
+        {alerts.map((alert, idx) => (
+          <div key={idx} className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-[12px] ${getAlertStyle(alert.type)}`}>
+            {alert.type === 'warning' ? (
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            ) : (
+              <Clock className="w-3.5 h-3.5 shrink-0" />
+            )}
+            <span>{alert.text}</span>
           </div>
-        </div>
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
-              <UserPlus className="w-5 h-5 text-[#2FBF71]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">今月入社</p>
-              <p className="text-xl font-bold text-white/90">2名</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
-              <UserMinus className="w-5 h-5 text-[#FF5D5D]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">今月退社</p>
-              <p className="text-xl font-bold text-white/90">0名</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
-              <Clock className="w-5 h-5 text-[#F5A524]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">手続き未完了</p>
-              <p className="text-xl font-bold text-white/90">3件</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
-        {[
-          { key: 'employees' as const, label: '従業員一覧' },
-          { key: 'events' as const, label: '予定イベント' },
-          { key: 'procedures' as const, label: '手続き管理' },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab.key
-                ? 'bg-white/[0.08] text-white'
-                : 'text-[#5A6070] hover:text-[#A8B0BD]'
-            }`}
-          >
-            {tab.label}
-          </button>
         ))}
       </div>
 
-      {activeTab === 'employees' && (
-        <>
-          {/* Search */}
-          <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl px-4 py-2.5 flex items-center gap-3">
-            <Search className="w-4 h-4 text-[#5A6070]" />
-            <input
-              type="text"
-              placeholder="従業員を検索..."
-              className="flex-1 bg-transparent text-sm text-white outline-none placeholder-[#5A6070]"
-            />
-          </div>
-
-          {/* Employee Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {demoEmployees.map((emp) => {
-              const status = statusConfig[emp.status]
-              return (
-                <div
-                  key={emp.id}
-                  className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7C8CFF] to-[#6366F1] flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-sm">
-                      {emp.avatar}
+      {/* ── 今日の処理 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          今日の処理
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {todayActions.map((action) => {
+            const Icon = action.icon
+            return (
+              <Link key={action.name} href={action.href}>
+                <div className="relative bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold text-white/90 group-hover:text-[#7C8CFF] transition-colors">
-                          {emp.name}
-                        </h3>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium ${status.color}`}>
-                          {status.label}
-                        </span>
-                      </div>
-                      <p className="text-xs text-[#A8B0BD] mt-0.5">{emp.position}</p>
-                      <div className="flex items-center gap-3 mt-2 text-xs text-[#5A6070]">
-                        <span className="flex items-center gap-1">
-                          <Building2 className="w-3 h-3" />
-                          {emp.department}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Shield className="w-3 h-3" />
-                          {emp.employmentType}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {emp.joinDate}
-                        </span>
-                      </div>
-                    </div>
+                    {action.badge > 0 && (
+                      <span className="min-w-[20px] h-[20px] flex items-center justify-center rounded-full bg-[#FF5D5D] text-white text-[10px] font-bold px-1 leading-none ring-2 ring-[#0F1115]">
+                        {action.badge}
+                      </span>
+                    )}
                   </div>
+                  <p className="text-[13px] font-semibold text-white/85 group-hover:text-white transition-colors">{action.name}</p>
+                  <p className="text-[11px] text-[#4B5263] mt-0.5">{action.sub}</p>
                 </div>
-              )
-            })}
-          </div>
-        </>
-      )}
+              </Link>
+            )
+          })}
+        </div>
+      </section>
 
-      {activeTab === 'events' && (
-        <div className="space-y-3">
-          {upcomingEvents.map((event, idx) => (
-            <div key={idx} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer">
-              <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center ${event.color}`}>
-                  <event.icon className="w-5 h-5" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-[#5A6070] font-medium">{event.type}</span>
+      {/* ── 管理 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          管理
+        </p>
+        <div className="space-y-1">
+          {management.map((item) => {
+            const Icon = item.icon
+            return (
+              <Link key={item.name} href={item.href}>
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.05] flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-[#5A6070] group-hover:text-[#7C8CFF] transition-colors" />
                   </div>
-                  <h3 className="text-sm font-semibold text-white/90">{event.name}</h3>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-medium text-[#A8B0BD] group-hover:text-white/90 transition-colors">{item.name}</p>
+                  </div>
+                  <span className="text-[12px] text-[#3A3F4B] group-hover:text-[#5A6070] transition-colors">{item.sub}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#2E323B] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <span className="text-sm text-[#A8B0BD]">{event.date}</span>
-              </div>
-            </div>
-          ))}
+              </Link>
+            )
+          })}
         </div>
-      )}
+      </section>
 
-      {activeTab === 'procedures' && (
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-8 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-white/[0.06] flex items-center justify-center mx-auto mb-4">
-            <Users className="w-8 h-8 text-[#4B5263]" />
-          </div>
-          <h3 className="text-sm font-semibold text-[#A8B0BD] mb-1">手続き管理</h3>
-          <p className="text-xs text-[#5A6070]">社保・雇保・年末調整等の手続き管理はこちらに表示されます</p>
+      {/* ── 制度・法定 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          制度・法定
+        </p>
+        <div className="space-y-1">
+          {systems.map((item) => {
+            const Icon = item.icon
+            return (
+              <Link key={item.name} href={item.href}>
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.05] flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-[#5A6070] group-hover:text-[#7C8CFF] transition-colors" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-medium text-[#A8B0BD] group-hover:text-white/90 transition-colors">{item.name}</p>
+                  </div>
+                  <span className="text-[12px] text-[#3A3F4B] group-hover:text-[#5A6070] transition-colors">{item.sub}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#2E323B] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
+            )
+          })}
         </div>
-      )}
+      </section>
     </div>
   )
 }

@@ -1,180 +1,166 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import {
   Building2,
-  Plus,
-  Filter,
   Package,
-  Laptop,
-  Key,
-  Printer,
-  Mail,
   Monitor,
-  User,
-  Calendar,
-  ChevronRight,
+  ShoppingCart,
+  Wrench,
+  ClipboardList,
+  ArrowLeftRight,
+  Settings,
+  ArrowRight,
   AlertCircle,
+  Clock,
 } from 'lucide-react'
 
-type AssetCategory = 'equipment' | 'device' | 'account' | 'facility' | 'supply'
-type AssetStatus = 'active' | 'returning' | 'maintenance' | 'disposed'
+/* ─────────────────────────────────
+   Workspace: 総務
+   3セクション構成:
+     今日の処理 → 備品・貸出・発注・修理
+     管理       → 備品台帳・貸出一覧・設備管理
+     アラート   → トナー残量・新入社員備品
+───────────────────────────────── */
 
-interface Asset {
-  id: string
-  name: string
-  category: AssetCategory
-  status: AssetStatus
-  assignee: string
-  department: string
-  assignedDate: string
-  note?: string
-}
-
-const categoryConfig: Record<AssetCategory, { label: string; icon: typeof Package; color: string }> = {
-  equipment: { label: '備品', icon: Package, color: 'from-blue-500 to-blue-600' },
-  device: { label: '端末・PC', icon: Laptop, color: 'from-violet-500 to-violet-600' },
-  account: { label: 'アカウント', icon: Key, color: 'from-emerald-500 to-emerald-600' },
-  facility: { label: '設備', icon: Monitor, color: 'from-amber-500 to-amber-600' },
-  supply: { label: '消耗品', icon: Printer, color: 'from-gray-500 to-gray-600' },
-}
-
-const statusConfig: Record<AssetStatus, { label: string; color: string }> = {
-  active: { label: '使用中', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
-  returning: { label: '返却予定', color: 'text-[#F5A524] bg-[#F5A524]/10' },
-  maintenance: { label: 'メンテナンス中', color: 'text-[#60A5FA] bg-[#60A5FA]/10' },
-  disposed: { label: '廃棄済', color: 'text-[#6B7280] bg-white/[0.04]' },
-}
-
-const demoAssets: Asset[] = [
-  { id: 'AST-001', name: 'MacBook Pro 14" M3', category: 'device', status: 'active', assignee: '田中太郎', department: '開発部', assignedDate: '2025-04-01' },
-  { id: 'AST-002', name: 'Dell 27" 4Kモニター', category: 'equipment', status: 'active', assignee: '佐藤花子', department: '営業部', assignedDate: '2025-06-15' },
-  { id: 'AST-003', name: 'Slack Business+', category: 'account', status: 'active', assignee: '全社員', department: '全社', assignedDate: '2025-01-01' },
-  { id: 'AST-004', name: 'セキュリティカード #047', category: 'equipment', status: 'returning', assignee: '山田健太', department: '開発部', assignedDate: '2024-10-01', note: '3/15 退社予定' },
-  { id: 'AST-005', name: 'iPhone 16 Pro', category: 'device', status: 'active', assignee: '鈴木一郎', department: '営業部', assignedDate: '2025-09-20' },
-  { id: 'AST-006', name: 'キヤノン複合機 MF750', category: 'facility', status: 'maintenance', assignee: '3F共有', department: '総務部', assignedDate: '2024-01-10', note: 'トナー交換中' },
-  { id: 'AST-007', name: 'Adobe Creative Cloud', category: 'account', status: 'active', assignee: 'デザインチーム', department: '開発部', assignedDate: '2025-03-01' },
-  { id: 'AST-008', name: 'エルゴヒューマン チェア', category: 'equipment', status: 'disposed', assignee: '-', department: '総務部', assignedDate: '2021-04-01', note: '2026-02-28 廃棄' },
+const todayActions = [
+  {
+    name: '備品管理',
+    sub: '備品の在庫確認・登録',
+    icon: Package,
+    gradient: 'from-sky-500 to-sky-600',
+    badge: 2,
+    href: '/general-affairs',
+  },
+  {
+    name: '貸出管理',
+    sub: '端末・備品の貸出・返却',
+    icon: Monitor,
+    gradient: 'from-violet-500 to-violet-600',
+    badge: 1,
+    href: '/general-affairs',
+  },
+  {
+    name: '発注処理',
+    sub: '購買申請・発注の確認',
+    icon: ShoppingCart,
+    gradient: 'from-amber-500 to-amber-600',
+    badge: 4,
+    href: '/general-affairs',
+  },
+  {
+    name: '修理・メンテ',
+    sub: '設備の修理・点検依頼',
+    icon: Wrench,
+    gradient: 'from-rose-500 to-rose-600',
+    badge: 2,
+    href: '/general-affairs',
+  },
 ]
 
-const summaryStats = [
-  { label: '管理資産', value: '234', icon: Package, color: 'text-[#60A5FA]' },
-  { label: '端末・PC', value: '48', icon: Laptop, color: 'text-[#7C8CFF]' },
-  { label: 'アカウント', value: '15', icon: Key, color: 'text-[#2FBF71]' },
-  { label: '返却・要対応', value: '3', icon: AlertCircle, color: 'text-[#F5A524]' },
+const management = [
+  { name: '備品台帳', sub: '156件', icon: ClipboardList, href: '/general-affairs' },
+  { name: '貸出一覧', sub: '23件貸出中', icon: ArrowLeftRight, href: '/general-affairs' },
+  { name: '設備管理', sub: 'オフィス設備・保守', icon: Settings, href: '/general-affairs' },
 ]
+
+const alerts = [
+  { text: 'プリンタートナー残量低下', type: 'warning' as const },
+  { text: '新入社員用備品セット発注済', type: 'info' as const },
+]
+
+function getAlertStyle(type: 'danger' | 'warning' | 'info') {
+  switch (type) {
+    case 'danger': return 'bg-[#FF5D5D]/8 text-[#FF5D5D] border-[#FF5D5D]/15'
+    case 'warning': return 'bg-[#F5A524]/8 text-[#F5A524] border-[#F5A524]/15'
+    case 'info': return 'bg-[#60A5FA]/8 text-[#60A5FA] border-[#60A5FA]/15'
+  }
+}
 
 export default function GeneralAffairsPage() {
-  const [activeTab, setActiveTab] = useState<'all' | 'device' | 'account'>('all')
-
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white/90">総務</h1>
-          <p className="text-sm text-[#5A6070] mt-1">備品・貸与物・アカウント管理</p>
+    <div className="max-w-4xl mx-auto space-y-8 py-2">
+
+      {/* ── Workspace Header ── */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
+          <Building2 className="w-6 h-6 text-white" />
         </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
-            <Filter className="w-4 h-4" />
-            フィルタ
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
-            <Plus className="w-4 h-4" />
-            新規登録
-          </button>
+        <div>
+          <h1 className="text-lg font-bold text-white/90 tracking-tight">総務</h1>
+          <p className="text-[13px] text-[#5A6070]">備品・設備・庶務・オフィス管理</p>
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {summaryStats.map((stat) => (
-          <div key={stat.label} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
-            <div className={`w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center mb-3`}>
-              <stat.icon className={`w-5 h-5 ${stat.color}`} />
-            </div>
-            <p className="text-xs text-[#5A6070]">{stat.label}</p>
-            <p className="text-2xl font-bold text-white/90 mt-0.5">{stat.value}</p>
+      {/* ── Alerts ── */}
+      <div className="space-y-2">
+        {alerts.map((alert, idx) => (
+          <div key={idx} className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-[12px] ${getAlertStyle(alert.type)}`}>
+            {alert.type === 'warning' ? (
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            ) : (
+              <Clock className="w-3.5 h-3.5 shrink-0" />
+            )}
+            <span>{alert.text}</span>
           </div>
         ))}
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
-        {[
-          { key: 'all' as const, label: '全て' },
-          { key: 'device' as const, label: '端末・PC' },
-          { key: 'account' as const, label: 'アカウント' },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab.key
-                ? 'bg-white/[0.08] text-white'
-                : 'text-[#5A6070] hover:text-[#A8B0BD]'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Asset List */}
-      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.04]">
-        {demoAssets
-          .filter(a => {
-            if (activeTab === 'device') return a.category === 'device'
-            if (activeTab === 'account') return a.category === 'account'
-            return true
-          })
-          .map((asset) => {
-            const cat = categoryConfig[asset.category]
-            const status = statusConfig[asset.status]
-            const CatIcon = cat.icon
+      {/* ── 今日の処理 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          今日の処理
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {todayActions.map((action) => {
+            const Icon = action.icon
             return (
-              <div
-                key={asset.id}
-                className="px-5 py-4 hover:bg-white/[0.03] transition-all cursor-pointer group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
-                      <CatIcon className="w-5 h-5 text-white" />
+              <Link key={action.name} href={action.href}>
+                <div className="relative bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-xs text-[#4B5263] font-mono">{asset.id}</span>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium ${status.color}`}>
-                          {status.label}
-                        </span>
-                      </div>
-                      <h4 className="text-sm font-semibold text-white/90 group-hover:text-[#7C8CFF] transition-colors">
-                        {asset.name}
-                      </h4>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-[#5A6070]">
-                        <span className="flex items-center gap-1">
-                          <User className="w-3 h-3" />
-                          {asset.assignee}
-                        </span>
-                        <span>{asset.department}</span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {asset.assignedDate}
-                        </span>
-                        {asset.note && (
-                          <span className="text-[#F5A524]">{asset.note}</span>
-                        )}
-                      </div>
-                    </div>
+                    {action.badge > 0 && (
+                      <span className="min-w-[20px] h-[20px] flex items-center justify-center rounded-full bg-[#FF5D5D] text-white text-[10px] font-bold px-1 leading-none ring-2 ring-[#0F1115]">
+                        {action.badge}
+                      </span>
+                    )}
                   </div>
-                  <ChevronRight className="w-4 h-4 text-[#4B5263] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <p className="text-[13px] font-semibold text-white/85 group-hover:text-white transition-colors">{action.name}</p>
+                  <p className="text-[11px] text-[#4B5263] mt-0.5">{action.sub}</p>
                 </div>
-              </div>
+              </Link>
             )
           })}
-      </div>
+        </div>
+      </section>
+
+      {/* ── 管理 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          管理
+        </p>
+        <div className="space-y-1">
+          {management.map((item) => {
+            const Icon = item.icon
+            return (
+              <Link key={item.name} href={item.href}>
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.05] flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-[#5A6070] group-hover:text-[#7C8CFF] transition-colors" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-medium text-[#A8B0BD] group-hover:text-white/90 transition-colors">{item.name}</p>
+                  </div>
+                  <span className="text-[12px] text-[#3A3F4B] group-hover:text-[#5A6070] transition-colors">{item.sub}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#2E323B] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
     </div>
   )
 }

@@ -1,287 +1,212 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import {
   Stamp,
-  Plus,
-  Filter,
   Clock,
+  Plus,
+  RotateCcw,
   CheckCircle2,
-  XCircle,
   ArrowRight,
-  TrendingUp,
-  AlertTriangle,
+  AlertCircle,
+  Search,
+  GitBranch,
   FileText,
-  Banknote,
 } from 'lucide-react'
 
-type RingiStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'executing'
+/* ─────────────────────────────────
+   Workspace: 稟議
+   3セクション構成:
+     今日の処理 → 承認待ち・新規起票・差戻し対応・決裁済確認
+     管理       → 稟議一覧・承認ルート設定・テンプレート
+     最近の稟議 → 直近3件のステータス付きリスト
+───────────────────────────────── */
 
-interface Ringi {
-  id: string
-  title: string
-  purpose: string
-  amount: string
-  applicant: string
-  department: string
-  date: string
-  status: RingiStatus
-  approvers: { name: string; status: 'approved' | 'pending' | 'rejected' }[]
-  priority: 'high' | 'medium' | 'low'
-}
-
-const statusConfig: Record<RingiStatus, { label: string; color: string }> = {
-  draft: { label: '下書き', color: 'text-[#6B7280] bg-white/[0.06]' },
-  pending: { label: '決裁待ち', color: 'text-[#F5A524] bg-[#F5A524]/10' },
-  approved: { label: '決裁済み', color: 'text-[#2FBF71] bg-[#2FBF71]/10' },
-  rejected: { label: '差戻し', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10' },
-  executing: { label: '実行中', color: 'text-[#7C8CFF] bg-[#7C8CFF]/10' },
-}
-
-const priorityConfig = {
-  high: { label: '高', color: 'text-[#FF5D5D] bg-[#FF5D5D]/10' },
-  medium: { label: '中', color: 'text-[#F5A524] bg-[#F5A524]/10' },
-  low: { label: '低', color: 'text-[#6B7280] bg-white/[0.06]' },
-}
-
-const demoRingis: Ringi[] = [
+const todayActions = [
   {
-    id: 'RNG-2026-001',
-    title: 'クラウドサービス導入（年間契約）',
-    purpose: '業務効率化のためSaaS導入。月間工数20%削減見込み。',
-    amount: '¥3,600,000',
-    applicant: '佐藤太郎',
-    department: '情報システム部',
-    date: '2026-03-12',
-    status: 'pending',
-    approvers: [
-      { name: '高橋課長', status: 'approved' },
-      { name: '田中部長', status: 'pending' },
-      { name: '代表取締役', status: 'pending' },
-    ],
-    priority: 'high',
+    name: '承認待ち',
+    sub: '未決裁の稟議を確認',
+    icon: Clock,
+    gradient: 'from-amber-500 to-amber-600',
+    badge: 1,
+    href: '/ringi',
   },
   {
-    id: 'RNG-2026-002',
-    title: 'オフィス移転プロジェクト',
-    purpose: '人員増加に伴うオフィス拡張。現在のスペースでは2026年Q3に限界。',
-    amount: '¥15,000,000',
-    applicant: '山田花子',
-    department: '総務部',
-    date: '2026-03-10',
-    status: 'pending',
-    approvers: [
-      { name: '佐藤部長', status: 'approved' },
-      { name: '取締役会', status: 'pending' },
-    ],
-    priority: 'high',
+    name: '新規起票',
+    sub: '稟議書を作成する',
+    icon: Plus,
+    gradient: 'from-indigo-500 to-indigo-600',
+    badge: 0,
+    href: '/ringi',
   },
   {
-    id: 'RNG-2026-003',
-    title: '新規採用枠追加（エンジニア3名）',
-    purpose: '開発体制強化。現在のリソースではQ2のロードマップ達成が困難。',
-    amount: '¥18,000,000',
-    applicant: '鈴木一郎',
-    department: '開発部',
-    date: '2026-03-08',
-    status: 'approved',
-    approvers: [
-      { name: '高橋CTO', status: 'approved' },
-      { name: '代表取締役', status: 'approved' },
-    ],
-    priority: 'high',
+    name: '差戻し対応',
+    sub: '修正が必要な稟議',
+    icon: RotateCcw,
+    gradient: 'from-rose-500 to-rose-600',
+    badge: 1,
+    href: '/ringi',
   },
   {
-    id: 'RNG-2026-004',
-    title: '社内研修プログラム導入',
-    purpose: 'マネジメント研修を全管理職に実施。離職率改善目標5%。',
-    amount: '¥1,200,000',
-    applicant: '伊藤健太',
-    department: '人事部',
-    date: '2026-03-05',
-    status: 'executing',
-    approvers: [
-      { name: '佐藤部長', status: 'approved' },
-      { name: '代表取締役', status: 'approved' },
-    ],
-    priority: 'medium',
-  },
-  {
-    id: 'RNG-2026-005',
-    title: '営業車両リース契約更新',
-    purpose: '現行リース満了に伴う更新。EV車両への切り替えを提案。',
-    amount: '¥4,800,000',
-    applicant: '渡辺美咲',
-    department: '営業部',
-    date: '2026-03-03',
-    status: 'rejected',
-    approvers: [
-      { name: '田中部長', status: 'rejected' },
-    ],
-    priority: 'low',
+    name: '決裁済確認',
+    sub: '決裁完了の稟議を確認',
+    icon: CheckCircle2,
+    gradient: 'from-emerald-500 to-emerald-600',
+    badge: 0,
+    href: '/ringi',
   },
 ]
 
+const management = [
+  { name: '稟議一覧', sub: '全件検索', icon: Search, href: '/ringi' },
+  { name: '承認ルート設定', sub: '決裁フロー管理', icon: GitBranch, href: '/ringi' },
+  { name: 'テンプレート', sub: '稟議書ひな形', icon: FileText, href: '/ringi' },
+]
+
+const recentRingis = [
+  {
+    title: '社内研修プログラム導入',
+    amount: '¥800,000',
+    status: '決裁済',
+    statusColor: 'text-[#2FBF71] bg-[#2FBF71]/10',
+  },
+  {
+    title: 'オフィス移転費用',
+    amount: '¥5,200,000',
+    status: '承認待ち',
+    statusColor: 'text-[#F5A524] bg-[#F5A524]/10',
+  },
+  {
+    title: 'マーケティングツール導入',
+    amount: '¥360,000',
+    status: '差戻し',
+    statusColor: 'text-[#FF5D5D] bg-[#FF5D5D]/10',
+  },
+]
+
+const alerts = [
+  { text: 'オフィス移転費用 ¥5,200,000 — 承認待ち', type: 'warning' as const },
+  { text: 'マーケティングツール導入 — 差戻し・修正が必要', type: 'danger' as const },
+]
+
+function getAlertStyle(type: 'danger' | 'warning' | 'info') {
+  switch (type) {
+    case 'danger': return 'bg-[#FF5D5D]/8 text-[#FF5D5D] border-[#FF5D5D]/15'
+    case 'warning': return 'bg-[#F5A524]/8 text-[#F5A524] border-[#F5A524]/15'
+    case 'info': return 'bg-[#60A5FA]/8 text-[#60A5FA] border-[#60A5FA]/15'
+  }
+}
+
 export default function RingiPage() {
-  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved'>('all')
-
-  const pendingCount = demoRingis.filter(r => r.status === 'pending').length
-  const totalAmount = '¥42,600,000'
-
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="max-w-4xl mx-auto space-y-8 py-2">
+
+      {/* ── Workspace Header ── */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+          <Stamp className="w-6 h-6 text-white" />
+        </div>
         <div>
-          <h1 className="text-2xl font-bold text-white/90">稟議</h1>
-          <p className="text-sm text-[#6B7280] mt-1">
-            決裁待ちが <span className="text-[#F5A524] font-semibold">{pendingCount}件</span> あります
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-[#A8B0BD] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
-            <Filter className="w-4 h-4" />
-            フィルタ
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8D9BFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
-            <Plus className="w-4 h-4" />
-            新規稟議
-          </button>
+          <h1 className="text-lg font-bold text-white/90 tracking-tight">稟議</h1>
+          <p className="text-[13px] text-[#5A6070]">決裁プロセス管理</p>
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#F5A524]/10 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-[#F5A524]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">決裁待ち</p>
-              <p className="text-xl font-bold text-[#F5F7FA]">{pendingCount}件</p>
-            </div>
+      {/* ── Alerts ── */}
+      <div className="space-y-2">
+        {alerts.map((alert, idx) => (
+          <div key={idx} className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-[12px] ${getAlertStyle(alert.type)}`}>
+            {alert.type === 'danger' ? (
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            ) : (
+              <Clock className="w-3.5 h-3.5 shrink-0" />
+            )}
+            <span>{alert.text}</span>
           </div>
-        </div>
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#7C8CFF]/10 flex items-center justify-center">
-              <Banknote className="w-5 h-5 text-[#7C8CFF]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">今月の稟議総額</p>
-              <p className="text-xl font-bold text-[#F5F7FA]">{totalAmount}</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#2FBF71]/10 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-[#2FBF71]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#5A6070]">今月承認率</p>
-              <p className="text-xl font-bold text-[#F5F7FA]">75%</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 w-fit">
-        {[
-          { key: 'all' as const, label: '全て' },
-          { key: 'pending' as const, label: '決裁待ち' },
-          { key: 'approved' as const, label: '決裁済み' },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab.key
-                ? 'bg-white/[0.08] text-white'
-                : 'text-[#6B7280] hover:text-[#A8B0BD]'
-            }`}
-          >
-            {tab.label}
-          </button>
         ))}
       </div>
 
-      {/* Ringi Cards */}
-      <div className="space-y-4">
-        {demoRingis.map((ringi) => {
-          const status = statusConfig[ringi.status]
-          const priority = priorityConfig[ringi.priority]
-
-          return (
-            <div
-              key={ringi.id}
-              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <Stamp className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs text-[#5A6070] font-mono">{ringi.id}</span>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium ${priority.color}`}>
-                        {priority.label}
+      {/* ── 今日の処理 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          今日の処理
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {todayActions.map((action) => {
+            const Icon = action.icon
+            return (
+              <Link key={action.name} href={action.href}>
+                <div className="relative bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer group">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                    {action.badge > 0 && (
+                      <span className="min-w-[20px] h-[20px] flex items-center justify-center rounded-full bg-[#FF5D5D] text-white text-[10px] font-bold px-1 leading-none ring-2 ring-[#0F1115]">
+                        {action.badge}
                       </span>
-                    </div>
-                    <h3 className="text-sm font-semibold text-[#F5F7FA] group-hover:text-[#7C8CFF] transition-colors">
-                      {ringi.title}
-                    </h3>
-                    <p className="text-xs text-[#5A6070] mt-1 line-clamp-1">{ringi.purpose}</p>
+                    )}
                   </div>
+                  <p className="text-[13px] font-semibold text-white/85 group-hover:text-white transition-colors">{action.name}</p>
+                  <p className="text-[11px] text-[#4B5263] mt-0.5">{action.sub}</p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-[#A8B0BD]">{ringi.amount}</span>
-                  <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium ${status.color}`}>
-                    {status.label}
-                  </span>
-                </div>
-              </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
 
-              {/* Approval Flow */}
-              <div className="flex items-center gap-2 ml-15 pl-15">
-                <span className="text-xs text-[#5A6070] mr-2">承認フロー:</span>
-                {ringi.approvers.map((approver, idx) => (
-                  <div key={idx} className="flex items-center gap-1">
-                    {idx > 0 && <ArrowRight className="w-3 h-3 text-[#4B5263] mx-1" />}
-                    <div className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-xs ${
-                      approver.status === 'approved'
-                        ? 'bg-[#2FBF71]/10 text-[#2FBF71]'
-                        : approver.status === 'rejected'
-                        ? 'bg-[#FF5D5D]/10 text-[#FF5D5D]'
-                        : 'bg-white/[0.06] text-[#6B7280]'
-                    }`}>
-                      {approver.status === 'approved' && <CheckCircle2 className="w-3 h-3" />}
-                      {approver.status === 'rejected' && <XCircle className="w-3 h-3" />}
-                      {approver.status === 'pending' && <Clock className="w-3 h-3" />}
-                      {approver.name}
-                    </div>
+      {/* ── 管理 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          管理
+        </p>
+        <div className="space-y-1">
+          {management.map((item) => {
+            const Icon = item.icon
+            return (
+              <Link key={item.name} href={item.href}>
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.05] flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-[#5A6070] group-hover:text-[#7C8CFF] transition-colors" />
                   </div>
-                ))}
-              </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-medium text-[#A8B0BD] group-hover:text-white/90 transition-colors">{item.name}</p>
+                  </div>
+                  <span className="text-[12px] text-[#3A3F4B] group-hover:text-[#5A6070] transition-colors">{item.sub}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#2E323B] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
 
-              <div className="flex items-center gap-3 mt-3 text-xs text-[#5A6070] ml-15 pl-15">
-                <span>申請者: {ringi.applicant}</span>
-                <span>{ringi.department}</span>
-                <span>{ringi.date}</span>
-                {ringi.status === 'executing' && (
-                  <span className="flex items-center gap-1 text-[#7C8CFF]">
-                    <FileText className="w-3 h-3" />
-                    実行タスクあり
-                  </span>
-                )}
+      {/* ── 最近の稟議 ── */}
+      <section>
+        <p className="text-[10px] font-semibold text-[#3A3F4B] uppercase tracking-[0.1em] px-1 mb-3">
+          最近の稟議
+        </p>
+        <div className="space-y-1">
+          {recentRingis.map((ringi) => (
+            <Link key={ringi.title} href="/ringi">
+              <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.05] flex items-center justify-center shrink-0">
+                  <Stamp className="w-4 h-4 text-[#5A6070] group-hover:text-[#7C8CFF] transition-colors" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-medium text-[#A8B0BD] group-hover:text-white/90 transition-colors">{ringi.title}</p>
+                </div>
+                <span className="text-[12px] text-[#3A3F4B] group-hover:text-[#5A6070] transition-colors mr-2">{ringi.amount}</span>
+                <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium ${ringi.statusColor}`}>
+                  {ringi.status}
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#2E323B] opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-            </div>
-          )
-        })}
-      </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }
