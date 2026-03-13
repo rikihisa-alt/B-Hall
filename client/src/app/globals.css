@@ -1,194 +1,56 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────────────
-   B-Hall Design System v1.0
-   Workspace OS / Quiet Premium / Dark Glass
-   ───────────────────────────────────────────────── */
+/* ─────────────────────────────────
+   B-Hall v2 — Company Workspace OS
+   Design: Mac app / Large / Airy
+   ───────────────────────────────── */
 
 @theme {
-  /* ── Background ── */
-  --color-bg: #0F1115;
-  --color-bg-elevated: #161920;
-  --color-bg-subtle: #1A1D25;
+  --color-bg: #0A0A0C;
+  --color-surface: #111114;
+  --color-surface-2: #18181C;
+  --color-surface-3: #1F1F24;
 
-  /* ── Surface (glass layers) ── */
-  --color-surface: rgba(255, 255, 255, 0.05);
-  --color-surface-strong: rgba(255, 255, 255, 0.08);
-  --color-surface-hover: rgba(255, 255, 255, 0.10);
-  --color-surface-active: rgba(255, 255, 255, 0.12);
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
 
-  /* ── Border ── */
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.14);
-  --color-border-hover: rgba(255, 255, 255, 0.20);
+  --color-accent: #6E7BF7;
+  --color-accent-soft: rgba(110, 123, 247, 0.12);
 
-  /* ── Brand ── */
-  --color-primary: #7C8CFF;
-  --color-primary-soft: rgba(124, 140, 255, 0.15);
-  --color-primary-hover: #929FFF;
-  --color-primary-muted: rgba(124, 140, 255, 0.08);
+  --color-text-1: #ECECEF;
+  --color-text-2: #8E8E96;
+  --color-text-3: #4E4E56;
 
-  /* ── Semantic ── */
-  --color-success: #2FBF71;
-  --color-success-soft: rgba(47, 191, 113, 0.12);
-  --color-warning: #F5A524;
-  --color-warning-soft: rgba(245, 165, 36, 0.12);
-  --color-danger: #FF5D5D;
-  --color-danger-soft: rgba(255, 93, 93, 0.12);
-  --color-info: #60A5FA;
-  --color-info-soft: rgba(96, 165, 250, 0.12);
+  --color-red: #E55A5A;
+  --color-amber: #D4993D;
+  --color-green: #3CB06C;
+  --color-blue: #4A9FE8;
 
-  /* ── Text ── */
-  --color-text-primary: #F5F7FA;
-  --color-text-secondary: #A8B0BD;
-  --color-text-muted: #6B7280;
-  --color-text-faint: #4B5263;
-
-  /* ── Radius ── */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
-
-  /* ── Font ── */
-  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "SF Mono", monospace;
 }
 
-/* ─── Base ─── */
 body {
   font-family: var(--font-sans);
   background: var(--color-bg);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124, 140, 255, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(47, 191, 113, 0.03) 0%, transparent 50%);
-  min-height: 100vh;
-  color: var(--color-text-primary);
+  color: var(--color-text-1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.011em;
+  letter-spacing: -0.02em;
 }
 
-/* ─── Glass Surfaces ─── */
-.glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.2s ease;
-}
-.glass:hover {
-  border-color: rgba(255, 255, 255, 0.10);
-}
-
-.glass-subtle {
-  background: rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: all 0.2s ease;
-}
-
-.glass-strong {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  transition: all 0.2s ease;
-}
-
-/* ─── Scrollbar ─── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 99px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-/* ─── Selection ─── */
 ::selection {
-  background: rgba(124, 140, 255, 0.3);
-  color: #F5F7FA;
+  background: rgba(110, 123, 247, 0.3);
 }
 
-/* ─── Focus ─── */
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
+
+/* focus */
 *:focus-visible {
-  outline: 2px solid rgba(124, 140, 255, 0.5);
+  outline: 2px solid rgba(110, 123, 247, 0.4);
   outline-offset: 2px;
-  border-radius: 8px;
-}
-
-/* ─── Tile Glow ─── */
-.tile-glow {
-  position: relative;
-  overflow: hidden;
-}
-.tile-glow::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 0%,
-    rgba(124, 140, 255, 0.06) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-.tile-glow:hover::before {
-  opacity: 1;
-}
-
-/* ─── Utility: Soft Button ─── */
-.btn-soft {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 500;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--color-text-secondary);
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-.btn-soft:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: var(--color-text-primary);
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 500;
-  background: var(--color-primary);
-  color: #0F1115;
-  border: none;
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-.btn-primary:hover {
-  background: var(--color-primary-hover);
-  box-shadow: 0 0 20px rgba(124, 140, 255, 0.2);
-}
-.btn-primary:active {
-  transform: scale(0.97);
 }
