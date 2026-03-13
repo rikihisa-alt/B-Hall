@@ -391,3 +391,92 @@ Mac / iOSアプリのような静かな高級感。
 「この書類どこだっけ」が、永遠に起きない状態。
 
 それがB-Hallだ。
+
+---
+
+## 技術スタック（実装時に従え）
+
+| レイヤー | 技術 |
+|---------|------|
+| フロントエンド | React + TypeScript + Vite |
+| スタイリング | Tailwind CSS（@tailwindcss/postcss） |
+| 状態管理 | Zustand or TanStack Query |
+| ルーティング | React Router v7 |
+| バックエンド | Node.js + Express + TypeScript |
+| ORM | Prisma |
+| DB | PostgreSQL |
+| 認証 | JWT + bcrypt |
+| ファイルストレージ | S3互換 |
+| リアルタイム | WebSocket |
+| デプロイ | Vercel（フロント）+ Railway/Render（API） |
+
+---
+
+## コード品質の制約
+
+### ディレクトリ構造
+
+```
+client/src/
+  components/ui/       基本UIコンポーネント
+  components/layout/   レイアウト
+  features/            モジュール別（M01〜M13）
+  hooks/               カスタムフック
+  lib/                 ユーティリティ
+  stores/              状態管理
+  types/               型定義
+
+server/src/
+  modules/             モジュール別
+  common/middleware/    認証・テナント分離・ログ
+  common/guards/       権限チェック
+  database/            DB設定
+  events/              イベント駆動基盤
+```
+
+### コーディングルール
+
+1. **型安全**: `any` 禁止。すべてに型を付ける
+2. **テナント分離**: すべてのDB操作に `tenant_id` フィルタ
+3. **監査カラム**: 全テーブルに `created_at, updated_at, created_by, updated_by, deleted_at`
+4. **ソフトデリート**: 物理削除は原則禁止
+5. **イベント駆動**: 業務イベント発生時はイベントバスを通じて処理
+6. **コンポーネント設計**: 1コンポーネント1責務。200行超えたら分割を検討
+
+### UI実装のルール
+
+1. **カラー**: Tailwindのカスタムパレットを使用。ハードコードしない
+2. **スペーシング**: 4pxの倍数のみ使用
+3. **角丸**: カード12px、ボタン8px、バッジpill
+4. **ガラス効果**: `backdrop-blur-xl bg-white/72` をサイドバー・モーダルに
+5. **ローディング**: スケルトンスクリーン（スピナー禁止）
+6. **空状態**: 必ずデザイン。次のアクションを案内
+7. **レスポンシブ**: モバイルファーストで設計
+
+---
+
+## 仕様書への参照
+
+詳細な仕様は `docs/requirements/` 以下を参照せよ。
+
+| ファイル | 内容 |
+|---------|------|
+| product-overview.md | プロダクト概要 |
+| information-architecture.md | 情報アーキテクチャ |
+| domain-model.md | ドメインモデル・エンティティ設計 |
+| roles-and-permissions.md | ロール・権限設計 |
+| workflow-engine-spec.md | ワークフローエンジン仕様 |
+| task-system-spec.md | タスクシステム仕様 |
+| hr-labor-spec.md | 人事・労務仕様 |
+| accounting-finance-spec.md | 経理・財務仕様 |
+| approvals-and-ringi-spec.md | 申請・承認・稟議仕様 |
+| reporting-and-improvement-spec.md | 報告・改善仕様 |
+| document-management-spec.md | 文書管理仕様 |
+| dashboard-spec.md | ダッシュボード仕様 |
+| notification-spec.md | 通知・期限管理仕様 |
+| ui-ux-principles.md | UI/UX設計原則 |
+| design-system-spec.md | デザインシステム仕様 |
+| audit-and-security-spec.md | 監査・セキュリティ仕様 |
+| multitenancy-spec.md | マルチテナント仕様 |
+| customization-spec.md | カスタマイズ仕様 |
+| implementation-roadmap.md | 実装ロードマップ |
