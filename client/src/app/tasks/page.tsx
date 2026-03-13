@@ -1,10 +1,12 @@
 'use client'
 
+import { motion } from 'framer-motion'
+
 const statusColors: Record<string, string> = {
-  '未着手': '#4E4E56',
-  '進行中': '#4A9FE8',
-  '確認待ち': '#D4993D',
-  '完了': '#3CB06C',
+  '未着手': '#94A3B8',
+  '進行中': '#0284C7',
+  '確認待ち': '#D97706',
+  '完了': '#059669',
 }
 
 const tasks = [
@@ -16,39 +18,68 @@ const tasks = [
   { title: '決算準備チェックリスト', status: '未着手', category: '経理', assignee: '高橋美咲', date: '3/31' },
 ]
 
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.06,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 260, damping: 28 },
+  },
+}
+
 export default function TasksPage() {
   return (
-    <div className="max-w-2xl mx-auto px-8 py-12">
-      <div className="mb-8">
-        <h1 className="text-[24px] font-bold text-[#ECECEF]">タスク</h1>
-        <p className="text-[14px] text-[#4E4E56] mt-1">6件のタスク</p>
-      </div>
+    <div className="max-w-[720px] mx-auto px-10 py-14">
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+      >
+        <h1 className="text-[24px] font-bold text-[#1E293B]">タスク</h1>
+        <p className="text-[14px] text-[#94A3B8] font-medium mt-1">6件のタスク</p>
+      </motion.div>
 
-      <div className="rounded-xl border border-white/[0.04] bg-[#111114] overflow-hidden divide-y divide-white/[0.04]">
+      <motion.div
+        className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[#F1F5F9]"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
         {tasks.map((task, i) => (
-          <div
+          <motion.div
             key={i}
-            className="flex items-center gap-3 px-4 py-3 hover:bg-white/[0.02] transition-colors cursor-pointer"
+            variants={itemVariants}
+            className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#FAFBFC] transition-colors cursor-pointer"
           >
             <div
-              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              className="w-2 h-2 rounded-full flex-shrink-0"
               style={{ backgroundColor: statusColors[task.status] }}
             />
-            <span className="text-[14px] text-[#ECECEF] flex-1 min-w-0 truncate">
+            <span className="text-[15px] font-semibold text-[#1E293B] flex-1 min-w-0 truncate">
               {task.title}
             </span>
-            <span className="text-[12px] text-[#3A3A42] flex-shrink-0">
+            <span className="text-[13px] text-[#94A3B8] font-medium flex-shrink-0">
               {task.category}
             </span>
-            <span className="text-[12px] text-[#4E4E56] flex-shrink-0">
+            <span className="text-[13px] text-[#64748B] font-medium flex-shrink-0">
               {task.assignee}
             </span>
-            <span className="text-[12px] text-[#3A3A42] tabular-nums flex-shrink-0">
+            <span className="text-[13px] text-[#CBD5E1] tabular-nums font-medium flex-shrink-0">
               {task.date}
             </span>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import {
   FileText,
   Receipt,
@@ -36,105 +37,118 @@ const types = [
 ]
 
 const recent = [
-  { title: '中途採用申請 - エンジニア1名',     status: '承認済', date: '3/08', color: '#3CB06C' },
-  { title: '有給休暇申請（3/20-3/21）',        status: '承認済', date: '3/11', color: '#3CB06C' },
-  { title: 'リモートワーク端末貸与申請',        status: '下書き', date: '3/07', color: '#4E4E56' },
+  { title: '中途採用申請 - エンジニア1名',     status: '承認済', date: '3/08', color: '#059669' },
+  { title: '有給休暇申請（3/20-3/21）',        status: '承認済', date: '3/11', color: '#059669' },
+  { title: 'リモートワーク端末貸与申請',        status: '下書き', date: '3/07', color: '#94A3B8' },
 ]
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 260, damping: 28 } },
+}
 
 export default function ApplicationsPage() {
   return (
-    <div className="max-w-2xl mx-auto px-8 py-12">
+    <div className="max-w-[720px] mx-auto px-10 py-14">
 
       {/* Header */}
-      <div className="flex items-center gap-4 mb-12">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#6E7BF714' }}>
-          <FileText className="w-6 h-6 text-[#6E7BF7]" />
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+        className="flex items-center gap-5 mb-14"
+      >
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#EEF2FF]">
+          <FileText className="w-7 h-7 text-[#6366F1]" />
         </div>
         <div>
-          <h1 className="text-[24px] font-bold text-[#ECECEF] tracking-tight">申請</h1>
-          <p className="text-[14px] text-[#4E4E56]">ワークフロー・承認処理</p>
+          <h1 className="text-[28px] font-bold text-[#1E293B] tracking-tight">申請</h1>
+          <p className="text-[15px] text-[#94A3B8] font-medium mt-0.5">ワークフロー・承認処理</p>
         </div>
-      </div>
+      </motion.div>
 
       {/* 承認待ち */}
       {pending.length > 0 && (
-        <section className="mb-10">
-          <h2 className="text-[11px] font-medium text-[#3A3A42] tracking-wide mb-3 px-1 flex items-center gap-2">
-            <Clock className="w-3.5 h-3.5 text-[#D4993D]" />
+        <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.08 }} className="mb-12">
+          <h2 className="text-[12px] font-semibold text-[#94A3B8] uppercase tracking-[0.08em] mb-4 px-1 flex items-center gap-2">
+            <Clock className="w-4 h-4 text-[#D97706]" />
             <span>承認待ち</span>
-            <span className="text-[#D4993D]">{pending.length}</span>
+            <span className="text-[#D97706]">{pending.length}</span>
           </h2>
-          <div className="rounded-xl border border-white/[0.04] bg-[#111114] divide-y divide-white/[0.04]">
+          <div className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[#F1F5F9]">
             {pending.map(item => (
-              <div key={item.id} className="flex items-center gap-4 px-4 py-3.5 hover:bg-white/[0.02] transition-colors cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-6 py-5 hover:bg-[#FAFBFC] transition-colors cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] text-[#ECECEF] group-hover:text-white transition-colors">{item.title}</p>
-                  <p className="text-[12px] text-[#3A3A42] mt-0.5">{item.type} · {item.applicant}</p>
+                  <p className="text-[15px] font-semibold text-[#1E293B]">{item.title}</p>
+                  <p className="text-[13px] text-[#94A3B8] mt-0.5 font-medium">{item.type} · {item.applicant}</p>
                 </div>
-                <span className="text-[14px] font-medium text-[#8E8E96] tabular-nums">{item.amount}</span>
-                <ChevronRight className="w-4 h-4 text-[#2A2A32] group-hover:text-[#4E4E56] transition-colors" />
+                <span className="text-[15px] font-semibold text-[#475569] tabular-nums">{item.amount}</span>
+                <ChevronRight className="w-[18px] h-[18px] text-[#E2E8F0] group-hover:text-[#94A3B8] transition-colors" />
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
       )}
 
       {/* 差戻し */}
       {rejected.length > 0 && (
-        <section className="mb-10">
-          <h2 className="text-[11px] font-medium text-[#3A3A42] tracking-wide mb-3 px-1 flex items-center gap-2">
-            <XCircle className="w-3.5 h-3.5 text-[#E55A5A]" />
+        <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.14 }} className="mb-12">
+          <h2 className="text-[12px] font-semibold text-[#94A3B8] uppercase tracking-[0.08em] mb-4 px-1 flex items-center gap-2">
+            <XCircle className="w-4 h-4 text-[#E11D48]" />
             <span>差戻し</span>
-            <span className="text-[#E55A5A]">{rejected.length}</span>
+            <span className="text-[#E11D48]">{rejected.length}</span>
           </h2>
-          <div className="rounded-xl border border-white/[0.04] bg-[#111114] divide-y divide-white/[0.04]">
+          <div className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[#F1F5F9]">
             {rejected.map(item => (
-              <div key={item.id} className="flex items-center gap-4 px-4 py-3.5 hover:bg-white/[0.02] transition-colors cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-6 py-5 hover:bg-[#FAFBFC] transition-colors cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] text-[#ECECEF] group-hover:text-white transition-colors">{item.title}</p>
-                  <p className="text-[12px] text-[#E55A5A]/60 mt-0.5">{item.reason}</p>
+                  <p className="text-[15px] font-semibold text-[#1E293B]">{item.title}</p>
+                  <p className="text-[13px] text-[#E11D48]/70 mt-0.5 font-medium">{item.reason}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#2A2A32] group-hover:text-[#4E4E56] transition-colors" />
+                <ChevronRight className="w-[18px] h-[18px] text-[#E2E8F0] group-hover:text-[#94A3B8] transition-colors" />
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
       )}
 
       {/* 新規申請 */}
-      <section className="mb-10">
-        <h2 className="text-[11px] font-medium text-[#3A3A42] tracking-wide mb-3 px-1">新規申請</h2>
-        <div className="rounded-xl border border-white/[0.04] bg-[#111114] divide-y divide-white/[0.04]">
+      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.2 }} className="mb-12">
+        <h2 className="text-[12px] font-semibold text-[#94A3B8] uppercase tracking-[0.08em] mb-4 px-1">新規申請</h2>
+        <div className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[#F1F5F9]">
           {types.map(type => {
             const Icon = type.icon
             return (
               <Link key={type.name} href={type.href}>
-                <div className="flex items-center gap-4 px-4 py-3 hover:bg-white/[0.02] transition-colors cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-[#4E4E56] group-hover:text-[#6E7BF7] transition-colors shrink-0" />
-                  <p className="flex-1 text-[14px] text-[#ECECEF] group-hover:text-white transition-colors">{type.name}</p>
-                  <ChevronRight className="w-4 h-4 text-[#2A2A32] group-hover:text-[#4E4E56] transition-colors" />
+                <div className="flex items-center gap-5 px-6 py-4.5 hover:bg-[#FAFBFC] transition-colors cursor-pointer group">
+                  <Icon className="w-5 h-5 text-[#94A3B8] group-hover:text-[#6366F1] transition-colors shrink-0" />
+                  <p className="flex-1 text-[15px] font-semibold text-[#1E293B]">{type.name}</p>
+                  <ChevronRight className="w-[18px] h-[18px] text-[#E2E8F0] group-hover:text-[#94A3B8] transition-colors" />
                 </div>
               </Link>
             )
           })}
         </div>
-      </section>
+      </motion.section>
 
       {/* 最近の申請 */}
-      <section>
-        <h2 className="text-[11px] font-medium text-[#3A3A42] tracking-wide mb-3 px-1">最近の申請</h2>
-        <div className="rounded-xl border border-white/[0.04] bg-[#111114] divide-y divide-white/[0.04]">
+      <motion.section variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.28 }}>
+        <h2 className="text-[12px] font-semibold text-[#94A3B8] uppercase tracking-[0.08em] mb-4 px-1">最近の申請</h2>
+        <div className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[#F1F5F9]">
           {recent.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-4 px-4 py-3.5 hover:bg-white/[0.02] transition-colors cursor-pointer group">
-              <p className="flex-1 text-[14px] text-[#8E8E96] group-hover:text-[#ECECEF] transition-colors truncate">{item.title}</p>
-              <span className="text-[12px] font-medium px-2 py-0.5 rounded-md" style={{ color: item.color, backgroundColor: `${item.color}14` }}>
+            <div key={idx} className="flex items-center gap-5 px-6 py-5 hover:bg-[#FAFBFC] transition-colors cursor-pointer group">
+              <p className="flex-1 text-[15px] text-[#64748B] group-hover:text-[#1E293B] transition-colors truncate font-medium">{item.title}</p>
+              <span
+                className="text-[12px] font-semibold px-2.5 py-1 rounded-lg"
+                style={{ color: item.color, backgroundColor: `${item.color}10` }}
+              >
                 {item.status}
               </span>
-              <span className="text-[12px] text-[#3A3A42] tabular-nums">{item.date}</span>
+              <span className="text-[13px] text-[#CBD5E1] tabular-nums font-medium">{item.date}</span>
             </div>
           ))}
         </div>
-      </section>
+      </motion.section>
     </div>
   )
 }

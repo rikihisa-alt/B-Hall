@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import {
   Settings,
   User,
@@ -63,59 +64,90 @@ const notificationSettings = [
   { label: 'システムメンテナンス', email: true, app: true },
 ]
 
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.06,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 260, damping: 28 },
+  },
+}
+
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState<SettingsSection>('profile')
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-[720px] mx-auto px-10 py-14">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white/90">設定</h1>
-        <p className="text-sm text-[#6B7280] mt-1">アカウント・組織・システムの設定</p>
-      </div>
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+      >
+        <h1 className="text-[24px] font-bold text-[#1E293B]">設定</h1>
+        <p className="text-[13px] text-[#64748B] font-medium mt-1">アカウント・組織・システムの設定</p>
+      </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <motion.div
+        className="flex flex-col lg:flex-row gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
         {/* Sidebar Navigation */}
-        <div className="lg:col-span-1">
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-2 space-y-1">
+        <motion.div className="lg:w-52 shrink-0" variants={itemVariants}>
+          <div className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-2 space-y-1">
             {settingsSections.map((item) => (
               <button
                 key={item.section}
                 onClick={() => setActiveSection(item.section)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
                   activeSection === item.section
-                    ? 'bg-white/[0.08] text-white'
-                    : 'text-[#6B7280] hover:text-[#A8B0BD] hover:bg-white/[0.05]'
+                    ? 'bg-[#6366F1]/[0.08] text-[#6366F1]'
+                    : 'text-[#64748B] hover:bg-[#F1F5F9]'
                 }`}
               >
                 <item.icon className="w-4 h-4 flex-shrink-0" />
-                <span className="text-sm font-medium">{item.title}</span>
+                <span className="text-[13px] font-medium">{item.title}</span>
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Main Content */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="flex-1 space-y-6 min-w-0">
           {activeSection === 'profile' && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white/90 mb-6">プロフィール設定</h2>
+            <motion.div
+              className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-6"
+              variants={itemVariants}
+            >
+              <h2 className="text-[15px] font-semibold text-[#1E293B] mb-6">プロフィール設定</h2>
               <div className="flex items-center gap-5 mb-8">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7C8CFF] to-[#6366F1] flex items-center justify-center text-[#0F1115] text-2xl font-bold shadow-md">
+                <div className="w-20 h-20 rounded-2xl bg-[#EEF2FF] flex items-center justify-center text-[#6366F1] text-2xl font-bold">
                   T
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white/90">{profileData.name}</h3>
-                  <p className="text-sm text-[#6B7280]">{profileData.email}</p>
+                  <h3 className="text-[15px] font-semibold text-[#1E293B]">{profileData.name}</h3>
+                  <p className="text-[13px] text-[#64748B] font-medium">{profileData.email}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium text-[#7C8CFF] bg-[#7C8CFF]/10">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium text-[#6366F1] bg-[#EEF2FF]">
                       {profileData.role}
                     </span>
-                    <span className="text-xs text-[#5A6070]">{profileData.department}</span>
+                    <span className="text-[13px] text-[#94A3B8] font-medium">{profileData.department}</span>
                   </div>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-0">
                 {[
                   { label: '氏名', value: profileData.name },
                   { label: 'メールアドレス', value: profileData.email },
@@ -123,60 +155,66 @@ export default function SettingsPage() {
                   { label: '部署', value: profileData.department },
                   { label: 'ロール', value: profileData.role },
                 ].map((field) => (
-                  <div key={field.label} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
-                    <span className="text-sm text-[#6B7280]">{field.label}</span>
-                    <span className="text-sm font-medium text-[#A8B0BD]">{field.value}</span>
+                  <div key={field.label} className="flex items-center justify-between py-4 border-b border-[#F1F5F9] last:border-0">
+                    <span className="text-[13px] text-[#64748B] font-medium">{field.label}</span>
+                    <span className="text-[15px] font-semibold text-[#1E293B]">{field.value}</span>
                   </div>
                 ))}
               </div>
-              <button className="mt-6 px-4 py-2.5 rounded-xl bg-[#7C8CFF] text-[#0F1115] text-sm font-medium hover:bg-[#8B9AFF] shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+              <button className="mt-6 px-5 py-2.5 rounded-xl bg-[#6366F1] text-white text-[13px] font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(99,102,241,0.3)] hover:bg-[#818CF8] transition-all active:scale-[0.98]">
                 編集する
               </button>
-            </div>
+            </motion.div>
           )}
 
           {activeSection === 'notifications' && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white/90 mb-6">通知設定</h2>
-              <div className="space-y-1">
+            <motion.div
+              className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-6"
+              variants={itemVariants}
+            >
+              <h2 className="text-[15px] font-semibold text-[#1E293B] mb-6">通知設定</h2>
+              <div className="space-y-0">
                 <div className="flex items-center justify-between py-2 mb-2">
-                  <span className="text-sm font-medium text-[#6B7280]">通知項目</span>
+                  <span className="text-[13px] font-medium text-[#64748B]">通知項目</span>
                   <div className="flex items-center gap-8">
-                    <span className="text-xs text-[#5A6070] flex items-center gap-1">
-                      <Mail className="w-3 h-3" />
+                    <span className="text-[13px] text-[#94A3B8] font-medium flex items-center gap-1">
+                      <Mail className="w-3.5 h-3.5" />
                       メール
                     </span>
-                    <span className="text-xs text-[#5A6070] flex items-center gap-1">
-                      <Smartphone className="w-3 h-3" />
+                    <span className="text-[13px] text-[#94A3B8] font-medium flex items-center gap-1">
+                      <Smartphone className="w-3.5 h-3.5" />
                       アプリ
                     </span>
                   </div>
                 </div>
                 {notificationSettings.map((setting) => (
-                  <div key={setting.label} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
-                    <span className="text-sm text-[#A8B0BD]">{setting.label}</span>
+                  <div key={setting.label} className="flex items-center justify-between py-4 border-b border-[#F1F5F9] last:border-0">
+                    <span className="text-[15px] font-semibold text-[#1E293B]">{setting.label}</span>
                     <div className="flex items-center gap-8">
-                      <div className={`w-8 h-5 rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
-                        setting.email ? 'bg-[#7C8CFF] justify-end' : 'bg-white/[0.10] justify-start'
+                      <div className={`w-9 h-5 rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
+                        setting.email ? 'bg-[#6366F1] justify-end' : 'bg-[#E2E8F0] justify-start'
                       }`}>
-                        <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
+                        <div className="w-4 h-4 rounded-full bg-white shadow" />
                       </div>
-                      <div className={`w-8 h-5 rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
-                        setting.app ? 'bg-[#7C8CFF] justify-end' : 'bg-white/[0.10] justify-start'
+                      <div className={`w-9 h-5 rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
+                        setting.app ? 'bg-[#6366F1] justify-end' : 'bg-[#E2E8F0] justify-start'
                       }`}>
-                        <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
+                        <div className="w-4 h-4 rounded-full bg-white shadow" />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {activeSection === 'organization' && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white/90 mb-6">組織設定</h2>
-              <div className="space-y-4">
+            <motion.div
+              className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-6"
+              variants={itemVariants}
+            >
+              <h2 className="text-[15px] font-semibold text-[#1E293B] mb-6">組織設定</h2>
+              <div className="space-y-0">
                 {[
                   { label: '会社名', value: '株式会社サンプル' },
                   { label: '設立日', value: '2020年4月1日' },
@@ -184,69 +222,75 @@ export default function SettingsPage() {
                   { label: '部署数', value: '6部署' },
                   { label: 'プラン', value: 'ビジネスプラン' },
                 ].map((field) => (
-                  <div key={field.label} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-0">
-                    <span className="text-sm text-[#6B7280]">{field.label}</span>
-                    <span className="text-sm font-medium text-[#A8B0BD]">{field.value}</span>
+                  <div key={field.label} className="flex items-center justify-between py-4 border-b border-[#F1F5F9] last:border-0">
+                    <span className="text-[13px] text-[#64748B] font-medium">{field.label}</span>
+                    <span className="text-[15px] font-semibold text-[#1E293B]">{field.value}</span>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {activeSection === 'security' && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white/90 mb-6">セキュリティ設定</h2>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <motion.div
+              className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-6"
+              variants={itemVariants}
+            >
+              <h2 className="text-[15px] font-semibold text-[#1E293B] mb-6">セキュリティ設定</h2>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-[#F8FAFC] border border-[#F1F5F9]">
                   <div>
-                    <h4 className="text-sm font-medium text-[#A8B0BD]">パスワード</h4>
-                    <p className="text-xs text-[#5A6070] mt-0.5">最終変更: 2026年1月15日</p>
+                    <h4 className="text-[15px] font-semibold text-[#1E293B]">パスワード</h4>
+                    <p className="text-[13px] text-[#94A3B8] font-medium mt-0.5">最終変更: 2026年1月15日</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#7C8CFF] bg-[#7C8CFF]/10 hover:bg-[#7C8CFF]/20 transition-all">
+                  <button className="px-3 py-1.5 rounded-xl text-[13px] font-semibold text-[#6366F1] bg-[#EEF2FF] hover:bg-[#E0E7FF] transition-all">
                     変更
                   </button>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-[#F8FAFC] border border-[#F1F5F9]">
                   <div>
-                    <h4 className="text-sm font-medium text-[#A8B0BD]">二要素認証</h4>
-                    <p className="text-xs text-[#5A6070] mt-0.5">認証アプリを使用した二要素認証</p>
+                    <h4 className="text-[15px] font-semibold text-[#1E293B]">二要素認証</h4>
+                    <p className="text-[13px] text-[#94A3B8] font-medium mt-0.5">認証アプリを使用した二要素認証</p>
                   </div>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium text-[#2FBF71] bg-[#2FBF71]/10">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium text-[#059669] bg-[#059669]/10">
                     <Check className="w-3 h-3" />
                     有効
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-[#F8FAFC] border border-[#F1F5F9]">
                   <div>
-                    <h4 className="text-sm font-medium text-[#A8B0BD]">アクティブセッション</h4>
-                    <p className="text-xs text-[#5A6070] mt-0.5">現在1デバイスからログイン中</p>
+                    <h4 className="text-[15px] font-semibold text-[#1E293B]">アクティブセッション</h4>
+                    <p className="text-[13px] text-[#94A3B8] font-medium mt-0.5">現在1デバイスからログイン中</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8B0BD] bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                  <button className="px-3 py-1.5 rounded-xl text-[13px] font-medium text-[#64748B] bg-[#F1F5F9] hover:bg-[#E2E8F0] transition-all">
                     管理
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {activeSection === 'appearance' && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white/90 mb-6">表示・テーマ設定</h2>
+            <motion.div
+              className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-6"
+              variants={itemVariants}
+            >
+              <h2 className="text-[15px] font-semibold text-[#1E293B] mb-6">表示・テーマ設定</h2>
               <div className="space-y-6">
                 <div>
-                  <h4 className="text-sm font-medium text-[#A8B0BD] mb-3">テーマ</h4>
+                  <h4 className="text-[13px] font-medium text-[#64748B] mb-3">テーマ</h4>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { name: 'ライト', active: false },
-                      { name: 'ダーク', active: true },
+                      { name: 'ライト', active: true },
+                      { name: 'ダーク', active: false },
                       { name: 'システム', active: false },
                     ].map((theme) => (
                       <button
                         key={theme.name}
-                        className={`p-4 rounded-xl text-center text-sm font-medium transition-all ${
+                        className={`p-4 rounded-xl text-center text-[13px] font-semibold transition-all ${
                           theme.active
-                            ? 'bg-[#7C8CFF]/15 text-[#7C8CFF] ring-2 ring-[#7C8CFF]/30'
-                            : 'bg-white/[0.03] border border-white/[0.06] text-[#6B7280] hover:bg-white/[0.05] hover:text-[#A8B0BD]'
+                            ? 'bg-[#6366F1]/[0.08] text-[#6366F1] ring-2 ring-[#6366F1]/20'
+                            : 'bg-[#F8FAFC] border border-[#F1F5F9] text-[#64748B] hover:bg-[#F1F5F9]'
                         }`}
                       >
                         {theme.name}
@@ -255,38 +299,41 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-[#A8B0BD] mb-3">言語</h4>
-                  <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 flex items-center justify-between hover:bg-white/[0.05] transition-colors cursor-pointer">
-                    <span className="text-sm text-[#A8B0BD]">日本語</span>
-                    <ChevronRight className="w-4 h-4 text-[#5A6070]" />
+                  <h4 className="text-[13px] font-medium text-[#64748B] mb-3">言語</h4>
+                  <div className="bg-[#F8FAFC] border border-[#F1F5F9] rounded-xl px-4 py-3 flex items-center justify-between hover:bg-[#F1F5F9] transition-colors cursor-pointer">
+                    <span className="text-[15px] font-semibold text-[#1E293B]">日本語</span>
+                    <ChevronRight className="w-5 h-5 text-[#94A3B8]" />
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Advanced Settings */}
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-            <h2 className="text-sm font-semibold text-[#5A6070] uppercase tracking-wider mb-4">管理者設定</h2>
+          <motion.div
+            className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-6"
+            variants={itemVariants}
+          >
+            <h2 className="text-[13px] font-semibold text-[#94A3B8] uppercase tracking-wider mb-4">管理者設定</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {advancedSettings.map((item) => (
                 <button
                   key={item.title}
-                  className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all group text-left"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-[#F8FAFC] border border-[#F1F5F9] hover:bg-[#F1F5F9] hover:border-[#E2E8F0] transition-all group text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0 group-hover:bg-white/[0.08] transition-colors">
-                    <item.icon className="w-4 h-4 text-[#6B7280]" />
+                  <div className="w-9 h-9 rounded-xl bg-white border border-[#F1F5F9] flex items-center justify-center flex-shrink-0 group-hover:border-[#E2E8F0] transition-colors">
+                    <item.icon className="w-5 h-5 text-[#94A3B8]" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-[#A8B0BD]">{item.title}</h4>
-                    <p className="text-[11px] text-[#5A6070]">{item.description}</p>
+                    <h4 className="text-[15px] font-semibold text-[#1E293B]">{item.title}</h4>
+                    <p className="text-[13px] text-[#94A3B8] font-medium">{item.description}</p>
                   </div>
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

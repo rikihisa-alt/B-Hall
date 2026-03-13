@@ -1,56 +1,66 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────
-   B-Hall v2 — Company Workspace OS
-   Design: Mac app / Large / Airy
-   ───────────────────────────────── */
+/* ─────────────────────────────────────────
+   B-Hall v3 — "Luminous Clarity"
+   光を纏う明晰さ。白基調。浮遊する要素。
+   ───────────────────────────────────────── */
 
 @theme {
-  --color-bg: #0A0A0C;
-  --color-surface: #111114;
-  --color-surface-2: #18181C;
-  --color-surface-3: #1F1F24;
+  /* ── Luminous Palette ── */
+  --color-canvas: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-surface-warm: #FAFBFC;
+  --color-surface-glass: rgba(255, 255, 255, 0.72);
 
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-border-hover: rgba(255, 255, 255, 0.12);
+  --color-ink: #1E293B;
+  --color-ink-2: #475569;
+  --color-ink-3: #64748B;
+  --color-ink-4: #94A3B8;
+  --color-ink-5: #CBD5E1;
 
-  --color-accent: #6E7BF7;
-  --color-accent-soft: rgba(110, 123, 247, 0.12);
+  --color-accent: #6366F1;
+  --color-accent-soft: rgba(99, 102, 241, 0.08);
+  --color-accent-hover: #818CF8;
 
-  --color-text-1: #ECECEF;
-  --color-text-2: #8E8E96;
-  --color-text-3: #4E4E56;
+  --color-emerald: #059669;
+  --color-amber: #D97706;
+  --color-rose: #E11D48;
+  --color-sky: #0284C7;
 
-  --color-red: #E55A5A;
-  --color-amber: #D4993D;
-  --color-green: #3CB06C;
-  --color-blue: #4A9FE8;
-
-  --font-sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), "Hiragino Sans", "Hiragino Kaku Gothic ProN", -apple-system, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), "SF Mono", monospace;
 }
 
+/* ── Body ── */
 body {
   font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-text-1);
+  background: var(--color-canvas);
+  color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.02em;
+  font-feature-settings: "palt";
+  letter-spacing: 0.01em;
 }
 
+/* ── Selection ── */
 ::selection {
-  background: rgba(110, 123, 247, 0.3);
+  background: rgba(99, 102, 241, 0.15);
+  color: #1E293B;
 }
 
-/* scrollbar */
+/* ── Scrollbar — whisper thin ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
 
-/* focus */
+/* ── Focus ring ── */
 *:focus-visible {
-  outline: 2px solid rgba(110, 123, 247, 0.4);
+  outline: 2px solid rgba(99, 102, 241, 0.4);
   outline-offset: 2px;
 }

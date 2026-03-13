@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "framer-motion": "^12.36.0",
     "geist": "^1.7.0",
     "lucide-react": "^0.468.0",
     "next": "^15.1.0",
