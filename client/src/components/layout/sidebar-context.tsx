@@ -11,23 +11,44 @@ import {
 
 const STORAGE_KEY = 'b-hall-sidebar-collapsed'
 
-interface SidebarContextValue {
+/* ────────────────────────────────────────── */
+/*  Types                                     */
+/* ────────────────────────────────────────── */
+
+interface NavigationContextValue {
+  // 左サイドバー collapse（将来用に保持）
   collapsed: boolean
-  setCollapsed: (collapsed: boolean) => void
-  toggle: () => void
+  setCollapsed: (v: boolean) => void
+  toggleCollapsed: () => void
+
+  // アクティブセクション
+  activeSection: string | null
+  setActiveSection: (key: string | null) => void
+
+  // 第2サイドバー
+  subSidebarOpen: boolean
+  subSidebarSection: string | null
+  openSubSidebar: (sectionKey: string) => void
+  closeSubSidebar: () => void
 }
 
-const SidebarContext = createContext<SidebarContextValue | null>(null)
+const NavigationContext = createContext<NavigationContextValue | null>(null)
 
-export function SidebarProvider({ children }: { children: ReactNode }) {
+/* ────────────────────────────────────────── */
+/*  Provider                                  */
+/* ────────────────────────────────────────── */
+
+export function NavigationProvider({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsedState] = useState(false)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
+  const [subSidebarOpen, setSubSidebarOpen] = useState(false)
+  const [subSidebarSection, setSubSidebarSection] = useState<string | null>(null)
 
+  // localStorage からサイドバー状態を復元
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored !== null) {
-        setCollapsedState(stored === 'true')
-      }
+      if (stored !== null) setCollapsedState(stored === 'true')
     } catch {
       // localStorage unavailable
     }
@@ -42,21 +63,64 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const toggle = useCallback(() => {
-    setCollapsed(!collapsed)
-  }, [collapsed, setCollapsed])
+  const toggleCollapsed = useCallback(() => {
+    setCollapsedState((prev) => {
+      const next = !prev
+      try {
+        localStorage.setItem(STORAGE_KEY, String(next))
+      } catch {
+        // localStorage unavailable
+      }
+      return next
+    })
+  }, [])
+
+  // 第2サイドバーを開く（同じセクション再クリックでトグル閉じ）
+  const openSubSidebar = useCallback((sectionKey: string) => {
+    setSubSidebarOpen((prevOpen) => {
+      if (prevOpen && subSidebarSection === sectionKey) {
+        // 同じセクションを再クリック → 閉じる
+        setSubSidebarSection(null)
+        return false
+      }
+      // 新しいセクション or 閉じている状態 → 開く
+      setSubSidebarSection(sectionKey)
+      return true
+    })
+  }, [subSidebarSection])
+
+  const closeSubSidebar = useCallback(() => {
+    setSubSidebarOpen(false)
+    setSubSidebarSection(null)
+  }, [])
 
   return (
-    <SidebarContext.Provider value={{ collapsed, setCollapsed, toggle }}>
+    <NavigationContext.Provider
+      value={{
+        collapsed,
+        setCollapsed,
+        toggleCollapsed,
+        activeSection,
+        setActiveSection,
+        subSidebarOpen,
+        subSidebarSection,
+        openSubSidebar,
+        closeSubSidebar,
+      }}
+    >
       {children}
-    </SidebarContext.Provider>
+    </NavigationContext.Provider>
   )
 }
 
-export function useSidebar(): SidebarContextValue {
-  const ctx = useContext(SidebarContext)
+/* ────────────────────────────────────────── */
+/*  Hook                                      */
+/* ────────────────────────────────────────── */
+
+export function useNavigation(): NavigationContextValue {
+  const ctx = useContext(NavigationContext)
   if (!ctx) {
-    throw new Error('useSidebar must be used within a SidebarProvider')
+    throw new Error('useNavigation must be used within a NavigationProvider')
   }
   return ctx
 }
