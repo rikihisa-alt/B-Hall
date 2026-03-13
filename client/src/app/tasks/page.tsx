@@ -27,30 +27,30 @@ const containerVariants = {
   },
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
+const fadeUp = {
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring' as const, stiffness: 260, damping: 28 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 30 },
   },
 }
 
 export default function TasksPage() {
   return (
-    <div className="max-w-[720px] mx-auto px-10 py-14">
+    <div className="max-w-[680px] mx-auto px-10 py-10">
       <motion.div
         className="mb-8"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
       >
-        <h1 className="text-[24px] font-bold text-[#1E293B]">タスク</h1>
-        <p className="text-[14px] text-[#94A3B8] font-medium mt-1">6件のタスク</p>
+        <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">タスク</h1>
+        <p className="text-[13px] text-[#94a3b8] mt-1">6件のタスク</p>
       </motion.div>
 
       <motion.div
-        className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[#F1F5F9]"
+        className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden divide-y divide-black/[0.04]"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -58,23 +58,23 @@ export default function TasksPage() {
         {tasks.map((task, i) => (
           <motion.div
             key={i}
-            variants={itemVariants}
-            className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#FAFBFC] transition-colors cursor-pointer"
+            variants={fadeUp}
+            className="flex items-center gap-3 px-5 py-3.5 hover:bg-white/50 hover:-translate-y-px transition-all duration-150 cursor-pointer"
           >
             <div
               className="w-2 h-2 rounded-full flex-shrink-0"
               style={{ backgroundColor: statusColors[task.status] }}
             />
-            <span className="text-[15px] font-semibold text-[#1E293B] flex-1 min-w-0 truncate">
+            <span className="text-[14px] font-semibold text-[#0f172a] tracking-tight flex-1 min-w-0 truncate">
               {task.title}
             </span>
-            <span className="text-[13px] text-[#94A3B8] font-medium flex-shrink-0">
+            <span className="text-[12px] text-[#94a3b8] flex-shrink-0">
               {task.category}
             </span>
-            <span className="text-[13px] text-[#64748B] font-medium flex-shrink-0">
+            <span className="text-[12px] text-[#94a3b8] flex-shrink-0">
               {task.assignee}
             </span>
-            <span className="text-[13px] text-[#CBD5E1] tabular-nums font-medium flex-shrink-0">
+            <span className="text-[12px] text-[#94a3b8] tabular-nums flex-shrink-0">
               {task.date}
             </span>
           </motion.div>

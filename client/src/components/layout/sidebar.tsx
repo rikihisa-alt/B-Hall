@@ -46,37 +46,37 @@ export function Sidebar() {
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <aside className="w-[260px] h-screen flex flex-col shrink-0 select-none border-r border-black/[0.06] bg-white/72 backdrop-blur-xl">
+    <aside className="w-[252px] h-screen flex flex-col shrink-0 select-none bg-white/60 backdrop-blur-2xl border-r border-black/[0.04]">
 
-      {/* ── Logo ── */}
-      <div className="h-16 flex items-center px-6 shrink-0">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-[10px] bg-[#6366F1] flex items-center justify-center shadow-[0_2px_8px_rgba(99,102,241,0.3)]">
-            <span className="text-[12px] font-black text-white leading-none tracking-tight">B</span>
+      {/* Logo */}
+      <div className="h-[56px] flex items-center px-5 shrink-0">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-[#6366f1] flex items-center justify-center">
+            <span className="text-[11px] font-black text-white leading-none">B</span>
           </div>
-          <span className="text-[16px] font-bold text-[#1E293B] tracking-tight">B-Hall</span>
+          <span className="text-[15px] font-semibold text-[#0f172a] tracking-tight">B-Hall</span>
         </Link>
       </div>
 
-      {/* ── Search ── */}
-      <div className="px-4 mb-3">
-        <button className="w-full flex items-center gap-3 h-10 px-3.5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] transition-colors cursor-pointer">
-          <Search className="w-[15px] h-[15px] text-[#94A3B8]" />
-          <span className="text-[14px] text-[#94A3B8] flex-1 text-left">検索</span>
-          <kbd className="text-[11px] text-[#CBD5E1] font-mono bg-white px-1.5 py-0.5 rounded-md shadow-[0_1px_2px_rgba(0,0,0,0.06)]">⌘K</kbd>
+      {/* Search */}
+      <div className="px-3 mb-2">
+        <button className="w-full flex items-center gap-2.5 h-9 px-3 rounded-lg bg-black/[0.03] hover:bg-black/[0.05] transition-colors cursor-pointer">
+          <Search className="w-[14px] h-[14px] text-[#94a3b8]" />
+          <span className="text-[13px] text-[#94a3b8] flex-1 text-left">検索</span>
+          <kbd className="text-[10px] text-[#cbd5e1] font-mono px-1.5 py-0.5 rounded bg-white/80 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">⌘K</kbd>
         </button>
       </div>
 
-      {/* ── Nav ── */}
-      <nav className="flex-1 overflow-y-auto px-3 pt-1 pb-6">
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto px-2.5 pt-1 pb-4">
 
         {/* Home */}
-        <div className="mb-6 px-1">
+        <div className="mb-4 px-0.5">
           <Link href="/">
-            <div className={`flex items-center gap-3 px-3 h-10 rounded-xl text-[15px] font-semibold transition-all duration-200 ${
+            <div className={`flex items-center gap-2.5 px-2.5 h-9 rounded-lg text-[13px] font-semibold tracking-tight transition-all duration-150 ${
               isActive('/')
-                ? 'bg-[#6366F1]/[0.08] text-[#6366F1]'
-                : 'text-[#475569] hover:text-[#1E293B] hover:bg-black/[0.03]'
+                ? 'bg-[#6366f1]/[0.07] text-[#6366f1]'
+                : 'text-[#334155] hover:bg-black/[0.03]'
             }`}>
               ホーム
             </div>
@@ -84,22 +84,22 @@ export function Sidebar() {
         </div>
 
         {/* Sections */}
-        <div className="mb-6">
-          <p className="text-[11px] font-semibold text-[#94A3B8] uppercase px-4 mb-2 tracking-[0.08em]">
+        <div className="mb-4">
+          <p className="text-[10px] font-semibold text-[#94a3b8] uppercase px-3 mb-1.5 tracking-[0.06em]">
             Workspace
           </p>
-          <div className="space-y-0.5">
+          <div className="space-y-px">
             {sections.map(item => {
               const Icon = item.icon
               const on = isActive(item.href)
               return (
                 <Link key={item.href} href={item.href}>
-                  <div className={`flex items-center gap-3 px-3 h-10 rounded-xl text-[14px] transition-all duration-200 ${
+                  <div className={`flex items-center gap-2.5 px-2.5 h-9 rounded-lg text-[13px] tracking-tight transition-all duration-150 ${
                     on
-                      ? 'bg-[#6366F1]/[0.08] text-[#6366F1] font-semibold'
-                      : 'text-[#64748B] hover:text-[#1E293B] hover:bg-black/[0.03]'
+                      ? 'bg-[#6366f1]/[0.07] text-[#6366f1] font-semibold'
+                      : 'text-[#64748b] hover:text-[#0f172a] hover:bg-black/[0.03]'
                   }`}>
-                    <Icon className={`w-[17px] h-[17px] shrink-0 ${on ? 'text-[#6366F1]' : 'text-[#94A3B8]'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${on ? 'text-[#6366f1]' : 'text-[#94a3b8]'}`} strokeWidth={1.75} />
                     {item.name}
                   </div>
                 </Link>
@@ -110,24 +110,24 @@ export function Sidebar() {
 
         {/* Tools */}
         <div>
-          <p className="text-[11px] font-semibold text-[#94A3B8] uppercase px-4 mb-2 tracking-[0.08em]">
+          <p className="text-[10px] font-semibold text-[#94a3b8] uppercase px-3 mb-1.5 tracking-[0.06em]">
             Tools
           </p>
-          <div className="space-y-0.5">
+          <div className="space-y-px">
             {utilities.map(item => {
               const Icon = item.icon
               const on = isActive(item.href)
               return (
                 <Link key={item.href} href={item.href}>
-                  <div className={`flex items-center gap-3 px-3 h-10 rounded-xl text-[14px] transition-all duration-200 ${
+                  <div className={`flex items-center gap-2.5 px-2.5 h-9 rounded-lg text-[13px] tracking-tight transition-all duration-150 ${
                     on
-                      ? 'bg-[#6366F1]/[0.08] text-[#6366F1] font-semibold'
-                      : 'text-[#64748B] hover:text-[#1E293B] hover:bg-black/[0.03]'
+                      ? 'bg-[#6366f1]/[0.07] text-[#6366f1] font-semibold'
+                      : 'text-[#64748b] hover:text-[#0f172a] hover:bg-black/[0.03]'
                   }`}>
-                    <Icon className={`w-[17px] h-[17px] shrink-0 ${on ? 'text-[#6366F1]' : 'text-[#94A3B8]'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${on ? 'text-[#6366f1]' : 'text-[#94a3b8]'}`} strokeWidth={1.75} />
                     <span className="flex-1">{item.name}</span>
                     {'count' in item && item.count && (
-                      <span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-[#E11D48] text-white text-[11px] font-bold px-1.5">
+                      <span className="min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#e11d48] text-white text-[10px] font-bold px-1">
                         {item.count}
                       </span>
                     )}

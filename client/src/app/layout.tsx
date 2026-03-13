@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="antialiased">
-        <div className="flex h-screen overflow-hidden bg-canvas">
+        <div className="flex h-screen overflow-hidden">
           <Sidebar />
           <main className="flex-1 overflow-y-auto">
             {children}

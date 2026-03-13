@@ -1,40 +1,40 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────
-   B-Hall v3 — "Luminous Clarity"
-   光を纏う明晰さ。白基調。浮遊する要素。
+   B-Hall v4 — "Quiet OS"
+   Linear / Arc / Raycast に学ぶ。
+   微グラデーション。Glass Panel。2層Shadow。
    ───────────────────────────────────────── */
 
 @theme {
-  /* ── Luminous Palette ── */
-  --color-canvas: #F4F5F7;
-  --color-surface: #FFFFFF;
-  --color-surface-warm: #FAFBFC;
-  --color-surface-glass: rgba(255, 255, 255, 0.72);
+  --color-canvas: #f8fafc;
+  --color-surface: rgba(255, 255, 255, 0.6);
+  --color-surface-solid: #ffffff;
+  --color-surface-hover: rgba(255, 255, 255, 0.85);
 
-  --color-ink: #1E293B;
-  --color-ink-2: #475569;
-  --color-ink-3: #64748B;
-  --color-ink-4: #94A3B8;
-  --color-ink-5: #CBD5E1;
+  --color-ink: #0f172a;
+  --color-ink-2: #334155;
+  --color-ink-3: #64748b;
+  --color-ink-4: #94a3b8;
+  --color-ink-5: #cbd5e1;
 
-  --color-accent: #6366F1;
+  --color-accent: #6366f1;
   --color-accent-soft: rgba(99, 102, 241, 0.08);
-  --color-accent-hover: #818CF8;
+  --color-accent-hover: #818cf8;
 
   --color-emerald: #059669;
-  --color-amber: #D97706;
-  --color-rose: #E11D48;
-  --color-sky: #0284C7;
+  --color-amber: #d97706;
+  --color-rose: #e11d48;
+  --color-sky: #0284c7;
 
   --font-sans: var(--font-geist-sans), "Hiragino Sans", "Hiragino Kaku Gothic ProN", -apple-system, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), "SF Mono", monospace;
 }
 
-/* ── Body ── */
 body {
   font-family: var(--font-sans);
-  background: var(--color-canvas);
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  background-attachment: fixed;
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,13 +42,11 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* ── Selection ── */
 ::selection {
-  background: rgba(99, 102, 241, 0.15);
-  color: #1E293B;
+  background: rgba(99, 102, 241, 0.12);
+  color: #0f172a;
 }
 
-/* ── Scrollbar — whisper thin ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
@@ -59,7 +57,6 @@ body {
   background: rgba(0, 0, 0, 0.14);
 }
 
-/* ── Focus ring ── */
 *:focus-visible {
   outline: 2px solid rgba(99, 102, 241, 0.4);
   outline-offset: 2px;

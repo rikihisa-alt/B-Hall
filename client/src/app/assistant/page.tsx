@@ -47,12 +47,12 @@ const containerVariants = {
   },
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
+const fadeUp = {
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring' as const, stiffness: 260, damping: 28 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 30 },
   },
 }
 
@@ -82,37 +82,35 @@ export default function AssistantPage() {
   }
 
   return (
-    <div className="max-w-[720px] mx-auto px-10 py-14 h-full flex flex-col">
+    <div className="max-w-[680px] mx-auto px-10 py-10 h-full flex flex-col">
       {/* Header */}
       <motion.div
-        className="flex items-center gap-4 mb-6"
+        className="flex items-center gap-3 mb-6"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 30 }}
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#EEF2FF] flex items-center justify-center">
-            <Bot className="w-5 h-5 text-[#6366F1]" />
-          </div>
+          <Bot className="w-6 h-6 text-[#6366f1]" strokeWidth={1.75} />
           <div>
-            <h1 className="text-[18px] font-bold text-[#1E293B]">ジジロボ</h1>
-            <p className="text-[13px] text-[#94A3B8] font-medium">AIアシスタント</p>
+            <h1 className="text-[24px] font-semibold text-[#0f172a] tracking-tight">ジジロボ</h1>
+            <p className="text-[13px] text-[#94a3b8] mt-0.5">AIアシスタント</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#059669]/10 text-[#059669] text-[12px] font-medium">
-          <span className="w-2 h-2 rounded-full bg-[#059669] animate-pulse" />
+        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#059669]/10 text-[#059669] text-[12px] font-semibold">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse" />
           オンライン
         </div>
       </motion.div>
 
       {/* Suggested Questions */}
       <motion.div
-        className="rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] p-4 mb-4"
+        className="rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] p-4 mb-4"
         variants={containerVariants}
         initial="hidden"
         animate="show"
       >
-        <h3 className="text-[13px] font-semibold text-[#94A3B8] uppercase tracking-wider mb-3">
+        <h3 className="text-[12px] font-semibold text-[#94a3b8] uppercase tracking-wider mb-3">
           よくある質問
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -121,16 +119,16 @@ export default function AssistantPage() {
             return (
               <motion.button
                 key={idx}
-                variants={itemVariants}
+                variants={fadeUp}
                 onClick={() => {
                   setMessage(q.text)
                 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] transition-all text-left"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-black/[0.02] hover:bg-black/[0.04] transition-all text-left"
               >
-                <QIcon className="w-5 h-5 text-[#94A3B8] shrink-0" />
+                <QIcon className="w-5 h-5 text-[#94a3b8] shrink-0" strokeWidth={1.75} />
                 <div className="min-w-0">
-                  <p className="text-[15px] font-semibold text-[#1E293B] truncate">{q.text}</p>
-                  <p className="text-[13px] text-[#94A3B8] font-medium">{q.category}</p>
+                  <p className="text-[14px] font-semibold text-[#0f172a] tracking-tight truncate">{q.text}</p>
+                  <p className="text-[12px] text-[#94a3b8]">{q.category}</p>
                 </div>
               </motion.button>
             )
@@ -140,10 +138,10 @@ export default function AssistantPage() {
 
       {/* Chat Area */}
       <motion.div
-        className="flex-1 rounded-3xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden min-h-0"
-        initial={{ opacity: 0, y: 12 }}
+        className="flex-1 rounded-xl bg-white/60 backdrop-blur-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden min-h-0"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 28, delay: 0.2 }}
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 30, delay: 0.2 }}
       >
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
@@ -152,15 +150,13 @@ export default function AssistantPage() {
               <div className={`max-w-[80%] ${msg.role === 'user' ? 'order-1' : ''}`}>
                 <div className="flex items-end gap-2">
                   {msg.role === 'assistant' && (
-                    <div className="w-7 h-7 rounded-lg bg-[#EEF2FF] flex items-center justify-center shrink-0 mb-0.5">
-                      <Bot className="w-3.5 h-3.5 text-[#6366F1]" />
-                    </div>
+                    <Bot className="w-4 h-4 text-[#6366f1] shrink-0 mb-1" strokeWidth={1.75} />
                   )}
                   <div
-                    className={`rounded-2xl px-4 py-3 text-[14px] leading-relaxed ${
+                    className={`px-4 py-3 text-[14px] leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-[#6366F1] text-white rounded-br-md'
-                        : 'bg-[#F8FAFC] text-[#475569] rounded-bl-md'
+                        ? 'bg-[#6366f1] text-white rounded-2xl rounded-br-sm'
+                        : 'bg-black/[0.02] text-[#334155] rounded-2xl rounded-bl-sm'
                     }`}
                   >
                     {msg.content.split('\n').map((line, i) => (
@@ -171,9 +167,9 @@ export default function AssistantPage() {
                     ))}
                   </div>
                 </div>
-                <div className={`flex items-center gap-1 mt-1 ${msg.role === 'user' ? 'justify-end' : 'ml-9'}`}>
-                  <Clock className="w-3 h-3 text-[#CBD5E1]" />
-                  <span className="text-[11px] text-[#CBD5E1] font-medium">{msg.time}</span>
+                <div className={`flex items-center gap-1 mt-1 ${msg.role === 'user' ? 'justify-end' : 'ml-6'}`}>
+                  <Clock className="w-3 h-3 text-[#e2e8f0]" strokeWidth={1.75} />
+                  <span className="text-[11px] text-[#e2e8f0]">{msg.time}</span>
                 </div>
               </div>
             </div>
@@ -181,7 +177,7 @@ export default function AssistantPage() {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-[#F1F5F9]">
+        <div className="p-4 border-t border-black/[0.04]">
           <div className="flex items-end gap-3">
             <div className="flex-1 relative">
               <textarea
@@ -190,19 +186,19 @@ export default function AssistantPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="メッセージを入力..."
                 rows={1}
-                className="w-full resize-none rounded-xl bg-[#F8FAFC] border-none px-4 py-3 text-[14px] text-[#1E293B] placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
+                className="w-full resize-none rounded-lg bg-black/[0.02] border-none px-4 py-3 text-[14px] text-[#0f172a] placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#6366f1]/20 transition-all"
               />
             </div>
             <button
               onClick={handleSend}
               disabled={!message.trim()}
-              className="w-10 h-10 rounded-xl bg-[#6366F1] flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(99,102,241,0.3)] hover:bg-[#818CF8] disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
+              className="w-10 h-10 rounded-lg bg-[#6366f1] flex items-center justify-center text-white hover:bg-[#818cf8] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0"
             >
               <Send className="w-4 h-4" />
             </button>
           </div>
-          <p className="text-[13px] text-[#94A3B8] font-medium mt-2 ml-1 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5" />
+          <p className="text-[12px] text-[#94a3b8] mt-2 ml-1 flex items-center gap-1">
+            <Sparkles className="w-3.5 h-3.5" strokeWidth={1.75} />
             ジジロボは社内情報に基づいて回答します。機密情報の取り扱いにご注意ください。
           </p>
         </div>
