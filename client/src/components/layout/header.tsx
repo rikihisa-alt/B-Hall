@@ -12,9 +12,9 @@ export function Header() {
         <Image
           src="/logo.png"
           alt="B-Hall"
-          width={280}
-          height={52}
-          className="h-[52px] w-auto object-contain"
+          width={240}
+          height={40}
+          className="h-[40px] w-auto object-contain"
           priority
         />
       </Link>
