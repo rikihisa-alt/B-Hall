@@ -96,6 +96,11 @@ export default function TasksPage() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [filterOpen])
 
+  const getUserName = (userId: string) => {
+    const user = users.find((u) => u.id === userId)
+    return user?.name || '未割当'
+  }
+
   const allTasks = useMemo(() => {
     if (!mounted || !hydrated) return []
     return getActiveTasks()
@@ -185,11 +190,6 @@ export default function TasksPage() {
       { label: '完了', value: done, color: '#22C55E', filter: 'done' as FilterTab },
     ]
   }, [allTasks])
-
-  const getUserName = (userId: string) => {
-    const user = users.find((u) => u.id === userId)
-    return user?.name || '未割当'
-  }
 
   // Show skeleton on initial render
   if (!mounted || !hydrated) {
