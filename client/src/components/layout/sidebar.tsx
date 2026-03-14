@@ -40,10 +40,7 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="h-screen w-[68px] flex flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
-      {/* ── ヘッダー揃え用スペーサー ── */}
-      <div className="h-16 shrink-0" />
-
+    <aside className="w-[68px] flex flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
       {/* ── セクションナビ ── */}
       <nav className="flex-1 overflow-y-auto py-1 flex flex-col">
         <div className="flex-1 space-y-0.5 px-1.5">
