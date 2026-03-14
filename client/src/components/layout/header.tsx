@@ -3,8 +3,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Bell } from 'lucide-react'
+import { useAuth } from '@/hooks/use-auth'
+import { USER_ROLE_LABELS } from '@/lib/constants'
 
 export function Header() {
+  const { currentUser, mounted } = useAuth()
+
+  const avatarInitial = mounted && currentUser ? currentUser.avatar_initial : '田'
+  const roleLabel = mounted && currentUser ? USER_ROLE_LABELS[currentUser.role] : ''
+
   return (
     <header className="h-16 border-b border-border bg-bg-surface flex items-center px-6 shrink-0 z-[200]">
       {/* Left side — Logo */}
@@ -30,9 +37,21 @@ export function Header() {
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-danger" />
         </button>
 
-        {/* User avatar */}
-        <div className="w-8 h-8 rounded-full bg-accent-muted text-accent text-[13px] font-semibold flex items-center justify-center cursor-pointer">
-          田
+        {/* User avatar with role badge */}
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-accent-muted text-accent text-[13px] font-semibold flex items-center justify-center cursor-pointer">
+            {avatarInitial}
+          </div>
+          {mounted && currentUser && (
+            <div className="hidden sm:flex flex-col">
+              <span className="text-[12px] font-medium text-text-primary leading-tight">
+                {currentUser.name}
+              </span>
+              <span className="text-[10px] text-text-muted leading-tight">
+                {roleLabel}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </header>

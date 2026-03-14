@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/layout/sidebar'
 import { SubSidebar } from '@/components/layout/sub-sidebar'
 import { Header } from '@/components/layout/header'
 import { NavigationProvider } from '@/components/layout/sidebar-context'
+import { ToastProvider } from '@/components/ui/toast-provider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,18 +35,20 @@ export default function RootLayout({
     <html lang="ja" className={`${inter.variable} ${notoSansJP.variable}`}>
       <body className="antialiased">
         <NavigationProvider>
-          <div className="flex flex-col h-screen overflow-hidden">
-            <Header />
-            <div className="flex flex-1 overflow-hidden">
-              <Sidebar />
-              <main className="flex-1 overflow-y-auto">
-                <div className="max-w-[1440px] mx-auto px-8 py-8">
-                  {children}
-                </div>
-              </main>
+          <ToastProvider>
+            <div className="flex flex-col h-screen overflow-hidden">
+              <Header />
+              <div className="flex flex-1 overflow-hidden">
+                <Sidebar />
+                <main className="flex-1 overflow-y-auto">
+                  <div className="max-w-[1440px] mx-auto px-8 py-8">
+                    {children}
+                  </div>
+                </main>
+              </div>
             </div>
-          </div>
-          <SubSidebar />
+            <SubSidebar />
+          </ToastProvider>
         </NavigationProvider>
       </body>
     </html>

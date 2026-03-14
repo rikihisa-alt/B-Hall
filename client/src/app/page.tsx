@@ -1,5 +1,7 @@
 'use client'
 
+import { useState, useEffect, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   ListTodo,
@@ -22,15 +24,16 @@ import {
 } from 'recharts'
 import { useCountUp } from '@/lib/use-count-up'
 import { fadeUp, staggerContainer } from '@/lib/animation'
+import { SectionLauncher } from '@/features/dashboard/components/section-launcher'
+import { useTaskStore } from '@/stores/task-store'
+import { useAuthStore } from '@/stores/auth-store'
+import {
+  TASK_STATUS_LABELS,
+  TASK_PRIORITY_LABELS,
+} from '@/lib/constants'
+import { formatDateCompact } from '@/lib/date'
 
-/* ── Mock Data ── */
-
-const metrics = [
-  { label: '未処理タスク', value: 12, change: -3, up: false, icon: ListTodo, color: '#4F46E5' },
-  { label: '承認待ち', value: 5, change: 2, up: true, icon: Clock, color: '#F59E0B' },
-  { label: '今月の経費', value: 320, prefix: '¥', suffix: '万', change: 8.4, up: true, icon: Wallet, color: '#22C55E' },
-  { label: '未読通知', value: 3, change: 0, up: false, icon: Bell, color: '#3B82F6' },
-]
+/* ── Mock Data (chart + activities kept unchanged) ── */
 
 const chartData = [
   { month: '10月', revenue: 4200, expense: 2800 },
@@ -49,22 +52,26 @@ const activities = [
   { time: '09:05', text: '契約書 NDA-2024-03 が更新期限', type: 'danger' as const },
 ]
 
-const recentTasks = [
-  { title: '3月度経費精算の確認', category: '経理', assignee: '鈴木一郎', due: '3/18', status: '進行中' as const, priority: '高' as const },
-  { title: '新入社員オンボーディング', category: '人事', assignee: '佐藤花子', due: '3/20', status: '未着手' as const, priority: '中' as const },
-  { title: '備品発注書の承認', category: '総務', assignee: '山田太郎', due: '3/15', status: '承認待ち' as const, priority: '高' as const },
-  { title: 'NDA契約書レビュー', category: '法務', assignee: '高橋美咲', due: '3/22', status: '進行中' as const, priority: '中' as const },
-  { title: '月次報告書作成', category: '報告', assignee: '田中次郎', due: '3/25', status: '未着手' as const, priority: '低' as const },
-]
-
 const statusColors: Record<string, string> = {
   '進行中': '#3B82F6',
   '未着手': 'rgba(28,25,23,0.25)',
   '承認待ち': '#F59E0B',
+  '確認待ち': '#F59E0B',
   '完了': '#22C55E',
+  '差戻し': '#EF4444',
+  '保留': 'rgba(28,25,23,0.25)',
+  '中止': 'rgba(28,25,23,0.25)',
+}
+
+const priorityLabels: Record<string, string> = {
+  urgent: '緊急',
+  high: '高',
+  medium: '中',
+  low: '低',
 }
 
 const priorityStyles: Record<string, string> = {
+  '緊急': 'bg-[rgba(239,68,68,0.08)] text-[#DC2626] border-[rgba(239,68,68,0.18)]',
   '高': 'bg-[rgba(239,68,68,0.08)] text-[#DC2626] border-[rgba(239,68,68,0.18)]',
   '中': 'bg-[rgba(59,130,246,0.08)] text-[#2563EB] border-[rgba(59,130,246,0.18)]',
   '低': 'bg-[rgba(28,25,23,0.04)] text-text-muted border-border',
@@ -119,6 +126,45 @@ function ChartTooltipContent({ active, payload, label }: { active?: boolean; pay
 
 /* ── Page ── */
 export default function HomePage() {
+  const router = useRouter()
+  const getActiveTasks = useTaskStore((s) => s.getActiveTasks)
+  const hydrated = useTaskStore((s) => s._hydrated)
+  const users = useAuthStore((s) => s.users)
+
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Real task data for metrics and recent tasks
+  const allTasks = useMemo(() => {
+    if (!mounted || !hydrated) return []
+    return getActiveTasks()
+  }, [mounted, hydrated, getActiveTasks])
+
+  const unprocessedCount = useMemo(() => {
+    return allTasks.filter((t) => t.status === 'todo' || t.status === 'in_progress').length
+  }, [allTasks])
+
+  const recentTasks = useMemo(() => {
+    return [...allTasks]
+      .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+      .slice(0, 5)
+  }, [allTasks])
+
+  const getUserName = (userId: string) => {
+    const user = users.find((u) => u.id === userId)
+    return user?.name || '未割当'
+  }
+
+  const metrics = [
+    { label: '未処理タスク', value: mounted && hydrated ? unprocessedCount : 12, change: -3, up: false, icon: ListTodo, color: '#4F46E5' },
+    { label: '承認待ち', value: 5, change: 2, up: true, icon: Clock, color: '#F59E0B' },
+    { label: '今月の経費', value: 320, prefix: '¥', suffix: '万', change: 8.4, up: true, icon: Wallet, color: '#22C55E' },
+    { label: '未読通知', value: 3, change: 0, up: false, icon: Bell, color: '#3B82F6' },
+  ]
+
   const today = new Date()
   const dateStr = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`
 
@@ -151,6 +197,18 @@ export default function HomePage() {
         {metrics.map((m, i) => (
           <MetricCard key={m.label} {...m} delay={i * 150} />
         ))}
+      </motion.div>
+
+      {/* Section Launcher */}
+      <motion.div
+        className="mb-8"
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        transition={{ delay: 0.15 }}
+      >
+        <h2 className="text-[18px] font-bold text-text-primary tracking-tight mb-4">業務メニュー</h2>
+        <SectionLauncher />
       </motion.div>
 
       {/* Chart + Activity — 2 columns */}
@@ -247,28 +305,54 @@ export default function HomePage() {
             </tr>
           </thead>
           <tbody>
-            {recentTasks.map((task, i) => (
-              <tr key={i} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer" style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}>
-                <td className="px-6 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: statusColors[task.status] || 'rgba(28,25,23,0.25)' }} />
-                    <span className="text-[13px] text-text-secondary">{task.status}</span>
-                  </div>
-                </td>
-                <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{task.title}</td>
-                <td className="px-6 py-3.5 text-[13px] text-text-muted">{task.category}</td>
-                <td className="px-6 py-3.5 text-[13px] text-text-secondary">{task.assignee}</td>
-                <td className="px-6 py-3.5 text-[13px] text-text-muted tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{task.due}</td>
-                <td className="px-6 py-3.5">
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${priorityStyles[task.priority]}`}>
-                    {task.priority}
-                  </span>
-                </td>
-                <td className="px-6 py-3.5">
-                  <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
-                </td>
-              </tr>
-            ))}
+            {mounted && hydrated && recentTasks.length > 0 ? (
+              recentTasks.map((task) => {
+                const statusLabel = TASK_STATUS_LABELS[task.status]
+                const pLabel = priorityLabels[task.priority] || '中'
+                return (
+                  <tr
+                    key={task.id}
+                    className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer"
+                    style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}
+                    onClick={() => router.push(`/tasks/${task.id}`)}
+                  >
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full shrink-0" style={{ background: statusColors[statusLabel] || 'rgba(28,25,23,0.25)' }} />
+                        <span className="text-[13px] text-text-secondary">{statusLabel}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{task.title}</td>
+                    <td className="px-6 py-3.5 text-[13px] text-text-muted">{task.category}</td>
+                    <td className="px-6 py-3.5 text-[13px] text-text-secondary">{getUserName(task.assignee_id)}</td>
+                    <td className="px-6 py-3.5 text-[13px] text-text-muted tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
+                      {task.due_date ? formatDateCompact(task.due_date) : '-'}
+                    </td>
+                    <td className="px-6 py-3.5">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${priorityStyles[pLabel] || ''}`}>
+                        {pLabel}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3.5">
+                      <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </td>
+                  </tr>
+                )
+              })
+            ) : (
+              // Skeleton rows during hydration
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i} className="border-b border-border">
+                  <td className="px-6 py-3.5"><div className="h-4 w-16 bg-bg-elevated rounded animate-pulse" /></td>
+                  <td className="px-6 py-3.5"><div className="h-4 w-40 bg-bg-elevated rounded animate-pulse" /></td>
+                  <td className="px-6 py-3.5"><div className="h-4 w-12 bg-bg-elevated rounded animate-pulse" /></td>
+                  <td className="px-6 py-3.5"><div className="h-4 w-20 bg-bg-elevated rounded animate-pulse" /></td>
+                  <td className="px-6 py-3.5"><div className="h-4 w-12 bg-bg-elevated rounded animate-pulse" /></td>
+                  <td className="px-6 py-3.5"><div className="h-4 w-8 bg-bg-elevated rounded animate-pulse" /></td>
+                  <td className="px-6 py-3.5"></td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </motion.div>

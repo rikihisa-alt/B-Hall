@@ -1,9 +1,12 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { sections, toolItems, getSectionKeyFromPathname } from '@/lib/navigation'
 import { useNavigation } from './sidebar-context'
+import { useAuth } from '@/hooks/use-auth'
+import { USER_ROLE_LABELS } from '@/lib/constants'
+import { Check } from 'lucide-react'
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -17,11 +20,39 @@ export function Sidebar() {
     closeSubSidebar,
   } = useNavigation()
 
+  const { currentUser, users, switchUser, mounted } = useAuth()
+
+  // ── ユーザー切替ポップオーバー ──
+  const [userPopoverOpen, setUserPopoverOpen] = useState(false)
+  const popoverRef = useRef<HTMLDivElement>(null)
+  const avatarRef = useRef<HTMLButtonElement>(null)
+
   // パスからアクティブセクションを同期
   useEffect(() => {
     const key = getSectionKeyFromPathname(pathname)
     setActiveSection(key)
   }, [pathname, setActiveSection])
+
+  // ポップオーバー外クリックで閉じる
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (
+      popoverRef.current &&
+      !popoverRef.current.contains(e.target as Node) &&
+      avatarRef.current &&
+      !avatarRef.current.contains(e.target as Node)
+    ) {
+      setUserPopoverOpen(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userPopoverOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [userPopoverOpen, handleClickOutside])
 
   const handleSectionClick = (section: typeof sections[number]) => {
     if (section.directNav) {
@@ -38,6 +69,13 @@ export function Sidebar() {
     router.push(href)
     closeSubSidebar()
   }
+
+  const handleUserSwitch = (userId: string) => {
+    switchUser(userId)
+    setUserPopoverOpen(false)
+  }
+
+  const avatarInitial = mounted && currentUser ? currentUser.avatar_initial : '田'
 
   return (
     <aside className="w-[68px] flex flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
@@ -120,10 +158,81 @@ export function Sidebar() {
         </div>
       </nav>
 
-      {/* ── ユーザーエリア ── */}
-      <div className="border-t border-border p-2 flex justify-center">
-        <button className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-[11px] font-bold cursor-pointer hover:ring-2 hover:ring-accent/30 transition-all">
-          田
+      {/* ── ユーザーエリア（ユーザー切替ポップオーバー付き） ── */}
+      <div className="relative border-t border-border p-2 flex justify-center">
+        {/* ユーザー切替ポップオーバー */}
+        {userPopoverOpen && (
+          <div
+            ref={popoverRef}
+            className="absolute bottom-14 left-2 w-[220px] bg-bg-surface border border-border rounded-[16px] shadow-lg z-[300] overflow-hidden"
+          >
+            <div className="px-3 py-2.5 border-b border-border">
+              <p className="text-[11px] font-medium text-text-muted">ユーザー切替</p>
+            </div>
+            <div className="py-1.5 max-h-[320px] overflow-y-auto">
+              {users.map((user) => {
+                const isCurrentUser = currentUser?.id === user.id
+                return (
+                  <button
+                    key={user.id}
+                    onClick={() => handleUserSwitch(user.id)}
+                    className={`
+                      w-full flex items-center gap-2.5 px-3 py-2 text-left cursor-pointer
+                      transition-colors duration-100
+                      ${isCurrentUser
+                        ? 'bg-accent-muted'
+                        : 'hover:bg-bg-elevated'
+                      }
+                    `}
+                  >
+                    {/* アバター */}
+                    <div
+                      className={`
+                        w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0
+                        ${isCurrentUser
+                          ? 'bg-accent text-white'
+                          : 'bg-bg-elevated text-text-secondary border border-border'
+                        }
+                      `}
+                    >
+                      {user.avatar_initial}
+                    </div>
+                    {/* ユーザー情報 */}
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-[12px] font-medium truncate ${
+                        isCurrentUser ? 'text-accent' : 'text-text-primary'
+                      }`}>
+                        {user.name}
+                      </p>
+                      <p className="text-[10px] text-text-muted truncate">
+                        {USER_ROLE_LABELS[user.role]} / {user.department}
+                      </p>
+                    </div>
+                    {/* チェックマーク */}
+                    {isCurrentUser && (
+                      <Check className="w-3.5 h-3.5 text-accent shrink-0" strokeWidth={2.5} />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* アバターボタン */}
+        <button
+          ref={avatarRef}
+          onClick={() => setUserPopoverOpen((prev) => !prev)}
+          className={`
+            w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-bold cursor-pointer
+            transition-all duration-150
+            ${userPopoverOpen
+              ? 'bg-accent text-white ring-2 ring-accent/30'
+              : 'bg-accent text-white hover:ring-2 hover:ring-accent/30'
+            }
+          `}
+        >
+          {avatarInitial}
         </button>
       </div>
     </aside>
