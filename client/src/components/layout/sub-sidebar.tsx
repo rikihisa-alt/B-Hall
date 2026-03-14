@@ -44,7 +44,7 @@ export function SubSidebar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed left-[68px] top-16 right-0 bottom-0 z-[140] bg-black/10"
+            className="fixed left-[68px] top-[88px] right-0 bottom-0 z-[140] bg-black/10"
             onClick={closeSubSidebar}
           />
 
@@ -55,7 +55,7 @@ export function SubSidebar() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -280, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="fixed left-[68px] top-16 bottom-0 w-[280px] z-[150] bg-bg-surface border-r border-border flex flex-col shadow-lg"
+            className="fixed left-[68px] top-[88px] bottom-0 w-[280px] z-[150] bg-bg-surface border-r border-border flex flex-col shadow-lg"
           >
             {/* ── ヘッダー ── */}
             <div className="flex items-center justify-between px-5 h-14 shrink-0 border-b border-border">
