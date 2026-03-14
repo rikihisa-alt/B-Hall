@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { useEmployeeStore } from '@/stores/employee-store'
 import { useTaskStore } from '@/stores/task-store'
+import { useToast } from '@/components/ui/toast-provider'
 import { TASK_STATUS_LABELS } from '@/lib/constants'
 import { formatDateCompact } from '@/lib/date'
 
@@ -25,6 +26,7 @@ export default function HRPage() {
   const empHydrated = useEmployeeStore((s) => s._hydrated)
   const tasks = useTaskStore((s) => s.tasks)
   const taskHydrated = useTaskStore((s) => s._hydrated)
+  const { addToast } = useToast()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -86,37 +88,37 @@ export default function HRPage() {
         desc: '社保届出・雇保手続き',
         icon: FileText,
         count: procedureTasks.length,
-        href: '/hr',
+        href: null,
       },
       {
         name: '勤怠確認',
         desc: '月次勤怠の確認・承認',
         icon: Calendar,
         count: attendanceTasks.length,
-        href: '/hr',
+        href: null,
       },
       {
         name: '異動・評価',
         desc: '人事異動・昇格管理',
         icon: UserCheck,
         count: transferTasks.length,
-        href: '/hr',
+        href: null,
       },
     ]
   }, [hrTasks])
 
   // ── 管理メニュー（実データ連動） ──
   const manageItems = useMemo(() => [
-    { name: '従業員一覧', meta: `${empStats.total}名 在籍`, icon: Users, href: '/hr/employees' },
-    { name: '組織図', meta: '部署・チーム構成', icon: ClipboardList, href: '/hr' },
-    { name: '雇用契約', meta: '契約更新 1件期限近', icon: FileText, href: '/hr' },
+    { name: '従業員一覧', meta: `${empStats.total}名 在籍`, icon: Users, href: '/hr/employees' as string | null },
+    { name: '組織図', meta: '部署・チーム構成', icon: ClipboardList, href: null as string | null },
+    { name: '雇用契約', meta: '契約更新 1件期限近', icon: FileText, href: null as string | null },
   ], [empStats.total])
 
   const systems = [
-    { name: '社会保険', meta: '加入・喪失管理', icon: Shield, href: '/hr' },
-    { name: '年末調整', meta: '次回 12月', icon: Calendar, href: '/hr' },
-    { name: '健康診断', meta: '4月実施 未受診5名', icon: Heart, href: '/hr' },
-    { name: '就業規則', meta: 'v3.2 最新', icon: FileText, href: '/hr' },
+    { name: '社会保険', meta: '加入・喪失管理', icon: Shield, href: null as string | null },
+    { name: '年末調整', meta: '次回 12月', icon: Calendar, href: null as string | null },
+    { name: '健康診断', meta: '4月実施 未受診5名', icon: Heart, href: null as string | null },
+    { name: '就業規則', meta: 'v3.2 最新', icon: FileText, href: null as string | null },
   ]
 
   // ローディング
@@ -158,22 +160,25 @@ export default function HRPage() {
         >
           {todayItems.map(item => {
             const Icon = item.icon
-            return (
-              <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
-                    <p className="text-[12px] text-text-secondary mt-0.5">{item.desc}</p>
-                  </div>
-                  {item.count > 0 && (
-                    <span className="text-[12px] font-semibold text-accent tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
-                      {item.count}
-                    </span>
-                  )}
-                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
+            const content = (
+              <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
+                <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
+                  <p className="text-[12px] text-text-secondary mt-0.5">{item.desc}</p>
                 </div>
-              </Link>
+                {item.count > 0 && (
+                  <span className="text-[12px] font-semibold text-accent tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
+                    {item.count}
+                  </span>
+                )}
+                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
+              </div>
+            )
+            return item.href ? (
+              <Link key={item.name} href={item.href}>{content}</Link>
+            ) : (
+              <div key={item.name} onClick={() => addToast('info', 'この機能は準備中です')}>{content}</div>
             )
           })}
         </motion.div>
@@ -188,15 +193,18 @@ export default function HRPage() {
         >
           {manageItems.map(item => {
             const Icon = item.icon
-            return (
-              <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
-                  <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
-                  <span className="text-[12px] text-text-secondary">{item.meta}</span>
-                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
-                </div>
-              </Link>
+            const content = (
+              <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
+                <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
+                <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
+                <span className="text-[12px] text-text-secondary">{item.meta}</span>
+                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
+              </div>
+            )
+            return item.href ? (
+              <Link key={item.name} href={item.href}>{content}</Link>
+            ) : (
+              <div key={item.name} onClick={() => addToast('info', 'この機能は準備中です')}>{content}</div>
             )
           })}
         </motion.div>
@@ -285,15 +293,18 @@ export default function HRPage() {
         >
           {systems.map(item => {
             const Icon = item.icon
-            return (
-              <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
-                  <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
-                  <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
-                  <span className="text-[12px] text-text-secondary">{item.meta}</span>
-                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
-                </div>
-              </Link>
+            const content = (
+              <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
+                <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
+                <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
+                <span className="text-[12px] text-text-secondary">{item.meta}</span>
+                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
+              </div>
+            )
+            return item.href ? (
+              <Link key={item.name} href={item.href}>{content}</Link>
+            ) : (
+              <div key={item.name} onClick={() => addToast('info', 'この機能は準備中です')}>{content}</div>
             )
           })}
         </motion.div>

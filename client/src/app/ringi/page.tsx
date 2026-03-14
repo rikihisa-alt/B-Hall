@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
 import { useRingiStore } from '@/stores/ringi-store'
 import { useAuth } from '@/hooks/use-auth'
+import { useToast } from '@/components/ui/toast-provider'
 import { RingiCreateModal } from '@/features/ringi/components/ringi-create-modal'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -34,6 +35,7 @@ export default function RingiPage() {
   const getPendingApprovals = useRingiStore((s) => s.getPendingApprovals)
   const hydrated = useRingiStore((s) => s._hydrated)
   const { currentUser } = useAuth()
+  const { addToast } = useToast()
 
   useEffect(() => {
     setMounted(true)
@@ -240,7 +242,14 @@ export default function RingiPage() {
           className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
-          <Link href="/ringi">
+          {/* 稟議一覧 scrolls to the list below */}
+          <button
+            onClick={() => {
+              const el = document.getElementById('all-ringi-section')
+              if (el) el.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="w-full text-left"
+          >
             <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Search className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">稟議一覧</span>
@@ -249,26 +258,33 @@ export default function RingiPage() {
               </span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
-          </Link>
-          <Link href="/ringi">
+          </button>
+          <button
+            onClick={() => addToast('info', 'この機能は準備中です')}
+            className="w-full text-left"
+          >
             <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <GitBranch className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">承認ルート設定</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
-          </Link>
-          <Link href="/ringi">
+          </button>
+          <button
+            onClick={() => addToast('info', 'この機能は準備中です')}
+            className="w-full text-left"
+          >
             <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <FileText className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">テンプレート</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
-          </Link>
+          </button>
         </motion.div>
       </motion.section>
 
       {/* すべての稟議 */}
       <motion.section
+        id="all-ringi-section"
         variants={staggerContainer}
         initial="hidden"
         animate="show"

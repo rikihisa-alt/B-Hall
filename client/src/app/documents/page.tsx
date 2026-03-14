@@ -454,7 +454,14 @@ export default function DocumentsPage() {
               <p className="text-[12px] text-text-muted">
                 更新: {formatRelative(detailDoc.updated_at)}
               </p>
-              <Button variant="secondary" size="sm" icon={Download}>
+              <Button
+                variant="secondary"
+                size="sm"
+                icon={Download}
+                onClick={() => {
+                  addToast('success', `ダウンロードを開始しました: ${detailDoc.file_name}`)
+                }}
+              >
                 ダウンロード
               </Button>
             </div>

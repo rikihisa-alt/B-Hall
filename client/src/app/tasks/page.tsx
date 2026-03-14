@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
 import {
   ChevronRight,
@@ -11,6 +11,7 @@ import {
   Search,
   Plus,
   Filter,
+  X,
 } from 'lucide-react'
 import { useTaskStore } from '@/stores/task-store'
 import { useAuthStore } from '@/stores/auth-store'
@@ -72,23 +73,92 @@ export default function TasksPage() {
   const [createOpen, setCreateOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<FilterTab>('all')
+  const [filterOpen, setFilterOpen] = useState(false)
+  const [filterStatus, setFilterStatus] = useState<Set<string>>(new Set())
+  const [filterPriority, setFilterPriority] = useState<Set<string>>(new Set())
+  const [filterDepartment, setFilterDepartment] = useState<Set<string>>(new Set())
+  const [filterAssignee, setFilterAssignee] = useState<Set<string>>(new Set())
+  const filterRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Close filter panel on outside click
+  useEffect(() => {
+    if (!filterOpen) return
+    const handleClick = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+        setFilterOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [filterOpen])
 
   const allTasks = useMemo(() => {
     if (!mounted || !hydrated) return []
     return getActiveTasks()
   }, [mounted, hydrated, getActiveTasks])
 
+  // Compute unique values for filter options
+  const filterOptions = useMemo(() => {
+    const statuses = new Set<string>()
+    const priorities = new Set<string>()
+    const departments = new Set<string>()
+    const assignees = new Map<string, string>()
+    allTasks.forEach((t) => {
+      statuses.add(TASK_STATUS_LABELS[t.status] || t.status)
+      priorities.add(priorityLabels[t.priority] || '中')
+      if (t.department) departments.add(t.department)
+      const name = getUserName(t.assignee_id)
+      assignees.set(t.assignee_id, name)
+    })
+    return {
+      statuses: Array.from(statuses),
+      priorities: Array.from(priorities),
+      departments: Array.from(departments),
+      assignees: Array.from(assignees.entries()),
+    }
+  }, [allTasks, users])
+
+  const activeFilterCount = filterStatus.size + filterPriority.size + filterDepartment.size + filterAssignee.size
+
+  const clearAllFilters = () => {
+    setFilterStatus(new Set())
+    setFilterPriority(new Set())
+    setFilterDepartment(new Set())
+    setFilterAssignee(new Set())
+  }
+
+  const toggleFilterItem = (set: Set<string>, item: string, setter: (s: Set<string>) => void) => {
+    const next = new Set(set)
+    if (next.has(item)) next.delete(item)
+    else next.add(item)
+    setter(next)
+  }
+
   // Filter tasks
   const filteredTasks = useMemo(() => {
     let result = allTasks
 
-    // Status filter
+    // Status tab filter
     if (activeFilter !== 'all') {
       result = result.filter((t) => t.status === activeFilter)
+    }
+
+    // Advanced filters
+    if (filterStatus.size > 0) {
+      result = result.filter((t) => filterStatus.has(TASK_STATUS_LABELS[t.status] || t.status))
+    }
+    if (filterPriority.size > 0) {
+      result = result.filter((t) => filterPriority.has(priorityLabels[t.priority] || '中'))
+    }
+    if (filterDepartment.size > 0) {
+      result = result.filter((t) => t.department && filterDepartment.has(t.department))
+    }
+    if (filterAssignee.size > 0) {
+      result = result.filter((t) => filterAssignee.has(t.assignee_id))
     }
 
     // Search filter
@@ -100,7 +170,7 @@ export default function TasksPage() {
     }
 
     return result
-  }, [allTasks, activeFilter, searchQuery])
+  }, [allTasks, activeFilter, searchQuery, filterStatus, filterPriority, filterDepartment, filterAssignee])
 
   // Stats from real data
   const stats = useMemo(() => {
@@ -157,10 +227,135 @@ export default function TasksPage() {
           <p className="text-[13px] text-text-secondary mt-1">{filteredTasks.length}件のタスク</p>
         </motion.div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 h-9 rounded-[10px] bg-bg-surface border border-border text-[13px] text-text-secondary font-medium hover:bg-bg-elevated transition-colors">
-            <Filter className="w-3.5 h-3.5" strokeWidth={1.75} />
-            フィルタ
-          </button>
+          <div className="relative" ref={filterRef}>
+            <button
+              onClick={() => setFilterOpen((v) => !v)}
+              className={`flex items-center gap-2 px-4 h-9 rounded-[10px] border text-[13px] font-medium transition-colors cursor-pointer ${
+                activeFilterCount > 0
+                  ? 'bg-[rgba(79,70,229,0.08)] border-accent/30 text-accent'
+                  : 'bg-bg-surface border-border text-text-secondary hover:bg-bg-elevated'
+              }`}
+            >
+              <Filter className="w-3.5 h-3.5" strokeWidth={1.75} />
+              フィルタ
+              {activeFilterCount > 0 && (
+                <span className="ml-1 w-5 h-5 rounded-full bg-accent text-white text-[10px] flex items-center justify-center font-bold">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+
+            <AnimatePresence>
+              {filterOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 top-full mt-2 w-[340px] bg-bg-surface border border-border rounded-[16px] shadow-lg z-50 overflow-hidden"
+                >
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+                    <span className="text-[13px] font-semibold text-text-primary">フィルタ</span>
+                    <div className="flex items-center gap-2">
+                      {activeFilterCount > 0 && (
+                        <button
+                          onClick={clearAllFilters}
+                          className="text-[11px] text-accent font-medium hover:underline cursor-pointer"
+                        >
+                          すべてクリア
+                        </button>
+                      )}
+                      <button onClick={() => setFilterOpen(false)} className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-bg-elevated transition-colors cursor-pointer">
+                        <X className="w-3.5 h-3.5 text-text-muted" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="px-5 py-4 space-y-5 max-h-[420px] overflow-y-auto">
+                    {/* Status */}
+                    <div>
+                      <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">ステータス</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {filterOptions.statuses.map((s) => (
+                          <button
+                            key={s}
+                            onClick={() => toggleFilterItem(filterStatus, s, setFilterStatus)}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${
+                              filterStatus.has(s)
+                                ? 'bg-accent text-white border-accent'
+                                : 'bg-bg-base border-border text-text-secondary hover:border-accent/40'
+                            }`}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Priority */}
+                    <div>
+                      <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">優先度</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {filterOptions.priorities.map((p) => (
+                          <button
+                            key={p}
+                            onClick={() => toggleFilterItem(filterPriority, p, setFilterPriority)}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${
+                              filterPriority.has(p)
+                                ? 'bg-accent text-white border-accent'
+                                : 'bg-bg-base border-border text-text-secondary hover:border-accent/40'
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Department */}
+                    {filterOptions.departments.length > 0 && (
+                      <div>
+                        <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">部署</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {filterOptions.departments.map((d) => (
+                            <button
+                              key={d}
+                              onClick={() => toggleFilterItem(filterDepartment, d, setFilterDepartment)}
+                              className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${
+                                filterDepartment.has(d)
+                                  ? 'bg-accent text-white border-accent'
+                                  : 'bg-bg-base border-border text-text-secondary hover:border-accent/40'
+                              }`}
+                            >
+                              {d}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {/* Assignee */}
+                    {filterOptions.assignees.length > 0 && (
+                      <div>
+                        <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">担当者</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {filterOptions.assignees.map(([id, name]) => (
+                            <button
+                              key={id}
+                              onClick={() => toggleFilterItem(filterAssignee, id, setFilterAssignee)}
+                              className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${
+                                filterAssignee.has(id)
+                                  ? 'bg-accent text-white border-accent'
+                                  : 'bg-bg-base border-border text-text-secondary hover:border-accent/40'
+                              }`}
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
           <button
             onClick={() => setCreateOpen(true)}
             className="flex items-center gap-2 bg-accent text-white font-semibold px-4 h-9 rounded-[10px] text-[13px] shadow-[0_0_12px_rgba(79,70,229,0.2)] hover:-translate-y-[2px] hover:shadow-[0_0_20px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200 cursor-pointer"
@@ -195,6 +390,40 @@ export default function TasksPage() {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Active Filter Tags */}
+      {activeFilterCount > 0 && (
+        <div className="flex items-center gap-2 flex-wrap mb-4">
+          <span className="text-[11px] text-text-muted font-medium">適用中:</span>
+          {Array.from(filterStatus).map((s) => (
+            <span key={`s-${s}`} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[rgba(79,70,229,0.08)] text-[11px] font-medium text-accent border border-accent/20">
+              {s}
+              <button onClick={() => toggleFilterItem(filterStatus, s, setFilterStatus)} className="hover:text-accent/70 cursor-pointer"><X className="w-3 h-3" /></button>
+            </span>
+          ))}
+          {Array.from(filterPriority).map((p) => (
+            <span key={`p-${p}`} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[rgba(79,70,229,0.08)] text-[11px] font-medium text-accent border border-accent/20">
+              {p}
+              <button onClick={() => toggleFilterItem(filterPriority, p, setFilterPriority)} className="hover:text-accent/70 cursor-pointer"><X className="w-3 h-3" /></button>
+            </span>
+          ))}
+          {Array.from(filterDepartment).map((d) => (
+            <span key={`d-${d}`} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[rgba(79,70,229,0.08)] text-[11px] font-medium text-accent border border-accent/20">
+              {d}
+              <button onClick={() => toggleFilterItem(filterDepartment, d, setFilterDepartment)} className="hover:text-accent/70 cursor-pointer"><X className="w-3 h-3" /></button>
+            </span>
+          ))}
+          {Array.from(filterAssignee).map((id) => (
+            <span key={`a-${id}`} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[rgba(79,70,229,0.08)] text-[11px] font-medium text-accent border border-accent/20">
+              {getUserName(id)}
+              <button onClick={() => toggleFilterItem(filterAssignee, id, setFilterAssignee)} className="hover:text-accent/70 cursor-pointer"><X className="w-3 h-3" /></button>
+            </span>
+          ))}
+          <button onClick={clearAllFilters} className="text-[11px] text-text-muted hover:text-accent font-medium cursor-pointer">
+            すべてクリア
+          </button>
+        </div>
+      )}
 
       {/* Task Table */}
       <motion.div

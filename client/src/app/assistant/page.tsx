@@ -1,63 +1,69 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
+import { motion, AnimatePresence } from 'framer-motion'
+import { fadeUp, pageTransition } from '@/lib/animation'
+import { useChatStore } from '@/stores/chat-store'
 import {
   Bot,
   Send,
   Sparkles,
-  FileText,
-  Calculator,
-  Users,
-  HelpCircle,
-  Clock,
   ChevronRight,
+  Trash2,
 } from 'lucide-react'
 
-/* ── Mock Data ── */
+/* ── Quick Actions ── */
 
-const suggestedQuestions = [
-  { icon: FileText, text: '経費申請の手順を教えて', category: '申請・承認' },
-  { icon: Calculator, text: '今月の経費精算状況は？', category: '経理' },
-  { icon: Users, text: '入社手続きに必要な書類は？', category: '人事' },
-  { icon: HelpCircle, text: '有給休暇の残日数は？', category: '労務' },
+const quickActions = [
+  '今日のタスクは？',
+  '承認待ちは？',
+  '今月の経費は？',
+  '全体の状況は？',
 ]
 
-const chatHistory = [
-  {
-    role: 'assistant' as const,
-    content: 'こんにちは！ジジロボです。B-Hallに関することなら何でもお気軽にご質問ください。業務手順の確認、申請の作成サポート、社内ルールの質問などお手伝いします。',
-    time: '10:00',
-  },
-  {
-    role: 'user' as const,
-    content: '経費申請のやり方を教えてください',
-    time: '10:02',
-  },
-  {
-    role: 'assistant' as const,
-    content: '経費申請の手順をご案内します。\n\n1. サイドバーから「業務統制」→「申請・承認」を開きます\n2. 右上の「新規申請」ボタンをクリック\n3. 申請種別で「経費精算」を選択\n4. 必要事項（日付、金額、用途、勘定科目）を入力\n5. 領収書を添付\n6. 承認者を確認して「申請」をクリック\n\n承認者への通知は自動で送信されます。承認状況は「申請・承認」画面で確認できます。',
-    time: '10:02',
-  },
-]
+/* ── Typing Indicator ── */
+
+function TypingIndicator() {
+  return (
+    <div className="flex justify-start">
+      <div className="max-w-[80%]">
+        <div className="flex items-end gap-2">
+          <Bot className="w-4 h-4 text-accent shrink-0 mb-1" strokeWidth={1.75} />
+          <div className="px-4 py-3 bg-white border border-border rounded-[16px] rounded-bl-sm shadow-card">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-text-muted animate-[bounce_1.4s_ease-in-out_infinite]" />
+              <span className="w-2 h-2 rounded-full bg-text-muted animate-[bounce_1.4s_ease-in-out_0.2s_infinite]" />
+              <span className="w-2 h-2 rounded-full bg-text-muted animate-[bounce_1.4s_ease-in-out_0.4s_infinite]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── Main Page ── */
 
 export default function AssistantPage() {
   const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState(chatHistory)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement>(null)
+
+  const messages = useChatStore((s) => s.messages)
+  const isTyping = useChatStore((s) => s.isTyping)
+  const sendMessage = useChatStore((s) => s.sendMessage)
+  const clearHistory = useChatStore((s) => s.clearHistory)
+
+  // Auto-scroll to bottom on new messages or typing
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, isTyping])
 
   const handleSend = () => {
-    if (!message.trim()) return
-    setMessages([
-      ...messages,
-      { role: 'user' as const, content: message, time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) },
-      {
-        role: 'assistant' as const,
-        content: 'ありがとうございます。確認しますので少々お待ちください...\n\n（※デモ版のため、実際のAI応答は開発中です）',
-        time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
-      },
-    ])
+    const text = message.trim()
+    if (!text || isTyping) return
+    sendMessage(text)
     setMessage('')
   }
 
@@ -65,6 +71,22 @@ export default function AssistantPage() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
+    }
+  }
+
+  const handleQuickAction = (text: string) => {
+    if (isTyping) return
+    sendMessage(text)
+  }
+
+  const formatTime = (timestamp: string) => {
+    try {
+      return new Date(timestamp).toLocaleTimeString('ja-JP', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    } catch {
+      return ''
     }
   }
 
@@ -77,14 +99,16 @@ export default function AssistantPage() {
     >
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-[13px] mb-4">
-        <Link href="/" className="text-text-muted hover:text-text-primary transition-colors">ホーム</Link>
+        <Link href="/" className="text-text-muted hover:text-text-primary transition-colors">
+          ホーム
+        </Link>
         <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
         <span className="text-text-secondary font-medium">AIアシスタント</span>
       </nav>
 
       {/* Header */}
       <motion.div
-        className="flex items-center gap-3 mb-6"
+        className="flex items-center gap-3 mb-4"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -98,42 +122,18 @@ export default function AssistantPage() {
             <p className="text-[13px] text-text-secondary mt-0.5">AIアシスタント</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(79,70,229,0.08)] text-accent text-[12px] font-semibold">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-          オンライン
-        </div>
-      </motion.div>
-
-      {/* Suggested Questions */}
-      <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card mb-4"
-        variants={staggerContainer}
-        initial="hidden"
-        animate="show"
-      >
-        <h3 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">
-          よくある質問
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {suggestedQuestions.map((q, idx) => {
-            const QIcon = q.icon
-            return (
-              <motion.button
-                key={idx}
-                variants={fadeUp}
-                onClick={() => {
-                  setMessage(q.text)
-                }}
-                className="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(79,70,229,0.3)] transition-all text-left group"
-              >
-                <QIcon className="w-5 h-5 text-text-muted group-hover:text-accent shrink-0 transition-colors" strokeWidth={1.75} />
-                <div className="min-w-0">
-                  <p className="text-[13px] font-medium text-text-primary tracking-tight truncate">{q.text}</p>
-                  <p className="text-[11px] text-text-muted">{q.category}</p>
-                </div>
-              </motion.button>
-            )
-          })}
+        <div className="ml-auto flex items-center gap-3">
+          <button
+            onClick={clearHistory}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-elevated border border-border text-text-muted text-[12px] font-medium hover:text-text-secondary hover:border-border-hover transition-all"
+          >
+            <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
+            履歴クリア
+          </button>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(79,70,229,0.08)] text-accent text-[12px] font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            オンライン
+          </div>
         </div>
       </motion.div>
 
@@ -143,58 +143,100 @@ export default function AssistantPage() {
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        transition={{ delay: 0.15 }}
+        transition={{ delay: 0.1 }}
       >
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-4">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] ${msg.role === 'user' ? 'order-1' : ''}`}>
-                <div className="flex items-end gap-2">
-                  {msg.role === 'assistant' && (
-                    <Bot className="w-4 h-4 text-accent shrink-0 mb-1" strokeWidth={1.75} />
-                  )}
+        <div
+          ref={chatContainerRef}
+          className="flex-1 overflow-y-auto p-5 space-y-4"
+        >
+          <AnimatePresence initial={false}>
+            {messages.map((msg) => (
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className="max-w-[80%]">
+                  <div className="flex items-end gap-2">
+                    {msg.role === 'assistant' && (
+                      <Bot className="w-4 h-4 text-accent shrink-0 mb-1" strokeWidth={1.75} />
+                    )}
+                    <div
+                      className={`px-4 py-3 text-[14px] leading-relaxed whitespace-pre-wrap ${
+                        msg.role === 'user'
+                          ? 'bg-accent text-white rounded-[16px] rounded-br-sm'
+                          : 'bg-white border border-border text-text-secondary rounded-[16px] rounded-bl-sm shadow-card'
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                  </div>
                   <div
-                    className={`px-4 py-3 text-[14px] leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'bg-accent text-white rounded-2xl rounded-br-sm'
-                        : 'bg-bg-elevated border border-border text-text-secondary rounded-2xl rounded-bl-sm'
+                    className={`flex items-center gap-1 mt-1 ${
+                      msg.role === 'user' ? 'justify-end' : 'ml-6'
                     }`}
                   >
-                    {msg.content.split('\n').map((line, i) => (
-                      <span key={i}>
-                        {line}
-                        {i < msg.content.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
+                    <span
+                      className="text-[11px] text-text-muted"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {formatTime(msg.timestamp)}
+                    </span>
                   </div>
                 </div>
-                <div className={`flex items-center gap-1 mt-1 ${msg.role === 'user' ? 'justify-end' : 'ml-6'}`}>
-                  <Clock className="w-3 h-3 text-text-muted" strokeWidth={1.75} />
-                  <span className="text-[11px] text-text-muted" style={{ fontFamily: 'var(--font-inter)' }}>{msg.time}</span>
-                </div>
-              </div>
-            </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {/* Typing Indicator */}
+          {isTyping && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <TypingIndicator />
+            </motion.div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="px-4 pt-2 pb-0 flex gap-2 flex-wrap">
+          {quickActions.map((text) => (
+            <button
+              key={text}
+              onClick={() => handleQuickAction(text)}
+              disabled={isTyping}
+              className="px-3 py-1.5 rounded-full bg-[rgba(79,70,229,0.06)] border border-[rgba(79,70,229,0.15)] text-accent text-[12px] font-medium hover:bg-[rgba(79,70,229,0.12)] hover:border-[rgba(79,70,229,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              {text}
+            </button>
           ))}
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border mt-2">
           <div className="flex items-end gap-3">
             <div className="flex-1 relative">
-              <textarea
+              <input
+                type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="メッセージを入力..."
-                rows={1}
-                className="w-full resize-none rounded-[10px] bg-bg-elevated border border-border px-4 py-3 text-[14px] text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"
+                disabled={isTyping}
+                className="w-full rounded-full bg-bg-elevated border border-border px-5 py-3 text-[14px] text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 disabled:opacity-60 transition-all"
               />
             </div>
             <button
               onClick={handleSend}
-              disabled={!message.trim()}
-              className="w-10 h-10 rounded-[10px] bg-accent flex items-center justify-center text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0 shadow-[0_0_12px_rgba(79,70,229,0.2)]"
+              disabled={!message.trim() || isTyping}
+              className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0 shadow-[0_0_12px_rgba(79,70,229,0.2)]"
             >
               <Send className="w-4 h-4" />
             </button>

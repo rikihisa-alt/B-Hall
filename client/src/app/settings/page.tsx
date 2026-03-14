@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import { useToast } from '@/components/ui/toast-provider'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Modal } from '@/components/ui/modal'
 import {
   User,
   Building2,
@@ -25,6 +26,9 @@ import {
   Globe,
   FileText,
   Workflow,
+  Monitor,
+  LogOut,
+  Construction,
 } from 'lucide-react'
 
 /* ── Types ── */
@@ -100,6 +104,14 @@ export default function SettingsPage() {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+
+  // Session management
+  const [sessionModalOpen, setSessionModalOpen] = useState(false)
+  const [sessions, setSessions] = useState([
+    { id: '1', device: 'MacBook Air', browser: 'Chrome', location: '東京', lastActive: 'アクティブ', isCurrent: true },
+    { id: '2', device: 'iPhone 15', browser: 'Safari', location: '東京', lastActive: '3日前', isCurrent: false },
+    { id: '3', device: 'Windows PC', browser: 'Edge', location: '大阪', lastActive: '1週間前', isCurrent: false },
+  ])
 
   // Notification settings
   const [notificationSettings, setNotificationSettings] = useState<NotificationSetting[]>([])
@@ -468,13 +480,72 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between p-4 rounded-[10px] bg-bg-elevated border border-border">
                   <div>
                     <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">アクティブセッション</h4>
-                    <p className="text-[12px] text-text-muted mt-0.5">現在1デバイスからログイン中</p>
+                    <p className="text-[12px] text-text-muted mt-0.5">現在{sessions.length}デバイスからログイン中</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-text-secondary bg-bg-elevated border border-border hover:bg-[rgba(0,0,0,0.03)] transition-all">
+                  <button
+                    onClick={() => setSessionModalOpen(true)}
+                    className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-text-secondary bg-bg-elevated border border-border hover:bg-[rgba(0,0,0,0.03)] hover:border-accent/30 transition-all cursor-pointer"
+                  >
                     管理
                   </button>
                 </div>
               </div>
+
+              {/* Session Management Modal */}
+              <Modal
+                open={sessionModalOpen}
+                onClose={() => setSessionModalOpen(false)}
+                title="セッション管理"
+                footer={
+                  <Button variant="ghost" onClick={() => setSessionModalOpen(false)}>閉じる</Button>
+                }
+              >
+                <div className="space-y-3">
+                  {sessions.map((session) => (
+                    <div
+                      key={session.id}
+                      className="flex items-center gap-4 p-4 rounded-[12px] bg-bg-base border border-border"
+                    >
+                      <div className="w-9 h-9 rounded-[10px] bg-bg-elevated flex items-center justify-center shrink-0">
+                        <Monitor className="w-[18px] h-[18px] text-text-muted" strokeWidth={1.75} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[14px] font-semibold text-text-primary tracking-tight">
+                          {session.device} &middot; {session.browser}
+                        </p>
+                        <p className="text-[12px] text-text-secondary mt-0.5">
+                          {session.location} &middot;{' '}
+                          {session.isCurrent ? (
+                            <span className="text-[#22C55E] font-semibold">{session.lastActive}</span>
+                          ) : (
+                            session.lastActive
+                          )}
+                        </p>
+                      </div>
+                      {session.isCurrent ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold text-[#22C55E] bg-[rgba(34,197,94,0.08)]">
+                          <Check className="w-3 h-3" />
+                          現在のセッション
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setSessions((prev) => prev.filter((s) => s.id !== session.id))
+                            addToast('success', 'セッションを終了しました')
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-danger bg-[rgba(239,68,68,0.06)] border border-[rgba(239,68,68,0.15)] hover:bg-[rgba(239,68,68,0.12)] transition-all cursor-pointer"
+                        >
+                          <LogOut className="w-3 h-3" />
+                          ログアウト
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  {sessions.length <= 1 && (
+                    <p className="text-[13px] text-text-muted text-center py-4">他のアクティブセッションはありません</p>
+                  )}
+                </div>
+              </Modal>
             </motion.div>
           )}
 
@@ -490,20 +561,20 @@ export default function SettingsPage() {
                   <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">テーマ</h4>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { name: 'Shiraki 白木', active: true },
-                      { name: 'ダーク', active: false },
-                      { name: 'システム', active: false },
+                      { name: 'Shiraki 白木', active: true, toast: '' },
+                      { name: 'ダーク', active: false, toast: 'ダークテーマは今後対応予定です' },
+                      { name: 'システム', active: false, toast: 'システムテーマは今後対応予定です' },
                     ].map((theme) => (
                       <button
                         key={theme.name}
                         onClick={() => {
                           if (theme.active) return
-                          addToast('info', '現在は Shiraki 白木 テーマのみ対応しています')
+                          addToast('info', theme.toast)
                         }}
-                        className={`p-4 rounded-[10px] text-center text-[13px] font-semibold transition-all ${
+                        className={`p-4 rounded-[10px] text-center text-[13px] font-semibold transition-all cursor-pointer ${
                           theme.active
                             ? 'bg-[rgba(79,70,229,0.08)] text-accent ring-2 ring-accent/20'
-                            : 'bg-bg-elevated border border-border text-text-muted hover:bg-[rgba(0,0,0,0.03)]'
+                            : 'bg-bg-elevated border border-border text-text-secondary hover:bg-[rgba(0,0,0,0.03)] hover:border-accent/30 active:scale-[0.98]'
                         }`}
                       >
                         {theme.name}
@@ -530,20 +601,30 @@ export default function SettingsPage() {
             className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
             variants={fadeUp}
           >
-            <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-4">管理者設定</h2>
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">管理者設定</h2>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.08)] text-[10px] font-semibold text-[#F59E0B] border border-[rgba(245,158,11,0.18)]">
+                <Construction className="w-2.5 h-2.5" strokeWidth={2} />
+                準備中
+              </span>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {advancedSettings.map((item) => (
-                <button
+                <div
                   key={item.title}
-                  onClick={() => addToast('info', `${item.title}は今後実装予定です`)}
-                  className="flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(79,70,229,0.3)] transition-all group text-left"
+                  className="relative flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border text-left group"
                 >
-                  <item.icon className="w-5 h-5 text-text-muted group-hover:text-accent flex-shrink-0 transition-colors" strokeWidth={1.75} />
-                  <div>
-                    <h4 className="text-[14px] font-medium text-text-primary tracking-tight">{item.title}</h4>
+                  <item.icon className="w-5 h-5 text-text-muted/50 flex-shrink-0" strokeWidth={1.75} />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-[14px] font-medium text-text-secondary tracking-tight">{item.title}</h4>
+                    </div>
                     <p className="text-[12px] text-text-muted">{item.description}</p>
                   </div>
-                </button>
+                  <span className="text-[10px] text-text-muted bg-bg-base px-2 py-0.5 rounded-md shrink-0">
+                    今後対応
+                  </span>
+                </div>
               ))}
             </div>
           </motion.div>

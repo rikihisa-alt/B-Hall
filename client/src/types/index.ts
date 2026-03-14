@@ -375,3 +375,12 @@ export interface FacilityBooking extends BaseEntity {
   purpose: string
   status: 'confirmed' | 'cancelled'
 }
+
+// ── Chat (AI Assistant) ──
+
+export interface ChatMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: string
+}
