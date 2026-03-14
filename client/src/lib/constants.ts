@@ -1,4 +1,4 @@
-import type { TaskStatus, TaskPriority, ApplicationStatus, RingiStatus, UserRole, ApplicationType, EmploymentType } from '@/types'
+import type { TaskStatus, TaskPriority, ApplicationStatus, RingiStatus, UserRole, ApplicationType, EmploymentType, DocumentCategory, ReportType, ImprovementCategory, KnowledgeType } from '@/types'
 
 // ── タスクステータス ──
 
@@ -162,4 +162,196 @@ export const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
   part_time: 'パート',
   contract: '契約社員',
   temporary: '派遣社員',
+}
+
+// ── 経理・財務 ──
+
+export const TRANSACTION_CATEGORIES = [
+  '売上', '仕入', '給与', '家賃', '光熱費', '通信費', '交通費',
+  '消耗品費', '接待交際費', '広告宣伝費', '支払手数料', '雑費', 'その他',
+] as const
+
+export const ACCOUNT_NAMES = [
+  '普通預金（三菱UFJ）', '普通預金（みずほ）', '当座預金', '現金', 'クレジットカード',
+] as const
+
+export const TRANSACTION_STATUS_LABELS: Record<string, string> = {
+  pending: '未確認',
+  confirmed: '確認済み',
+  cancelled: '取消',
+}
+
+export const TRANSACTION_STATUS_COLORS: Record<string, string> = {
+  pending: 'warning',
+  confirmed: 'success',
+  cancelled: 'neutral',
+}
+
+export const TRANSACTION_TYPE_LABELS: Record<string, string> = {
+  income: '収入',
+  expense: '支出',
+  transfer: '振替',
+}
+
+export const INVOICE_STATUS_LABELS: Record<string, string> = {
+  draft: '下書き',
+  issued: '発行済み',
+  sent: '送付済み',
+  paid: '入金済み',
+  overdue: '期限超過',
+  cancelled: '取消',
+}
+
+export const INVOICE_STATUS_COLORS: Record<string, string> = {
+  draft: 'neutral',
+  issued: 'info',
+  sent: 'processing',
+  paid: 'success',
+  overdue: 'danger',
+  cancelled: 'neutral',
+}
+
+export const PAYMENT_STATUS_LABELS: Record<string, string> = {
+  pending: '承認待ち',
+  approved: '承認済み',
+  completed: '支払済み',
+  cancelled: '取消',
+}
+
+export const PAYMENT_STATUS_COLORS: Record<string, string> = {
+  pending: 'warning',
+  approved: 'info',
+  completed: 'success',
+  cancelled: 'neutral',
+}
+
+export const PAYMENT_METHOD_LABELS: Record<string, string> = {
+  bank_transfer: '銀行振込',
+  cash: '現金',
+  credit_card: 'クレジットカード',
+  other: 'その他',
+}
+
+// ── 文書カテゴリ ──
+
+export const DOCUMENT_CATEGORY_LABELS: Record<DocumentCategory, string> = {
+  contract: '契約書',
+  nda: '秘密保持契約',
+  regulation: '規程',
+  manual: 'マニュアル',
+  form: 'フォーム・テンプレート',
+  certificate: '証明書',
+  report: '報告書',
+  other: 'その他',
+}
+
+export const DOCUMENT_CATEGORY_COLORS: Record<DocumentCategory, string> = {
+  contract: 'info',
+  nda: 'warning',
+  regulation: 'processing',
+  manual: 'success',
+  form: 'neutral',
+  certificate: 'info',
+  report: 'neutral',
+  other: 'neutral',
+}
+
+export const DOCUMENT_STATUS_LABELS: Record<string, string> = {
+  active: '有効',
+  expired: '期限切れ',
+  archived: 'アーカイブ',
+}
+
+export const DOCUMENT_STATUS_COLORS: Record<string, string> = {
+  active: 'success',
+  expired: 'danger',
+  archived: 'neutral',
+}
+
+// ── 報告種別 ──
+
+export const REPORT_TYPE_LABELS: Record<ReportType, string> = {
+  daily: '日報',
+  weekly: '週報',
+  monthly: '月報',
+  incident: '事故報告',
+  improvement: '改善報告',
+}
+
+export const REPORT_TYPE_COLORS: Record<ReportType, string> = {
+  daily: 'info',
+  weekly: 'processing',
+  monthly: 'success',
+  incident: 'danger',
+  improvement: 'warning',
+}
+
+export const REPORT_STATUS_LABELS: Record<string, string> = {
+  draft: '下書き',
+  submitted: '提出済み',
+  reviewed: 'レビュー済み',
+}
+
+export const REPORT_STATUS_COLORS: Record<string, string> = {
+  draft: 'neutral',
+  submitted: 'info',
+  reviewed: 'success',
+}
+
+// ── 改善カテゴリ ──
+
+export const IMPROVEMENT_CATEGORY_LABELS: Record<ImprovementCategory, string> = {
+  process: '業務プロセス',
+  cost: 'コスト削減',
+  quality: '品質向上',
+  safety: '安全衛生',
+  environment: '環境改善',
+  other: 'その他',
+}
+
+export const IMPROVEMENT_CATEGORY_COLORS: Record<ImprovementCategory, string> = {
+  process: 'info',
+  cost: 'success',
+  quality: 'warning',
+  safety: 'danger',
+  environment: 'processing',
+  other: 'neutral',
+}
+
+export const IMPROVEMENT_STATUS_LABELS: Record<string, string> = {
+  proposed: '提案中',
+  reviewing: '検討中',
+  approved: '承認済',
+  in_progress: '実施中',
+  completed: '完了',
+  rejected: '不採用',
+}
+
+export const IMPROVEMENT_STATUS_COLORS: Record<string, string> = {
+  proposed: 'info',
+  reviewing: 'warning',
+  approved: 'success',
+  in_progress: 'processing',
+  completed: 'success',
+  rejected: 'neutral',
+}
+
+// ── ナレッジ種別 ──
+
+export const KNOWLEDGE_TYPE_LABELS: Record<KnowledgeType, string> = {
+  manual: 'マニュアル',
+  procedure: '手順書',
+  faq: 'FAQ',
+  guide: 'ガイド',
+  template: 'テンプレート',
+  column: 'コラム',
+}
+
+export const KNOWLEDGE_TYPE_COLORS: Record<KnowledgeType, string> = {
+  manual: 'info',
+  procedure: 'success',
+  faq: 'warning',
+  guide: 'processing',
+  template: 'neutral',
+  column: 'info',
 }

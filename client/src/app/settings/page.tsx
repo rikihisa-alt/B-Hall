@@ -1,28 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
+import { useAuth } from '@/hooks/use-auth'
+import { useAuthStore } from '@/stores/auth-store'
+import { useToast } from '@/components/ui/toast-provider'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import {
   User,
   Building2,
   Bell,
   Shield,
   Palette,
-  Globe,
-  Database,
-  Key,
-  Mail,
-  Smartphone,
   ChevronRight,
   Check,
+  Mail,
+  Smartphone,
   Users,
+  Database,
+  Key,
+  Globe,
   FileText,
   Workflow,
 } from 'lucide-react'
 
-/* ── Types & Data ── */
+/* ── Types ── */
 
 type SettingsSection = 'profile' | 'organization' | 'notifications' | 'security' | 'appearance'
 
@@ -50,25 +55,130 @@ const advancedSettings = [
   { icon: Globe, title: 'ドメイン・SSO', description: 'カスタムドメイン、シングルサインオン設定' },
 ]
 
-const profileData = {
-  name: '田中太郎',
-  email: 'tanaka@example.com',
-  role: '管理者',
-  department: '開発部',
-  company: '株式会社サンプル',
+const roleLabels: Record<string, string> = {
+  ceo: '経営者',
+  exec: '役員',
+  admin: '管理者',
+  mgr: '部門責任者',
+  acc: '経理担当',
+  hr: '人事担当',
+  labor: '労務担当',
+  ga: '総務担当',
+  legal: '法務担当',
+  staff: '一般従業員',
+  viewer: '閲覧専用',
+  audit: '監査',
 }
 
-const notificationSettings = [
-  { label: 'タスク割当通知', email: true, app: true },
-  { label: '承認依頼通知', email: true, app: true },
-  { label: '期限リマインダー', email: true, app: true },
-  { label: 'コメント通知', email: false, app: true },
-  { label: '日報リマインダー', email: true, app: false },
-  { label: 'システムメンテナンス', email: true, app: true },
+interface NotificationSetting {
+  label: string
+  key: string
+  email: boolean
+  app: boolean
+}
+
+const DEFAULT_NOTIFICATION_SETTINGS: NotificationSetting[] = [
+  { label: 'タスク割当通知', key: 'task_assigned', email: true, app: true },
+  { label: '承認依頼通知', key: 'approval_requested', email: true, app: true },
+  { label: '期限リマインダー', key: 'deadline', email: true, app: true },
+  { label: 'コメント通知', key: 'comment', email: false, app: true },
+  { label: '日報リマインダー', key: 'daily_report', email: true, app: false },
+  { label: 'システムメンテナンス', key: 'system', email: true, app: true },
 ]
 
 export default function SettingsPage() {
+  const { currentUser, users, mounted } = useAuth()
+  const { addToast } = useToast()
   const [activeSection, setActiveSection] = useState<SettingsSection>('profile')
+
+  // Profile editing
+  const [editingProfile, setEditingProfile] = useState(false)
+  const [profileName, setProfileName] = useState('')
+  const [profileEmail, setProfileEmail] = useState('')
+
+  // Security
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+  // Notification settings
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSetting[]>([])
+
+  useEffect(() => {
+    if (currentUser) {
+      setProfileName(currentUser.name)
+      setProfileEmail(currentUser.email)
+    }
+  }, [currentUser])
+
+  useEffect(() => {
+    // Load notification settings from localStorage
+    const saved = localStorage.getItem('b-hall-notification-settings')
+    if (saved) {
+      try {
+        setNotificationSettings(JSON.parse(saved))
+      } catch {
+        setNotificationSettings(DEFAULT_NOTIFICATION_SETTINGS)
+      }
+    } else {
+      setNotificationSettings(DEFAULT_NOTIFICATION_SETTINGS)
+    }
+  }, [])
+
+  const handleSaveProfile = () => {
+    if (!profileName.trim() || !profileEmail.trim()) return
+    // Update auth store
+    const store = useAuthStore.getState()
+    if (currentUser) {
+      const updatedUsers = store.users.map((u) =>
+        u.id === currentUser.id
+          ? { ...u, name: profileName.trim(), email: profileEmail.trim(), updated_at: new Date().toISOString() }
+          : u
+      )
+      const updatedUser = updatedUsers.find((u) => u.id === currentUser.id)
+      useAuthStore.setState({ users: updatedUsers, currentUser: updatedUser || currentUser })
+    }
+    setEditingProfile(false)
+    addToast('success', 'プロフィールを更新しました')
+  }
+
+  const handleChangePassword = () => {
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      addToast('error', 'すべてのフィールドを入力してください')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      addToast('error', '新しいパスワードが一致しません')
+      return
+    }
+    if (newPassword.length < 8) {
+      addToast('error', 'パスワードは8文字以上にしてください')
+      return
+    }
+    // Simulated
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    addToast('success', 'パスワードを変更しました')
+  }
+
+  const toggleNotification = (key: string, field: 'email' | 'app') => {
+    const updated = notificationSettings.map((s) =>
+      s.key === key ? { ...s, [field]: !s[field] } : s
+    )
+    setNotificationSettings(updated)
+    localStorage.setItem('b-hall-notification-settings', JSON.stringify(updated))
+    addToast('success', '通知設定を更新しました')
+  }
+
+  if (!mounted) {
+    return (
+      <div className="space-y-6">
+        <div className="h-8 bg-bg-elevated rounded-[10px] w-48 animate-pulse" />
+        <div className="h-96 bg-bg-elevated rounded-[16px] animate-pulse" />
+      </div>
+    )
+  }
 
   return (
     <motion.div
@@ -117,6 +227,7 @@ export default function SettingsPage() {
 
         {/* Main Content */}
         <div className="flex-1 space-y-6 min-w-0">
+          {/* Profile */}
           {activeSection === 'profile' && (
             <motion.div
               className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
@@ -125,26 +236,104 @@ export default function SettingsPage() {
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">プロフィール設定</h2>
               <div className="flex items-center gap-5 mb-8">
                 <div className="w-20 h-20 rounded-[12px] bg-[rgba(79,70,229,0.08)] flex items-center justify-center text-accent text-2xl font-semibold">
-                  T
+                  {currentUser?.avatar_initial || 'U'}
                 </div>
                 <div>
-                  <h3 className="text-[14px] font-semibold text-text-primary tracking-tight">{profileData.name}</h3>
-                  <p className="text-[12px] text-text-muted">{profileData.email}</p>
+                  <h3 className="text-[14px] font-semibold text-text-primary tracking-tight">{currentUser?.name}</h3>
+                  <p className="text-[12px] text-text-muted">{currentUser?.email}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold text-accent bg-[rgba(79,70,229,0.08)]">
-                      {profileData.role}
+                      {roleLabels[currentUser?.role || ''] || currentUser?.role}
                     </span>
-                    <span className="text-[12px] text-text-muted">{profileData.department}</span>
+                    <span className="text-[12px] text-text-muted">{currentUser?.department}</span>
                   </div>
                 </div>
               </div>
-              <div className="space-y-0">
+
+              {editingProfile ? (
+                <div className="space-y-4">
+                  <Input
+                    label="氏名"
+                    required
+                    value={profileName}
+                    onChange={(e) => setProfileName(e.target.value)}
+                  />
+                  <Input
+                    label="メールアドレス"
+                    required
+                    type="email"
+                    value={profileEmail}
+                    onChange={(e) => setProfileEmail(e.target.value)}
+                  />
+                  <div className="flex items-center justify-between py-4 border-b border-border">
+                    <span className="text-[12px] text-text-muted">所属会社</span>
+                    <span className="text-[14px] font-semibold text-text-primary tracking-tight">株式会社Backlly</span>
+                  </div>
+                  <div className="flex items-center justify-between py-4 border-b border-border">
+                    <span className="text-[12px] text-text-muted">部署</span>
+                    <span className="text-[14px] font-semibold text-text-primary tracking-tight">{currentUser?.department}</span>
+                  </div>
+                  <div className="flex items-center justify-between py-4">
+                    <span className="text-[12px] text-text-muted">ロール</span>
+                    <span className="text-[14px] font-semibold text-text-primary tracking-tight">
+                      {roleLabels[currentUser?.role || ''] || currentUser?.role}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 mt-4">
+                    <Button variant="primary" size="sm" onClick={handleSaveProfile}>
+                      保存
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => {
+                      setEditingProfile(false)
+                      setProfileName(currentUser?.name || '')
+                      setProfileEmail(currentUser?.email || '')
+                    }}>
+                      キャンセル
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-0">
+                    {[
+                      { label: '氏名', value: currentUser?.name },
+                      { label: 'メールアドレス', value: currentUser?.email },
+                      { label: '所属会社', value: '株式会社Backlly' },
+                      { label: '部署', value: currentUser?.department },
+                      { label: 'ロール', value: roleLabels[currentUser?.role || ''] || currentUser?.role },
+                    ].map((field) => (
+                      <div key={field.label} className="flex items-center justify-between py-4 border-b border-border last:border-0">
+                        <span className="text-[12px] text-text-muted">{field.label}</span>
+                        <span className="text-[14px] font-semibold text-text-primary tracking-tight">{field.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="mt-6"
+                    onClick={() => setEditingProfile(true)}
+                  >
+                    編集する
+                  </Button>
+                </>
+              )}
+            </motion.div>
+          )}
+
+          {/* Organization */}
+          {activeSection === 'organization' && (
+            <motion.div
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
+              variants={fadeUp}
+            >
+              <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">組織設定</h2>
+
+              <div className="space-y-0 mb-6">
                 {[
-                  { label: '氏名', value: profileData.name },
-                  { label: 'メールアドレス', value: profileData.email },
-                  { label: '所属会社', value: profileData.company },
-                  { label: '部署', value: profileData.department },
-                  { label: 'ロール', value: profileData.role },
+                  { label: '会社名', value: '株式会社Backlly' },
+                  { label: '従業員数', value: `${users.length}名` },
+                  { label: 'プラン', value: 'ビジネスプラン' },
                 ].map((field) => (
                   <div key={field.label} className="flex items-center justify-between py-4 border-b border-border last:border-0">
                     <span className="text-[12px] text-text-muted">{field.label}</span>
@@ -152,12 +341,31 @@ export default function SettingsPage() {
                   </div>
                 ))}
               </div>
-              <button className="mt-6 rounded-[10px] bg-accent text-white text-[13px] font-semibold px-4 py-2 hover:bg-accent-hover transition-all active:scale-[0.98] shadow-[0_0_12px_rgba(79,70,229,0.2)]">
-                編集する
-              </button>
+
+              <h3 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">ユーザー一覧</h3>
+              <div className="bg-bg-elevated border border-border rounded-[12px] overflow-hidden">
+                <div className="divide-y divide-border">
+                  {users.map((user) => (
+                    <div key={user.id} className="flex items-center gap-3 px-4 py-3">
+                      <div className="w-8 h-8 rounded-full bg-[rgba(79,70,229,0.08)] flex items-center justify-center shrink-0">
+                        <span className="text-[12px] font-semibold text-accent">{user.avatar_initial}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-semibold text-text-primary tracking-tight">{user.name}</p>
+                        <p className="text-[11px] text-text-muted">{user.email}</p>
+                      </div>
+                      <span className="text-[11px] text-text-muted bg-bg-base px-2 py-0.5 rounded-md shrink-0">
+                        {roleLabels[user.role] || user.role}
+                      </span>
+                      <span className="text-[11px] text-text-muted shrink-0">{user.department}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           )}
 
+          {/* Notifications */}
           {activeSection === 'notifications' && (
             <motion.div
               className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
@@ -179,19 +387,25 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 {notificationSettings.map((setting) => (
-                  <div key={setting.label} className="flex items-center justify-between py-4 border-b border-border last:border-0">
+                  <div key={setting.key} className="flex items-center justify-between py-4 border-b border-border last:border-0">
                     <span className="text-[14px] font-semibold text-text-primary tracking-tight">{setting.label}</span>
                     <div className="flex items-center gap-8">
-                      <div className={`w-8 h-[18px] rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
-                        setting.email ? 'bg-accent justify-end' : 'bg-bg-elevated justify-start'
-                      }`}>
+                      <button
+                        onClick={() => toggleNotification(setting.key, 'email')}
+                        className={`w-8 h-[18px] rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
+                          setting.email ? 'bg-accent justify-end' : 'bg-bg-elevated justify-start'
+                        }`}
+                      >
                         <div className="w-3.5 h-3.5 rounded-full bg-white shadow-sm" />
-                      </div>
-                      <div className={`w-8 h-[18px] rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
-                        setting.app ? 'bg-accent justify-end' : 'bg-bg-elevated justify-start'
-                      }`}>
+                      </button>
+                      <button
+                        onClick={() => toggleNotification(setting.key, 'app')}
+                        className={`w-8 h-[18px] rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
+                          setting.app ? 'bg-accent justify-end' : 'bg-bg-elevated justify-start'
+                        }`}
+                      >
                         <div className="w-3.5 h-3.5 rounded-full bg-white shadow-sm" />
-                      </div>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -199,45 +413,46 @@ export default function SettingsPage() {
             </motion.div>
           )}
 
-          {activeSection === 'organization' && (
-            <motion.div
-              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
-              variants={fadeUp}
-            >
-              <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">組織設定</h2>
-              <div className="space-y-0">
-                {[
-                  { label: '会社名', value: '株式会社サンプル' },
-                  { label: '設立日', value: '2020年4月1日' },
-                  { label: '従業員数', value: '42名' },
-                  { label: '部署数', value: '6部署' },
-                  { label: 'プラン', value: 'ビジネスプラン' },
-                ].map((field) => (
-                  <div key={field.label} className="flex items-center justify-between py-4 border-b border-border last:border-0">
-                    <span className="text-[12px] text-text-muted">{field.label}</span>
-                    <span className="text-[14px] font-semibold text-text-primary tracking-tight">{field.value}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
+          {/* Security */}
           {activeSection === 'security' && (
             <motion.div
               className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
               variants={fadeUp}
             >
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">セキュリティ設定</h2>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 rounded-[10px] bg-bg-elevated border border-border">
-                  <div>
-                    <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">パスワード</h4>
-                    <p className="text-[12px] text-text-muted mt-0.5">最終変更: 2026年1月15日</p>
+              <div className="space-y-5">
+                {/* Password Change */}
+                <div className="p-5 rounded-[12px] bg-bg-elevated border border-border">
+                  <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-4">パスワード変更</h4>
+                  <div className="space-y-3">
+                    <Input
+                      label="現在のパスワード"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="現在のパスワードを入力"
+                    />
+                    <Input
+                      label="新しいパスワード"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="8文字以上"
+                    />
+                    <Input
+                      label="新しいパスワード（確認）"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="もう一度入力"
+                    />
+                    <Button variant="primary" size="sm" onClick={handleChangePassword}>
+                      パスワードを変更
+                    </Button>
                   </div>
-                  <button className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-accent bg-[rgba(79,70,229,0.08)] hover:bg-[rgba(79,70,229,0.12)] transition-all">
-                    変更
-                  </button>
                 </div>
+
+                {/* 2FA */}
                 <div className="flex items-center justify-between p-4 rounded-[10px] bg-bg-elevated border border-border">
                   <div>
                     <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">二要素認証</h4>
@@ -248,6 +463,8 @@ export default function SettingsPage() {
                     有効
                   </span>
                 </div>
+
+                {/* Active Sessions */}
                 <div className="flex items-center justify-between p-4 rounded-[10px] bg-bg-elevated border border-border">
                   <div>
                     <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">アクティブセッション</h4>
@@ -261,6 +478,7 @@ export default function SettingsPage() {
             </motion.div>
           )}
 
+          {/* Appearance */}
           {activeSection === 'appearance' && (
             <motion.div
               className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
@@ -272,12 +490,16 @@ export default function SettingsPage() {
                   <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">テーマ</h4>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { name: 'ライト', active: true },
+                      { name: 'Shiraki 白木', active: true },
                       { name: 'ダーク', active: false },
                       { name: 'システム', active: false },
                     ].map((theme) => (
                       <button
                         key={theme.name}
+                        onClick={() => {
+                          if (theme.active) return
+                          addToast('info', '現在は Shiraki 白木 テーマのみ対応しています')
+                        }}
                         className={`p-4 rounded-[10px] text-center text-[13px] font-semibold transition-all ${
                           theme.active
                             ? 'bg-[rgba(79,70,229,0.08)] text-accent ring-2 ring-accent/20'
@@ -285,22 +507,25 @@ export default function SettingsPage() {
                         }`}
                       >
                         {theme.name}
+                        {theme.active && (
+                          <span className="block text-[10px] mt-1 text-accent/70">使用中</span>
+                        )}
                       </button>
                     ))}
                   </div>
                 </div>
                 <div>
                   <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">言語</h4>
-                  <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 flex items-center justify-between hover:bg-[rgba(0,0,0,0.03)] transition-colors cursor-pointer">
+                  <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 flex items-center justify-between">
                     <span className="text-[14px] font-semibold text-text-primary tracking-tight">日本語</span>
-                    <ChevronRight className="w-4 h-4 text-text-muted" strokeWidth={1.75} />
+                    <span className="text-[11px] text-text-muted bg-bg-base px-2 py-0.5 rounded-md">デフォルト</span>
                   </div>
                 </div>
               </div>
             </motion.div>
           )}
 
-          {/* Advanced Settings */}
+          {/* Advanced Settings (always visible) */}
           <motion.div
             className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
             variants={fadeUp}
@@ -310,6 +535,7 @@ export default function SettingsPage() {
               {advancedSettings.map((item) => (
                 <button
                   key={item.title}
+                  onClick={() => addToast('info', `${item.title}は今後実装予定です`)}
                   className="flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(79,70,229,0.3)] transition-all group text-left"
                 >
                   <item.icon className="w-5 h-5 text-text-muted group-hover:text-accent flex-shrink-0 transition-colors" strokeWidth={1.75} />

@@ -228,3 +228,150 @@ export interface Employee extends BaseEntity {
   health_check_date: string
   status: 'active' | 'on_leave' | 'terminated'
 }
+
+// ── Accounting ──
+
+export type TransactionType = 'income' | 'expense' | 'transfer'
+
+export interface Transaction extends BaseEntity {
+  type: TransactionType
+  date: string
+  description: string
+  amount: number
+  category: string
+  department: string
+  counterparty: string
+  account: string
+  sub_account: string
+  memo: string
+  receipt_id: string
+  status: 'pending' | 'confirmed' | 'cancelled'
+}
+
+export interface Invoice extends BaseEntity {
+  invoice_number: string
+  counterparty: string
+  issue_date: string
+  due_date: string
+  amount: number
+  tax_amount: number
+  total_amount: number
+  status: 'draft' | 'issued' | 'sent' | 'paid' | 'overdue' | 'cancelled'
+  items: InvoiceItem[]
+  memo: string
+}
+
+export interface InvoiceItem {
+  id: string
+  description: string
+  quantity: number
+  unit_price: number
+  amount: number
+}
+
+export interface Payment extends BaseEntity {
+  payee: string
+  amount: number
+  payment_date: string
+  due_date: string
+  method: 'bank_transfer' | 'cash' | 'credit_card' | 'other'
+  status: 'pending' | 'approved' | 'completed' | 'cancelled'
+  description: string
+  related_invoice_id: string
+  approved_by: string
+}
+
+// ── Document (文書管理) ──
+
+export type DocumentCategory = 'contract' | 'nda' | 'regulation' | 'manual' | 'form' | 'certificate' | 'report' | 'other'
+
+export interface Document extends BaseEntity {
+  title: string
+  category: DocumentCategory
+  description: string
+  department: string
+  tags: string[]
+  file_name: string
+  file_size: number
+  file_type: string
+  file_url: string
+  version: number
+  expiry_date: string | null
+  status: 'active' | 'expired' | 'archived'
+  related_entity_type: string
+  related_entity_id: string
+}
+
+// ── Report (報告) ──
+
+export type ReportType = 'daily' | 'weekly' | 'monthly' | 'incident' | 'improvement'
+
+export interface Report extends BaseEntity {
+  type: ReportType
+  title: string
+  content: string
+  author_id: string
+  department: string
+  period_start: string
+  period_end: string
+  status: 'draft' | 'submitted' | 'reviewed'
+  reviewer_id: string
+  is_anonymous: boolean
+  tags: string[]
+}
+
+// ── Improvement (改善) ──
+
+export type ImprovementCategory = 'process' | 'cost' | 'quality' | 'safety' | 'environment' | 'other'
+
+export interface Improvement extends BaseEntity {
+  title: string
+  category: ImprovementCategory
+  description: string
+  expected_effect: string
+  author_id: string
+  department: string
+  is_anonymous: boolean
+  status: 'proposed' | 'reviewing' | 'approved' | 'in_progress' | 'completed' | 'rejected'
+  votes: number
+  voted_by: string[]
+  related_task_id: string
+}
+
+// ── Knowledge (ナレッジ) ──
+
+export type KnowledgeType = 'manual' | 'procedure' | 'faq' | 'guide' | 'template' | 'column'
+
+export interface KnowledgeArticle extends BaseEntity {
+  title: string
+  type: KnowledgeType
+  content: string
+  department: string
+  tags: string[]
+  author_id: string
+  version: number
+  is_published: boolean
+  view_count: number
+}
+
+// ── General Affairs (総務) ──
+
+export interface EquipmentItem extends BaseEntity {
+  name: string
+  category: string
+  serial_number: string
+  assigned_to: string
+  status: 'available' | 'in_use' | 'maintenance' | 'disposed'
+  purchase_date: string
+  notes: string
+}
+
+export interface FacilityBooking extends BaseEntity {
+  facility_name: string
+  booked_by: string
+  date: string
+  start_time: string
+  end_time: string
+  purpose: string
+  status: 'confirmed' | 'cancelled'
+}
