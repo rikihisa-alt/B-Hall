@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { sections, toolItems, getSectionKeyFromPathname } from '@/lib/navigation'
@@ -45,9 +46,14 @@ export function Sidebar() {
       {/* ── ロゴ ── */}
       <div className="h-16 flex items-center justify-center shrink-0">
         <Link href="/" onClick={() => closeSubSidebar()}>
-          <div className="w-9 h-9 rounded-[10px] bg-accent flex items-center justify-center">
-            <span className="text-[13px] font-black text-white leading-none">B</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="B-Hall"
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain"
+            priority
+          />
         </Link>
       </div>
 
