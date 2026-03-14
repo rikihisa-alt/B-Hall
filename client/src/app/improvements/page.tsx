@@ -42,25 +42,25 @@ export default function ImprovementsPage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">今日の処理</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Lightbulb className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">新規提案</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <EyeOff className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">匿名投稿</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Clock className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">対応中の提案</span>
               <span className="text-[12px] font-semibold text-accent tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>3</span>
@@ -68,7 +68,7 @@ export default function ImprovementsPage() {
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <CheckCircle2 className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <span className="text-[14px] font-semibold text-text-primary tracking-tight block">実施済確認</span>
@@ -89,16 +89,16 @@ export default function ImprovementsPage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">最近の提案</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Lightbulb className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">リモートワーク申請フローの簡素化</span>
               <span
                 className="rounded-md px-2 py-0.5 text-[11px] font-medium text-warning"
-                style={{ backgroundColor: 'rgba(245,158,11,0.15)' }}
+                style={{ backgroundColor: 'rgba(245,158,11,0.08)' }}
               >検討中</span>
               <span className="flex items-center gap-1 text-[12px] text-text-secondary">
                 <ThumbsUp className="w-3.5 h-3.5" strokeWidth={1.75} />
@@ -108,12 +108,12 @@ export default function ImprovementsPage() {
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Lightbulb className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">社内勉強会の月次開催</span>
               <span
                 className="rounded-md px-2 py-0.5 text-[11px] font-medium text-success"
-                style={{ backgroundColor: 'rgba(34,197,94,0.15)' }}
+                style={{ backgroundColor: 'rgba(34,197,94,0.08)' }}
               >実施決定</span>
               <span className="flex items-center gap-1 text-[12px] text-text-secondary">
                 <ThumbsUp className="w-3.5 h-3.5" strokeWidth={1.75} />
@@ -123,12 +123,12 @@ export default function ImprovementsPage() {
             </div>
           </Link>
           <Link href="/improvements">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Lightbulb className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">経費精算のモバイル対応</span>
               <span
                 className="rounded-md px-2 py-0.5 text-[11px] font-medium text-info"
-                style={{ backgroundColor: 'rgba(59,130,246,0.15)' }}
+                style={{ backgroundColor: 'rgba(59,130,246,0.08)' }}
               >対応中</span>
               <span className="flex items-center gap-1 text-[12px] text-text-secondary">
                 <ThumbsUp className="w-3.5 h-3.5" strokeWidth={1.75} />

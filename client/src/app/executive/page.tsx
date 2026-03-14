@@ -21,7 +21,7 @@ import {
 
 const kpis = [
   { label: '月間売上', value: '840', prefix: '¥', suffix: '万', change: 12.3, up: true, color: '#22C55E' },
-  { label: '営業利益率', value: '18.2', suffix: '%', change: 2.1, up: true, color: '#2563EB' },
+  { label: '営業利益率', value: '18.2', suffix: '%', change: 2.1, up: true, color: '#4F46E5' },
   { label: '従業員数', value: '48', suffix: '名', change: 3, up: true, color: '#3B82F6' },
   { label: 'リスク案件', value: '3', suffix: '件', change: 1, up: true, color: '#EF4444' },
 ]
@@ -40,9 +40,9 @@ const riskItems = [
 ]
 
 const urgencyStyles: Record<string, string> = {
-  high: 'bg-[rgba(239,68,68,0.15)] text-[#EF4444] border-[rgba(239,68,68,0.3)]',
-  medium: 'bg-[rgba(245,158,11,0.15)] text-[#F59E0B] border-[rgba(245,158,11,0.3)]',
-  low: 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border-[rgba(59,130,246,0.3)]',
+  high: 'bg-[rgba(239,68,68,0.08)] text-[#EF4444] border-[rgba(239,68,68,0.18)]',
+  medium: 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]',
+  low: 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]',
 }
 
 const urgencyLabels: Record<string, string> = {
@@ -82,7 +82,7 @@ export default function ExecutivePage() {
           <motion.div
             key={kpi.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+            className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: kpi.color }}
           >
             <div className="flex items-center justify-between mb-3">
@@ -103,7 +103,7 @@ export default function ExecutivePage() {
       <div className="grid grid-cols-3 gap-5">
         {/* Pending Decisions */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+          className="col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -129,7 +129,7 @@ export default function ExecutivePage() {
             </thead>
             <tbody>
               {pendingDecisions.map((item, i) => (
-                <tr key={i} className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] group transition-colors cursor-pointer">
+                <tr key={i} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer">
                   <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{item.title}</td>
                   <td className="px-6 py-3.5 text-[13px] text-text-secondary tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{item.amount}</td>
                   <td className="px-6 py-3.5 text-[13px] text-text-muted">{item.type}</td>
@@ -150,7 +150,7 @@ export default function ExecutivePage() {
 
         {/* Risk Monitor */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
           variants={fadeUp}
           initial="hidden"
           animate="show"

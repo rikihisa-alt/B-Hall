@@ -54,14 +54,14 @@ export default function AccountingPage() {
       <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">今日の処理</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           {today.map(item => {
             const Icon = item.icon
             return (
               <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                   <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
@@ -84,14 +84,14 @@ export default function AccountingPage() {
       <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">管理</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           {manage.map(item => {
             const Icon = item.icon
             return (
               <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                   <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
                   <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>{item.meta}</span>
@@ -107,14 +107,14 @@ export default function AccountingPage() {
       <motion.section variants={staggerContainer} initial="hidden" animate="show">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">分析</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           {analysis.map(item => {
             const Icon = item.icon
             return (
               <Link key={item.name} href={item.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                   <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{item.name}</p>
                   <span className="text-[12px] text-text-secondary">{item.meta}</span>

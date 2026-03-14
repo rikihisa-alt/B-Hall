@@ -1,43 +1,43 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────
-   B-Hall v6 — Premium Dark UI
-   Linear / Stripe / Vercel-grade quality.
-   Blue accent. Solid surfaces.
+   B-Hall v7 — "Shiraki 白木"
+   白基調オリジナルデザイン。
+   和紙のような暖色ベース + インディゴアクセント。
    ───────────────────────────────────────── */
 
 @theme {
   /* ── Backgrounds ── */
-  --color-bg-base: #0D1117;
-  --color-bg-surface: #161B22;
-  --color-bg-elevated: #21262D;
+  --color-bg-base: #F8F7F4;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-elevated: #F0EDE8;
 
   /* ── Borders ── */
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-border: rgba(0, 0, 0, 0.07);
+  --color-border-strong: rgba(0, 0, 0, 0.14);
 
   /* ── Text ── */
-  --color-text-primary: #F0F6FC;
-  --color-text-secondary: rgba(240, 246, 252, 0.6);
-  --color-text-muted: rgba(240, 246, 252, 0.4);
+  --color-text-primary: #1C1917;
+  --color-text-secondary: #57534E;
+  --color-text-muted: #A8A29E;
 
-  /* ── Accent ── */
-  --color-accent: #2563EB;
-  --color-accent-hover: #3B82F6;
-  --color-accent-muted: rgba(37, 99, 235, 0.15);
+  /* ── Accent (Indigo) ── */
+  --color-accent: #4F46E5;
+  --color-accent-hover: #6366F1;
+  --color-accent-muted: rgba(79, 70, 229, 0.08);
 
   /* ── Status ── */
-  --color-success: #22C55E;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-info: #3B82F6;
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+  --color-info: #0284C7;
 
-  /* ── Shadows ── */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.12);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.35);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* ── Shadows (柔らかい暖色系) ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 16px rgba(0, 0, 0, 0.04);
 
   /* ── Radii ── */
   --radius-sm: 6px;
@@ -73,22 +73,22 @@ body {
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.25);
-  color: #F0F6FC;
+  background: rgba(79, 70, 229, 0.15);
+  color: #1C1917;
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.18);
 }
 
 *:focus-visible {
-  outline: 2px solid rgba(37, 99, 235, 0.5);
+  outline: 2px solid rgba(79, 70, 229, 0.4);
   outline-offset: 2px;
 }
 
@@ -131,7 +131,7 @@ body {
   background: linear-gradient(
     90deg,
     var(--color-bg-elevated) 25%,
-    rgba(255, 255, 255, 0.06) 50%,
+    rgba(0, 0, 0, 0.03) 50%,
     var(--color-bg-elevated) 75%
   );
   background-size: 200% 100%;

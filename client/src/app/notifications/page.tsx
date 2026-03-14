@@ -94,7 +94,7 @@ export default function NotificationsPage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">すべての通知</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           {notifications.map((n, i) => {
@@ -102,7 +102,7 @@ export default function NotificationsPage() {
             return (
               <div
                 key={i}
-                className="flex items-start gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer"
+                className="flex items-start gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer"
               >
                 <div className="mt-0.5 flex-shrink-0">
                   <Icon className={`w-5 h-5 ${n.iconColor}`} strokeWidth={1.75} />

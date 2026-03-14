@@ -44,11 +44,11 @@ export default function RingiPage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">今日の処理</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Clock className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">承認待ち</p>
@@ -59,7 +59,7 @@ export default function RingiPage() {
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <RotateCcw className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">差戻し対応</p>
@@ -70,7 +70,7 @@ export default function RingiPage() {
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Plus className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">新規起票</p>
@@ -80,7 +80,7 @@ export default function RingiPage() {
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <CheckCircle2 className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">決裁済確認</p>
@@ -101,25 +101,25 @@ export default function RingiPage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">管理</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Search className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">稟議一覧</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <GitBranch className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">承認ルート設定</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <FileText className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">テンプレート</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
@@ -136,39 +136,39 @@ export default function RingiPage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">最近の稟議</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Stamp className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">社内研修プログラム導入</p>
                 <p className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>¥800,000</p>
               </div>
-              <span className="rounded-md px-2 py-0.5 text-[11px] font-medium text-success" style={{ backgroundColor: 'rgba(34,197,94,0.15)' }}>決裁済</span>
+              <span className="rounded-md px-2 py-0.5 text-[11px] font-medium text-success" style={{ backgroundColor: 'rgba(34,197,94,0.08)' }}>決裁済</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Stamp className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">オフィス移転費用</p>
                 <p className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>¥5,200,000</p>
               </div>
-              <span className="rounded-md px-2 py-0.5 text-[11px] font-medium text-warning" style={{ backgroundColor: 'rgba(245,158,11,0.15)' }}>承認待ち</span>
+              <span className="rounded-md px-2 py-0.5 text-[11px] font-medium text-warning" style={{ backgroundColor: 'rgba(245,158,11,0.08)' }}>承認待ち</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>
           <Link href="/ringi">
-            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Stamp className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] font-semibold text-text-primary tracking-tight">マーケティングツール導入</p>
                 <p className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>¥360,000</p>
               </div>
-              <span className="rounded-md px-2 py-0.5 text-[11px] font-medium text-danger" style={{ backgroundColor: 'rgba(239,68,68,0.15)' }}>差戻し</span>
+              <span className="rounded-md px-2 py-0.5 text-[11px] font-medium text-danger" style={{ backgroundColor: 'rgba(239,68,68,0.08)' }}>差戻し</span>
               <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
             </div>
           </Link>

@@ -27,7 +27,7 @@ import { fadeUp, staggerContainer } from '@/lib/animation'
 
 const metrics = [
   { label: '月間売上', value: 840, prefix: '¥', suffix: '万', change: 12.3, up: true, icon: DollarSign, color: '#22C55E' },
-  { label: '営業利益', value: 153, prefix: '¥', suffix: '万', change: 18.2, up: true, icon: TrendingUp, color: '#2563EB' },
+  { label: '営業利益', value: 153, prefix: '¥', suffix: '万', change: 18.2, up: true, icon: TrendingUp, color: '#4F46E5' },
   { label: '従業員数', value: 48, suffix: '名', change: 3, up: true, icon: Users, color: '#3B82F6' },
   { label: 'リスク案件', value: 3, suffix: '件', change: 1, up: true, icon: AlertTriangle, color: '#EF4444' },
 ]
@@ -42,7 +42,7 @@ const revenueData = [
 ]
 
 const expenseBreakdown = [
-  { name: '人件費', value: 420, color: '#2563EB' },
+  { name: '人件費', value: 420, color: '#4F46E5' },
   { name: '設備費', value: 120, color: '#3B82F6' },
   { name: '外注費', value: 80, color: '#60A5FA' },
   { name: 'その他', value: 40, color: '#93C5FD' },
@@ -72,7 +72,7 @@ function MetricCard({ label, value, prefix, suffix, change, up, icon: Icon, colo
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
       style={{ borderLeftWidth: 3, borderLeftColor: color }}
     >
       <div className="flex items-center justify-between mb-3">
@@ -138,7 +138,7 @@ export default function ManagementPage() {
       <div className="grid grid-cols-3 gap-5 mb-8">
         {/* Revenue Chart */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
           variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.2 }}
         >
           <div className="flex items-center justify-between mb-5">
@@ -149,15 +149,15 @@ export default function ManagementPage() {
             <AreaChart data={revenueData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
               <defs>
                 <linearGradient id="mFillRev" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2563EB" stopOpacity={0.25} />
-                  <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#4F46E5" stopOpacity={0.12} />
+                  <stop offset="100%" stopColor="#4F46E5" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" />
-              <XAxis dataKey="month" tick={{ fill: 'rgba(240,246,252,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'rgba(240,246,252,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <CartesianGrid stroke="rgba(0,0,0,0.06)" strokeDasharray="4 4" />
+              <XAxis dataKey="month" tick={{ fill: 'rgba(28,25,23,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: 'rgba(28,25,23,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
               <RechartsTooltip content={<ChartTooltipContent />} />
-              <Area type="monotone" dataKey="revenue" name="revenue" stroke="#2563EB" strokeWidth={2} fill="url(#mFillRev)" />
+              <Area type="monotone" dataKey="revenue" name="revenue" stroke="#4F46E5" strokeWidth={2} fill="url(#mFillRev)" />
               <Area type="monotone" dataKey="expense" name="expense" stroke="#F59E0B" strokeWidth={2} fill="transparent" strokeDasharray="4 4" />
             </AreaChart>
           </ResponsiveContainer>
@@ -165,7 +165,7 @@ export default function ManagementPage() {
 
         {/* Expense Pie */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
           variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.25 }}
         >
           <h2 className="text-[18px] font-bold text-text-primary mb-4">費用内訳</h2>
@@ -196,7 +196,7 @@ export default function ManagementPage() {
       <div className="grid grid-cols-2 gap-5">
         {/* Risk Alerts */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
           variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.3 }}
         >
           <div className="px-6 py-4 border-b border-border">
@@ -205,7 +205,7 @@ export default function ManagementPage() {
           <div className="divide-y divide-border">
             {alerts.map((a, i) => (
               <Link key={i} href={a.href}>
-                <div className="flex items-center gap-4 px-6 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                <div className="flex items-center gap-4 px-6 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                   <div className="w-2 h-2 rounded-full shrink-0" style={{ background: priorityColors[a.priority] }} />
                   <span className="flex-1 text-[14px] text-text-primary">{a.text}</span>
                   <ArrowUpRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -217,7 +217,7 @@ export default function ManagementPage() {
 
         {/* Analysis Links */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
           variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.35 }}
         >
           <div className="px-6 py-4 border-b border-border">
@@ -228,7 +228,7 @@ export default function ManagementPage() {
               const Icon = item.icon
               return (
                 <Link key={item.name} href={item.href}>
-                  <div className="flex items-center gap-4 px-6 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                  <div className="flex items-center gap-4 px-6 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                     <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
                     <span className="flex-1 text-[14px] font-medium text-text-primary">{item.name}</span>
                     <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" />

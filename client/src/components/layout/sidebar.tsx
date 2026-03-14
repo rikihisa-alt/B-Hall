@@ -41,7 +41,7 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="h-screen w-[68px] flex flex-col shrink-0 select-none bg-bg-base border-r border-border z-[100]">
+    <aside className="h-screen w-[68px] flex flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
       {/* ── ロゴ ── */}
       <div className="h-16 flex items-center justify-center shrink-0">
         <Link href="/" onClick={() => closeSubSidebar()}>

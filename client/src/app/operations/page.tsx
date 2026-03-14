@@ -47,14 +47,14 @@ const statusColors: Record<string, string> = {
 }
 
 const statusBadge: Record<string, string> = {
-  '承認待ち': 'bg-[rgba(245,158,11,0.15)] text-[#F59E0B] border-[rgba(245,158,11,0.3)]',
-  '進行中': 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border-[rgba(59,130,246,0.3)]',
-  '完了': 'bg-[rgba(34,197,94,0.15)] text-[#22C55E] border-[rgba(34,197,94,0.3)]',
+  '承認待ち': 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]',
+  '進行中': 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]',
+  '完了': 'bg-[rgba(34,197,94,0.08)] text-[#22C55E] border-[rgba(34,197,94,0.18)]',
 }
 
 const resultBadge: Record<string, string> = {
-  '承認': 'bg-[rgba(34,197,94,0.15)] text-[#22C55E] border-[rgba(34,197,94,0.3)]',
-  '差戻し': 'bg-[rgba(239,68,68,0.15)] text-[#EF4444] border-[rgba(239,68,68,0.3)]',
+  '承認': 'bg-[rgba(34,197,94,0.08)] text-[#22C55E] border-[rgba(34,197,94,0.18)]',
+  '差戻し': 'bg-[rgba(239,68,68,0.08)] text-[#EF4444] border-[rgba(239,68,68,0.18)]',
 }
 
 export default function OperationsPage() {
@@ -88,7 +88,7 @@ export default function OperationsPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
             <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>{s.value}</p>
@@ -99,7 +99,7 @@ export default function OperationsPage() {
 
       {/* Active Flows Table */}
       <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden mb-8"
+        className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden mb-8"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -127,10 +127,10 @@ export default function OperationsPage() {
           </thead>
           <tbody>
             {activeFlows.map((flow, i) => (
-              <tr key={i} className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] group transition-colors cursor-pointer">
+              <tr key={i} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer">
                 <td className="px-6 py-3.5">
                   <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${statusBadge[flow.status] || ''}`}>
-                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[flow.status] || 'rgba(240,246,252,0.4)' }} />
+                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[flow.status] || 'rgba(28,25,23,0.3)' }} />
                     {flow.status}
                   </span>
                 </td>
@@ -150,7 +150,7 @@ export default function OperationsPage() {
 
       {/* Recent Approvals */}
       <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+        className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -174,7 +174,7 @@ export default function OperationsPage() {
           </thead>
           <tbody>
             {recentApprovals.map((item, i) => (
-              <tr key={i} className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer">
+              <tr key={i} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer">
                 <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{item.title}</td>
                 <td className="px-6 py-3.5 text-[13px] text-text-secondary">{item.approver}</td>
                 <td className="px-6 py-3.5">

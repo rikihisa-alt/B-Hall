@@ -42,11 +42,11 @@ export default function KnowledgePage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">カテゴリ</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <BookOpen className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">業務マニュアル</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>24件</span>
@@ -54,7 +54,7 @@ export default function KnowledgePage() {
             </div>
           </Link>
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <FileText className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">テンプレート</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>34件</span>
@@ -62,7 +62,7 @@ export default function KnowledgePage() {
             </div>
           </Link>
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <HelpCircle className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">FAQ</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>45件</span>
@@ -70,7 +70,7 @@ export default function KnowledgePage() {
             </div>
           </Link>
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Shield className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">規程・ガイド</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>25件</span>
@@ -89,11 +89,11 @@ export default function KnowledgePage() {
       >
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">管理</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <FolderOpen className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">ナレッジ一覧</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>128記事</span>
@@ -101,7 +101,7 @@ export default function KnowledgePage() {
             </div>
           </Link>
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <FileText className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">テンプレート管理</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>34件</span>
@@ -109,7 +109,7 @@ export default function KnowledgePage() {
             </div>
           </Link>
           <Link href="/knowledge">
-            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-all duration-150 cursor-pointer group">
+            <div className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
               <Clock className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
               <span className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">最近追加</span>
               <span className="text-[12px] text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>6件</span>

@@ -97,14 +97,14 @@ export default function SettingsPage() {
       >
         {/* Sidebar Navigation */}
         <motion.div className="lg:w-52 shrink-0" variants={fadeUp}>
-          <div className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-1.5 space-y-0.5">
+          <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-1.5 space-y-0.5">
             {settingsSections.map((item) => (
               <button
                 key={item.section}
                 onClick={() => setActiveSection(item.section)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-left transition-all ${
                   activeSection === item.section
-                    ? 'bg-[rgba(37,99,235,0.12)] text-accent'
+                    ? 'bg-[rgba(79,70,229,0.08)] text-accent'
                     : 'text-text-muted hover:bg-bg-elevated'
                 }`}
               >
@@ -119,19 +119,19 @@ export default function SettingsPage() {
         <div className="flex-1 space-y-6 min-w-0">
           {activeSection === 'profile' && (
             <motion.div
-              className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
               variants={fadeUp}
             >
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">プロフィール設定</h2>
               <div className="flex items-center gap-5 mb-8">
-                <div className="w-20 h-20 rounded-[12px] bg-[rgba(37,99,235,0.12)] flex items-center justify-center text-accent text-2xl font-semibold">
+                <div className="w-20 h-20 rounded-[12px] bg-[rgba(79,70,229,0.08)] flex items-center justify-center text-accent text-2xl font-semibold">
                   T
                 </div>
                 <div>
                   <h3 className="text-[14px] font-semibold text-text-primary tracking-tight">{profileData.name}</h3>
                   <p className="text-[12px] text-text-muted">{profileData.email}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold text-accent bg-[rgba(37,99,235,0.12)]">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold text-accent bg-[rgba(79,70,229,0.08)]">
                       {profileData.role}
                     </span>
                     <span className="text-[12px] text-text-muted">{profileData.department}</span>
@@ -152,7 +152,7 @@ export default function SettingsPage() {
                   </div>
                 ))}
               </div>
-              <button className="mt-6 rounded-[10px] bg-accent text-white text-[13px] font-semibold px-4 py-2 hover:bg-accent-hover transition-all active:scale-[0.98] shadow-[0_0_16px_rgba(37,99,235,0.3)]">
+              <button className="mt-6 rounded-[10px] bg-accent text-white text-[13px] font-semibold px-4 py-2 hover:bg-accent-hover transition-all active:scale-[0.98] shadow-[0_0_12px_rgba(79,70,229,0.2)]">
                 編集する
               </button>
             </motion.div>
@@ -160,7 +160,7 @@ export default function SettingsPage() {
 
           {activeSection === 'notifications' && (
             <motion.div
-              className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
               variants={fadeUp}
             >
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">通知設定</h2>
@@ -201,7 +201,7 @@ export default function SettingsPage() {
 
           {activeSection === 'organization' && (
             <motion.div
-              className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
               variants={fadeUp}
             >
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">組織設定</h2>
@@ -224,7 +224,7 @@ export default function SettingsPage() {
 
           {activeSection === 'security' && (
             <motion.div
-              className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
               variants={fadeUp}
             >
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">セキュリティ設定</h2>
@@ -234,7 +234,7 @@ export default function SettingsPage() {
                     <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">パスワード</h4>
                     <p className="text-[12px] text-text-muted mt-0.5">最終変更: 2026年1月15日</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-accent bg-[rgba(37,99,235,0.12)] hover:bg-[rgba(37,99,235,0.18)] transition-all">
+                  <button className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-accent bg-[rgba(79,70,229,0.08)] hover:bg-[rgba(79,70,229,0.12)] transition-all">
                     変更
                   </button>
                 </div>
@@ -243,7 +243,7 @@ export default function SettingsPage() {
                     <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">二要素認証</h4>
                     <p className="text-[12px] text-text-muted mt-0.5">認証アプリを使用した二要素認証</p>
                   </div>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold text-[#22C55E] bg-[rgba(34,197,94,0.15)]">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold text-[#22C55E] bg-[rgba(34,197,94,0.08)]">
                     <Check className="w-3 h-3" />
                     有効
                   </span>
@@ -253,7 +253,7 @@ export default function SettingsPage() {
                     <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">アクティブセッション</h4>
                     <p className="text-[12px] text-text-muted mt-0.5">現在1デバイスからログイン中</p>
                   </div>
-                  <button className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-text-secondary bg-bg-elevated border border-border hover:bg-[rgba(255,255,255,0.06)] transition-all">
+                  <button className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-text-secondary bg-bg-elevated border border-border hover:bg-[rgba(0,0,0,0.03)] transition-all">
                     管理
                   </button>
                 </div>
@@ -263,7 +263,7 @@ export default function SettingsPage() {
 
           {activeSection === 'appearance' && (
             <motion.div
-              className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
               variants={fadeUp}
             >
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">表示・テーマ設定</h2>
@@ -280,8 +280,8 @@ export default function SettingsPage() {
                         key={theme.name}
                         className={`p-4 rounded-[10px] text-center text-[13px] font-semibold transition-all ${
                           theme.active
-                            ? 'bg-[rgba(37,99,235,0.12)] text-accent ring-2 ring-accent/20'
-                            : 'bg-bg-elevated border border-border text-text-muted hover:bg-[rgba(255,255,255,0.06)]'
+                            ? 'bg-[rgba(79,70,229,0.08)] text-accent ring-2 ring-accent/20'
+                            : 'bg-bg-elevated border border-border text-text-muted hover:bg-[rgba(0,0,0,0.03)]'
                         }`}
                       >
                         {theme.name}
@@ -291,7 +291,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">言語</h4>
-                  <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 flex items-center justify-between hover:bg-[rgba(255,255,255,0.06)] transition-colors cursor-pointer">
+                  <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 flex items-center justify-between hover:bg-[rgba(0,0,0,0.03)] transition-colors cursor-pointer">
                     <span className="text-[14px] font-semibold text-text-primary tracking-tight">日本語</span>
                     <ChevronRight className="w-4 h-4 text-text-muted" strokeWidth={1.75} />
                   </div>
@@ -302,7 +302,7 @@ export default function SettingsPage() {
 
           {/* Advanced Settings */}
           <motion.div
-            className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] p-6"
+            className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
             variants={fadeUp}
           >
             <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-4">管理者設定</h2>
@@ -310,7 +310,7 @@ export default function SettingsPage() {
               {advancedSettings.map((item) => (
                 <button
                   key={item.title}
-                  className="flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(37,99,235,0.3)] transition-all group text-left"
+                  className="flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(79,70,229,0.3)] transition-all group text-left"
                 >
                   <item.icon className="w-5 h-5 text-text-muted group-hover:text-accent flex-shrink-0 transition-colors" strokeWidth={1.75} />
                   <div>

@@ -90,7 +90,7 @@ export default function AssistantPage() {
         animate="show"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[10px] bg-[rgba(37,99,235,0.15)] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-[10px] bg-[rgba(79,70,229,0.1)] flex items-center justify-center">
             <Bot className="w-5 h-5 text-accent" strokeWidth={1.75} />
           </div>
           <div>
@@ -98,7 +98,7 @@ export default function AssistantPage() {
             <p className="text-[13px] text-text-secondary mt-0.5">AIアシスタント</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(37,99,235,0.12)] text-accent text-[12px] font-semibold">
+        <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(79,70,229,0.08)] text-accent text-[12px] font-semibold">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           オンライン
         </div>
@@ -106,7 +106,7 @@ export default function AssistantPage() {
 
       {/* Suggested Questions */}
       <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] mb-4"
+        className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card mb-4"
         variants={staggerContainer}
         initial="hidden"
         animate="show"
@@ -124,7 +124,7 @@ export default function AssistantPage() {
                 onClick={() => {
                   setMessage(q.text)
                 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(37,99,235,0.3)] transition-all text-left group"
+                className="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-bg-elevated border border-border hover:border-[rgba(79,70,229,0.3)] transition-all text-left group"
               >
                 <QIcon className="w-5 h-5 text-text-muted group-hover:text-accent shrink-0 transition-colors" strokeWidth={1.75} />
                 <div className="min-w-0">
@@ -139,7 +139,7 @@ export default function AssistantPage() {
 
       {/* Chat Area */}
       <motion.div
-        className="flex-1 bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] flex flex-col overflow-hidden min-h-0"
+        className="flex-1 bg-bg-surface border border-border rounded-[16px] shadow-card flex flex-col overflow-hidden min-h-0"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -194,7 +194,7 @@ export default function AssistantPage() {
             <button
               onClick={handleSend}
               disabled={!message.trim()}
-              className="w-10 h-10 rounded-[10px] bg-accent flex items-center justify-center text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0 shadow-[0_0_16px_rgba(37,99,235,0.3)]"
+              className="w-10 h-10 rounded-[10px] bg-accent flex items-center justify-center text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98] shrink-0 shadow-[0_0_12px_rgba(79,70,229,0.2)]"
             >
               <Send className="w-4 h-4" />
             </button>

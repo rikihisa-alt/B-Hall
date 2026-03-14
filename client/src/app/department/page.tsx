@@ -16,7 +16,7 @@ import {
 /* ── Mock Data ── */
 
 const departments = [
-  { name: '開発部', head: '田中太郎', members: 12, tasks: 18, completed: 14, budget: 280, color: '#2563EB' },
+  { name: '開発部', head: '田中太郎', members: 12, tasks: 18, completed: 14, budget: 280, color: '#4F46E5' },
   { name: '営業部', head: '佐藤花子', members: 8, tasks: 24, completed: 19, budget: 150, color: '#3B82F6' },
   { name: '人事部', head: '鈴木一郎', members: 5, tasks: 12, completed: 10, budget: 80, color: '#60A5FA' },
   { name: '経理部', head: '高橋美咲', members: 4, tasks: 15, completed: 11, budget: 60, color: '#22C55E' },
@@ -25,7 +25,7 @@ const departments = [
 ]
 
 const summaryStats = [
-  { label: '総部署数', value: '6', color: '#2563EB' },
+  { label: '総部署数', value: '6', color: '#4F46E5' },
   { label: '総従業員数', value: '35', suffix: '名', color: '#3B82F6' },
   { label: '全体タスク完了率', value: '78', suffix: '%', color: '#22C55E' },
   { label: '月間予算合計', value: '670', prefix: '¥', suffix: '万', color: '#F59E0B' },
@@ -62,7 +62,7 @@ export default function DepartmentPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
             <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
@@ -75,7 +75,7 @@ export default function DepartmentPage() {
 
       {/* Department Table */}
       <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+        className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -102,12 +102,12 @@ export default function DepartmentPage() {
               return (
                 <tr
                   key={i}
-                  className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] group transition-colors cursor-pointer"
+                  className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer"
                   style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}
                 >
                   <td className="px-6 py-3.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-[8px] flex items-center justify-center" style={{ background: `${dept.color}20` }}>
+                      <div className="w-8 h-8 rounded-[8px] flex items-center justify-center" style={{ background: `${dept.color}12` }}>
                         <Building2 className="w-4 h-4" style={{ color: dept.color }} strokeWidth={1.75} />
                       </div>
                       <span className="text-[14px] font-medium text-text-primary">{dept.name}</span>

@@ -26,26 +26,26 @@ const statusColors: Record<string, string> = {
   '完了': '#22C55E',
   '進行中': '#3B82F6',
   '確認待ち': '#F59E0B',
-  '未着手': 'rgba(240,246,252,0.4)',
+  '未着手': 'rgba(28,25,23,0.3)',
 }
 
 const statusBadge: Record<string, string> = {
-  '完了': 'bg-[rgba(34,197,94,0.15)] text-[#22C55E] border-[rgba(34,197,94,0.3)]',
-  '進行中': 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border-[rgba(59,130,246,0.3)]',
-  '確認待ち': 'bg-[rgba(245,158,11,0.15)] text-[#F59E0B] border-[rgba(245,158,11,0.3)]',
-  '未着手': 'bg-[rgba(240,246,252,0.08)] text-text-muted border-border',
+  '完了': 'bg-[rgba(34,197,94,0.08)] text-[#22C55E] border-[rgba(34,197,94,0.18)]',
+  '進行中': 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]',
+  '確認待ち': 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]',
+  '未着手': 'bg-[rgba(28,25,23,0.04)] text-text-muted border-border',
 }
 
 const priorityStyles: Record<string, string> = {
-  '高': 'bg-[rgba(239,68,68,0.15)] text-[#EF4444] border-[rgba(239,68,68,0.3)]',
-  '中': 'bg-[rgba(245,158,11,0.15)] text-[#F59E0B] border-[rgba(245,158,11,0.3)]',
-  '低': 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border-[rgba(59,130,246,0.3)]',
+  '高': 'bg-[rgba(239,68,68,0.08)] text-[#EF4444] border-[rgba(239,68,68,0.18)]',
+  '中': 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]',
+  '低': 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]',
 }
 
 const stats = [
-  { label: '全タスク', value: 6, color: '#2563EB' },
+  { label: '全タスク', value: 6, color: '#4F46E5' },
   { label: '進行中', value: 2, color: '#3B82F6' },
-  { label: '未着手', value: 2, color: 'rgba(240,246,252,0.4)' },
+  { label: '未着手', value: 2, color: 'rgba(28,25,23,0.3)' },
   { label: '完了', value: 1, color: '#22C55E' },
 ]
 
@@ -74,7 +74,7 @@ export default function TasksPage() {
             <Filter className="w-3.5 h-3.5" strokeWidth={1.75} />
             フィルタ
           </button>
-          <button className="flex items-center gap-2 bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white font-semibold px-4 h-9 rounded-[10px] text-[13px] shadow-[0_0_20px_rgba(37,99,235,0.35)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(37,99,235,0.5)] active:translate-y-0 transition-all duration-200">
+          <button className="flex items-center gap-2 bg-accent text-white font-semibold px-4 h-9 rounded-[10px] text-[13px] shadow-[0_0_12px_rgba(79,70,229,0.2)] hover:-translate-y-[2px] hover:shadow-[0_0_20px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200">
             <Plus className="w-4 h-4" strokeWidth={2} />
             新規タスク
           </button>
@@ -92,7 +92,7 @@ export default function TasksPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
             <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>{s.value}</p>
@@ -103,7 +103,7 @@ export default function TasksPage() {
 
       {/* Task Table */}
       <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+        className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -136,12 +136,12 @@ export default function TasksPage() {
             {tasks.map((task, i) => (
               <tr
                 key={i}
-                className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] group transition-colors cursor-pointer"
+                className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer"
                 style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}
               >
                 <td className="px-6 py-3.5">
                   <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${statusBadge[task.status] || ''}`}>
-                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[task.status] || 'rgba(240,246,252,0.4)' }} />
+                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[task.status] || 'rgba(28,25,23,0.3)' }} />
                     {task.status}
                   </span>
                 </td>

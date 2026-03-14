@@ -26,7 +26,7 @@ import { fadeUp, staggerContainer } from '@/lib/animation'
 /* ── Mock Data ── */
 
 const metrics = [
-  { label: '未処理タスク', value: 12, change: -3, up: false, icon: ListTodo, color: '#2563EB' },
+  { label: '未処理タスク', value: 12, change: -3, up: false, icon: ListTodo, color: '#4F46E5' },
   { label: '承認待ち', value: 5, change: 2, up: true, icon: Clock, color: '#F59E0B' },
   { label: '今月の経費', value: 320, prefix: '¥', suffix: '万', change: 8.4, up: true, icon: Wallet, color: '#22C55E' },
   { label: '未読通知', value: 3, change: 0, up: false, icon: Bell, color: '#3B82F6' },
@@ -59,15 +59,15 @@ const recentTasks = [
 
 const statusColors: Record<string, string> = {
   '進行中': '#3B82F6',
-  '未着手': 'rgba(240,246,252,0.4)',
+  '未着手': 'rgba(28,25,23,0.25)',
   '承認待ち': '#F59E0B',
   '完了': '#22C55E',
 }
 
 const priorityStyles: Record<string, string> = {
-  '高': 'bg-[rgba(239,68,68,0.15)] text-[#EF4444] border-[rgba(239,68,68,0.3)]',
-  '中': 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border-[rgba(59,130,246,0.3)]',
-  '低': 'bg-[rgba(240,246,252,0.08)] text-text-muted border-border',
+  '高': 'bg-[rgba(239,68,68,0.08)] text-[#DC2626] border-[rgba(239,68,68,0.18)]',
+  '中': 'bg-[rgba(59,130,246,0.08)] text-[#2563EB] border-[rgba(59,130,246,0.18)]',
+  '低': 'bg-[rgba(28,25,23,0.04)] text-text-muted border-border',
 }
 
 /* ── Metric Card ── */
@@ -79,7 +79,7 @@ function MetricCard({ label, value, prefix, suffix, change, up, icon: Icon, colo
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] cursor-default"
+      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] cursor-default"
       style={{ borderLeftWidth: 3, borderLeftColor: color }}
     >
       <div className="flex items-center justify-between mb-3">
@@ -135,7 +135,7 @@ export default function HomePage() {
           <h1 className="text-[28px] font-bold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
           <p className="text-[15px] text-text-secondary mt-1">業務全体の状況を確認できます</p>
         </div>
-        <Link href="/tasks" className="inline-flex items-center gap-2 bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white font-semibold px-5 h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(37,99,235,0.35)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(37,99,235,0.5)] active:translate-y-0 transition-all duration-200">
+        <Link href="/tasks" className="inline-flex items-center gap-2 bg-gradient-to-r from-accent to-[#6366F1] text-white font-semibold px-5 h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(79,70,229,0.25)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200">
           <ListTodo className="w-4 h-4" strokeWidth={2} />
           タスク一覧
         </Link>
@@ -157,7 +157,7 @@ export default function HomePage() {
       <div className="grid grid-cols-3 gap-5 mb-8">
         {/* Area Chart */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -171,19 +171,19 @@ export default function HomePage() {
             <AreaChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
               <defs>
                 <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2563EB" stopOpacity={0.25} />
-                  <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#4F46E5" stopOpacity={0.12} />
+                  <stop offset="100%" stopColor="#4F46E5" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="fillExpense" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.15} />
+                  <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.08} />
                   <stop offset="100%" stopColor="#F59E0B" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" />
-              <XAxis dataKey="month" tick={{ fill: 'rgba(240,246,252,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'rgba(240,246,252,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <CartesianGrid stroke="rgba(0,0,0,0.06)" strokeDasharray="4 4" />
+              <XAxis dataKey="month" tick={{ fill: 'rgba(28,25,23,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: 'rgba(28,25,23,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
               <RechartsTooltip content={<ChartTooltipContent />} />
-              <Area type="monotone" dataKey="revenue" name="revenue" stroke="#2563EB" strokeWidth={2} fill="url(#fillRevenue)" />
+              <Area type="monotone" dataKey="revenue" name="revenue" stroke="#4F46E5" strokeWidth={2} fill="url(#fillRevenue)" />
               <Area type="monotone" dataKey="expense" name="expense" stroke="#F59E0B" strokeWidth={2} fill="url(#fillExpense)" />
             </AreaChart>
           </ResponsiveContainer>
@@ -191,7 +191,7 @@ export default function HomePage() {
 
         {/* Activity Timeline */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -220,7 +220,7 @@ export default function HomePage() {
 
       {/* Recent Tasks Table */}
       <motion.div
-        className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+        className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -248,10 +248,10 @@ export default function HomePage() {
           </thead>
           <tbody>
             {recentTasks.map((task, i) => (
-              <tr key={i} className="border-b border-border hover:bg-[rgba(255,255,255,0.03)] group transition-colors cursor-pointer" style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}>
+              <tr key={i} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer" style={{ borderLeftWidth: 3, borderLeftColor: 'transparent' }}>
                 <td className="px-6 py-3.5">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: statusColors[task.status] || 'rgba(240,246,252,0.4)' }} />
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: statusColors[task.status] || 'rgba(28,25,23,0.25)' }} />
                     <span className="text-[13px] text-text-secondary">{task.status}</span>
                   </div>
                 </td>

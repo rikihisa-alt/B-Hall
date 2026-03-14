@@ -44,8 +44,8 @@ const recent = [
 ]
 
 const statusStyles = {
-  success: { color: 'text-success', bg: 'bg-[rgba(34,197,94,0.15)]' },
-  muted: { color: 'text-text-muted', bg: 'bg-[rgba(240,246,252,0.06)]' },
+  success: { color: 'text-success', bg: 'bg-[rgba(34,197,94,0.08)]' },
+  muted: { color: 'text-text-muted', bg: 'bg-[rgba(0,0,0,0.04)]' },
 }
 
 export default function ApplicationsPage() {
@@ -73,11 +73,11 @@ export default function ApplicationsPage() {
             <span className="text-[12px] font-semibold text-warning tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{pending.length}</span>
           </h2>
           <motion.div
-            className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+            className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
             variants={fadeUp}
           >
             {pending.map(item => (
-              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.title}</p>
                   <p className="text-[12px] text-text-secondary mt-0.5">{item.type} · {item.applicant}</p>
@@ -99,11 +99,11 @@ export default function ApplicationsPage() {
             <span className="text-[12px] font-semibold text-danger tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>{rejected.length}</span>
           </h2>
           <motion.div
-            className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+            className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
             variants={fadeUp}
           >
             {rejected.map(item => (
-              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+              <div key={item.id} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] font-semibold text-text-primary tracking-tight">{item.title}</p>
                   <p className="text-[12px] text-danger/70 mt-0.5">{item.reason}</p>
@@ -119,14 +119,14 @@ export default function ApplicationsPage() {
       <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">新規申請</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           {types.map(type => {
             const Icon = type.icon
             return (
               <Link key={type.name} href={type.href}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                   <Icon className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <p className="flex-1 text-[14px] font-semibold text-text-primary tracking-tight">{type.name}</p>
                   <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
@@ -141,13 +141,13 @@ export default function ApplicationsPage() {
       <motion.section variants={staggerContainer} initial="hidden" animate="show">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">最近の申請</h2>
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden divide-y divide-border"
+          className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden divide-y divide-border"
           variants={fadeUp}
         >
           {recent.map((item, idx) => {
             const style = statusStyles[item.statusType]
             return (
-              <div key={idx} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(255,255,255,0.03)] transition-colors cursor-pointer group">
+              <div key={idx} className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
                 <p className="flex-1 text-[14px] text-text-secondary group-hover:text-text-primary transition-colors truncate font-medium tracking-tight">{item.title}</p>
                 <span className={`text-[12px] font-semibold px-2.5 py-1 rounded-lg ${style.color} ${style.bg}`}>
                   {item.status}
