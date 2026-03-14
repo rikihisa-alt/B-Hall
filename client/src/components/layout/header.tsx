@@ -6,15 +6,15 @@ import { Bell } from 'lucide-react'
 
 export function Header() {
   return (
-    <header className="h-[88px] border-b border-border bg-bg-surface flex items-center px-6 shrink-0 z-[200]">
+    <header className="h-[120px] border-b border-border bg-bg-surface flex items-center px-8 shrink-0 z-[200]">
       {/* Left side — Logo */}
       <Link href="/" className="flex items-center gap-2.5 shrink-0">
         <Image
           src="/logo.png"
           alt="B-Hall"
-          width={320}
-          height={80}
-          className="h-[72px] w-auto object-contain"
+          width={400}
+          height={100}
+          className="h-[100px] w-auto object-contain"
           priority
         />
       </Link>
