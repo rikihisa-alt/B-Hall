@@ -1,7 +1,5 @@
 'use client'
 
-import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { sections, toolItems, getSectionKeyFromPathname } from '@/lib/navigation'
@@ -43,19 +41,8 @@ export function Sidebar() {
 
   return (
     <aside className="h-screen w-[68px] flex flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
-      {/* ── ロゴ ── */}
-      <div className="h-16 flex items-center justify-center shrink-0">
-        <Link href="/" onClick={() => closeSubSidebar()}>
-          <Image
-            src="/logo.png"
-            alt="B-Hall"
-            width={40}
-            height={40}
-            className="w-10 h-10 object-contain"
-            priority
-          />
-        </Link>
-      </div>
+      {/* ── ヘッダー揃え用スペーサー ── */}
+      <div className="h-16 shrink-0" />
 
       {/* ── セクションナビ ── */}
       <nav className="flex-1 overflow-y-auto py-1 flex flex-col">

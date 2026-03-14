@@ -1,11 +1,25 @@
 'use client'
 
+import Image from 'next/image'
+import Link from 'next/link'
 import { Bell } from 'lucide-react'
 
 export function Header() {
   return (
-    <header className="h-16 border-b border-border bg-bg-surface flex items-center px-8 shrink-0 z-[200]">
-      {/* Left side — empty for now */}
+    <header className="h-16 border-b border-border bg-bg-surface flex items-center px-6 shrink-0 z-[200]">
+      {/* Left side — Logo */}
+      <Link href="/" className="flex items-center gap-2.5 shrink-0">
+        <Image
+          src="/logo.png"
+          alt="B-Hall"
+          width={120}
+          height={32}
+          className="h-8 w-auto object-contain"
+          priority
+        />
+      </Link>
+
+      {/* Spacer */}
       <div className="flex-1" />
 
       {/* Right side — notification bell + user avatar */}
