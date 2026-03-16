@@ -58,49 +58,8 @@ export function BottomBar() {
   const orderedItems = useMemo(() => getOrderedItems(mobileOrder), [mobileOrder])
   const visibleItems = useMemo(() => orderedItems.slice(0, VISIBLE_COUNT), [orderedItems])
 
-  // ── Track button positions for glass indicator ──
-  const buttonRefs = useRef<Map<number, HTMLButtonElement>>(new Map())
-  const moreButtonRef = useRef<HTMLButtonElement>(null)
-  const navRef = useRef<HTMLElement>(null)
-  const [activeIndicatorX, setActiveIndicatorX] = useState<number | null>(null)
-
-  // Find which visible index is active (or -1 for more)
-  const activeVisibleIndex = useMemo(() => {
-    const idx = visibleItems.findIndex((item) => activeSection === item.data.key)
-    return idx
-  }, [visibleItems, activeSection])
-
-  // Update indicator position when active tab changes
-  useEffect(() => {
-    const updatePosition = () => {
-      if (!navRef.current) return
-      const navRect = navRef.current.getBoundingClientRect()
-
-      if (moreMenuOpen) {
-        // Position on "more" button
-        const el = moreButtonRef.current
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          setActiveIndicatorX(rect.left - navRect.left + rect.width / 2 - 28)
-        }
-        return
-      }
-
-      if (activeVisibleIndex >= 0) {
-        const el = buttonRefs.current.get(activeVisibleIndex)
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          setActiveIndicatorX(rect.left - navRect.left + rect.width / 2 - 28)
-        }
-      } else {
-        setActiveIndicatorX(null)
-      }
-    }
-
-    updatePosition()
-    window.addEventListener('resize', updatePosition)
-    return () => window.removeEventListener('resize', updatePosition)
-  }, [activeVisibleIndex, moreMenuOpen])
+  // Find which key is effectively active (panel open overrides pathname-based)
+  const effectiveActiveKey = mobilePanelOpen && mobilePanelSection ? mobilePanelSection : moreMenuOpen ? '__more__' : activeSection
 
   // ── Handle icon click ──
   const handleItemClick = useCallback(
@@ -200,37 +159,22 @@ export function BottomBar() {
     return result
   }, [orderedItems, dragIdx, targetIdx])
 
-  const showGlassIndicator = activeIndicatorX !== null
-
   return (
     <>
       {/* ── Bottom bar ── */}
       <nav
-        ref={navRef}
         className="md:hidden fixed bottom-0 left-0 right-0 h-[68px] bg-white/80 backdrop-blur-xl border-t border-black/[0.06] shadow-[0_-2px_16px_rgba(0,0,0,0.04)] z-[100] flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]"
       >
-        {/* Glass circle indicator */}
-        {showGlassIndicator && (
-          <motion.div
-            className="absolute -top-3 w-14 h-14 rounded-full bg-white/70 backdrop-blur-xl shadow-[0_2px_16px_rgba(0,0,0,0.1)] border border-white/50 z-[101] pointer-events-none"
-            animate={{ left: activeIndicatorX ?? 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          />
-        )}
-
-        {visibleItems.map((item, index) => {
+        {visibleItems.map((item) => {
           const key = item.data.key
           const Icon = item.data.icon
           const label = item.type === 'section' ? item.data.shortLabel : item.data.label
-          const isActive = activeSection === key
+          const isActive = effectiveActiveKey === key
           const isToolWithCount = item.type === 'tool' && (item.data as NavToolItem).count
 
           return (
             <button
               key={key}
-              ref={(el) => {
-                if (el) buttonRefs.current.set(index, el)
-              }}
               onClick={() => handleItemClick(item)}
               className={`
                 flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] px-1 py-1 rounded-[10px]
@@ -241,6 +185,14 @@ export function BottomBar() {
                 }
               `}
             >
+              {/* Glass circle via layoutId */}
+              {isActive && (
+                <motion.div
+                  layoutId="bottom-bar-glass"
+                  className="absolute -top-3 w-14 h-14 rounded-full bg-white/70 backdrop-blur-xl shadow-[0_2px_16px_rgba(0,0,0,0.1)] border border-white/50 z-[-1]"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
               <div className="relative">
                 <Icon
                   className={`shrink-0 transition-all duration-150 ${
@@ -265,7 +217,6 @@ export function BottomBar() {
 
         {/* More button */}
         <button
-          ref={moreButtonRef}
           onClick={() => setMoreMenuOpen(true)}
           className={`
             flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] px-1 py-1 rounded-[10px]
@@ -273,6 +224,13 @@ export function BottomBar() {
             ${moreMenuOpen ? 'text-text-primary z-[102]' : 'text-text-muted'}
           `}
         >
+          {effectiveActiveKey === '__more__' && (
+            <motion.div
+              layoutId="bottom-bar-glass"
+              className="absolute -top-3 w-14 h-14 rounded-full bg-white/70 backdrop-blur-xl shadow-[0_2px_16px_rgba(0,0,0,0.1)] border border-white/50 z-[-1]"
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            />
+          )}
           <Grid3X3 className={`shrink-0 ${moreMenuOpen ? 'w-[22px] h-[22px]' : 'w-5 h-5'}`} strokeWidth={moreMenuOpen ? 1.75 : 1.5} />
           <span className={`text-[10px] leading-tight ${moreMenuOpen ? 'font-medium text-text-primary' : 'font-normal text-text-muted'}`}>その他</span>
         </button>
