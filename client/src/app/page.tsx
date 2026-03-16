@@ -24,7 +24,6 @@ import {
 } from 'recharts'
 import { useCountUp } from '@/lib/use-count-up'
 import { fadeUp, staggerContainer } from '@/lib/animation'
-import { SectionLauncher } from '@/features/dashboard/components/section-launcher'
 import { useTaskStore } from '@/stores/task-store'
 import { useAuthStore } from '@/stores/auth-store'
 import {
@@ -197,18 +196,6 @@ export default function HomePage() {
         {metrics.map((m, i) => (
           <MetricCard key={m.label} {...m} delay={i * 150} />
         ))}
-      </motion.div>
-
-      {/* Section Launcher */}
-      <motion.div
-        className="mb-8"
-        variants={fadeUp}
-        initial="hidden"
-        animate="show"
-        transition={{ delay: 0.15 }}
-      >
-        <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight mb-3 md:mb-4">業務メニュー</h2>
-        <SectionLauncher />
       </motion.div>
 
       {/* Chart + Activity — 2 columns */}
