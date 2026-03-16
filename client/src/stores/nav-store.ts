@@ -22,7 +22,7 @@ interface NavStore {
 const DEFAULT_ORDER: string[] = [
   ...sections.map((s) => s.key),
   ...toolItems.map((t) => t.key),
-]
+].filter((key) => key !== 'notifications' && key !== 'settings')
 
 /* ────────────────────────────────────────── */
 /*  Store                                     */

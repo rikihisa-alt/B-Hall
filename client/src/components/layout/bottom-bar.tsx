@@ -23,6 +23,8 @@ function getOrderedItems(order: string[]): NavItem[] {
 
   const items: NavItem[] = []
   for (const key of order) {
+    // Skip notifications and settings — they're in the header utility area
+    if (key === 'notifications' || key === 'settings') continue
     const sec = sectionMap.get(key)
     if (sec) {
       items.push({ type: 'section', data: sec })
@@ -37,10 +39,15 @@ function getOrderedItems(order: string[]): NavItem[] {
 }
 
 /* ────────────────────────────────────────── */
-/*  BottomBar Component                       */
+/*  Constants                                 */
 /* ────────────────────────────────────────── */
 
 const VISIBLE_COUNT = 4
+const BOTTOM_BAR_HEIGHT = 68 // px
+
+/* ────────────────────────────────────────── */
+/*  BottomBar Component                       */
+/* ────────────────────────────────────────── */
 
 export function BottomBar() {
   const router = useRouter()
@@ -163,7 +170,8 @@ export function BottomBar() {
     <>
       {/* ── Bottom bar ── */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 h-[68px] bg-white/80 backdrop-blur-xl border-t border-black/[0.06] shadow-[0_-2px_16px_rgba(0,0,0,0.04)] z-[100] flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]"
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-black/[0.06] shadow-[0_-2px_16px_rgba(0,0,0,0.04)] z-[100] flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]"
+        style={{ height: `${BOTTOM_BAR_HEIGHT}px` }}
       >
         {visibleItems.map((item) => {
           const key = item.data.key
@@ -236,7 +244,7 @@ export function BottomBar() {
         </button>
       </nav>
 
-      {/* ── Sub-items slide-up panel ── */}
+      {/* ── Sub-items slide-up panel (positioned ABOVE bottom bar) ── */}
       <AnimatePresence>
         {mobilePanelOpen && currentPanelSection && currentPanelSection.subItems && (
           <>
@@ -246,7 +254,7 @@ export function BottomBar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[390] bg-black/40 md:hidden"
+              className="fixed inset-0 z-[98] bg-black/40 md:hidden"
               onClick={closeMobilePanel}
             />
             <motion.div
@@ -255,7 +263,8 @@ export function BottomBar() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-              className="fixed bottom-0 left-0 right-0 z-[400] bg-white/90 backdrop-blur-xl rounded-t-[20px] shadow-2xl md:hidden max-h-[70vh] flex flex-col"
+              className="fixed left-0 right-0 z-[99] bg-white/90 backdrop-blur-xl rounded-t-[20px] shadow-2xl md:hidden max-h-[60vh] flex flex-col"
+              style={{ bottom: `${BOTTOM_BAR_HEIGHT}px` }}
             >
               {/* Drag handle */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -312,7 +321,7 @@ export function BottomBar() {
         )}
       </AnimatePresence>
 
-      {/* ── More menu (full slide-up) ── */}
+      {/* ── More menu (slide-up, positioned ABOVE bottom bar) ── */}
       <AnimatePresence>
         {moreMenuOpen && (
           <>
@@ -322,7 +331,7 @@ export function BottomBar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[390] bg-black/40 md:hidden"
+              className="fixed inset-0 z-[98] bg-black/40 md:hidden"
               onClick={() => setMoreMenuOpen(false)}
             />
             <motion.div
@@ -331,7 +340,8 @@ export function BottomBar() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-              className="fixed bottom-0 left-0 right-0 z-[400] bg-white/90 backdrop-blur-xl rounded-t-[20px] shadow-2xl md:hidden max-h-[85vh] flex flex-col"
+              className="fixed left-0 right-0 z-[99] bg-white/90 backdrop-blur-xl rounded-t-[20px] shadow-2xl md:hidden max-h-[75vh] flex flex-col"
+              style={{ bottom: `${BOTTOM_BAR_HEIGHT}px` }}
             >
               {/* Drag handle */}
               <div className="flex justify-center pt-2.5 pb-1">

@@ -262,9 +262,13 @@ export const sections: NavSection[] = [
 
 export const toolItems: NavToolItem[] = [
   { key: 'tasks',         label: 'タスク', icon: CheckSquare, href: '/tasks' },
-  { key: 'notifications', label: '通知',   icon: Bell,        href: '/notifications', count: 3 },
-  { key: 'settings',      label: '設定',   icon: Settings,    href: '/settings' },
 ]
+
+// Header-only utility items (not shown in nav tabs)
+export const headerUtilItems = {
+  notifications: { key: 'notifications', label: '通知', icon: Bell, href: '/notifications', count: 3 },
+  settings:      { key: 'settings',      label: '設定', icon: Settings, href: '/settings' },
+}
 
 /* ────────────────────────────────────────── */
 /*  Helper                                    */

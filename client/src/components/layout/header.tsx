@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bell, ChevronRight } from 'lucide-react'
+import { Bell, ChevronRight, Settings } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
 import { useNavigation } from './sidebar-context'
 import { useNavStore } from '@/stores/nav-store'
@@ -27,6 +27,8 @@ function getOrderedItems(order: string[]): NavItem[] {
 
   const items: NavItem[] = []
   for (const key of order) {
+    // Skip notifications and settings — they're in the header utility area
+    if (key === 'notifications' || key === 'settings') continue
     const sec = sectionMap.get(key)
     if (sec) {
       items.push({ type: 'section', data: sec })
@@ -59,6 +61,7 @@ export function Header() {
   const { desktopOrder, setDesktopOrder } = useNavStore()
 
   const avatarInitial = mounted && currentUser ? currentUser.avatar_initial : '田'
+  const userName = mounted && currentUser ? currentUser.name : '田中太郎'
   const roleLabel = mounted && currentUser ? USER_ROLE_LABELS[currentUser.role] : ''
 
   // Sync active section from pathname
@@ -67,7 +70,7 @@ export function Header() {
     setActiveSection(key)
   }, [pathname, setActiveSection])
 
-  // Ordered items for desktop
+  // Ordered items for desktop (filtered: no notifications/settings)
   const orderedItems = useMemo(() => getOrderedItems(desktopOrder), [desktopOrder])
 
   // ── Dropdown close on click outside ──
@@ -107,7 +110,6 @@ export function Header() {
   const handleDragStart = useCallback((e: React.DragEvent, index: number) => {
     setDragIndex(index)
     e.dataTransfer.effectAllowed = 'move'
-    // Use the actual element as drag image
     const rect = e.currentTarget.getBoundingClientRect()
     e.dataTransfer.setDragImage(
       e.currentTarget,
@@ -201,9 +203,9 @@ export function Header() {
         </Link>
       </div>
 
-      {/* ── Center: Desktop nav icons (hidden on mobile) ── */}
-      <div className="hidden md:flex flex-1 mx-4 overflow-x-auto overflow-y-hidden" ref={navRowRef}>
-        <div className="flex items-center gap-1.5 mx-auto">
+      {/* ── Desktop nav icons — left-aligned with gap from logo (hidden on mobile) ── */}
+      <div className="hidden md:flex flex-1 ml-8 overflow-x-auto overflow-y-hidden" ref={navRowRef}>
+        <div className="flex items-center gap-1">
           {orderedItems.map((item, index) => {
             const key = item.type === 'section' ? item.data.key : item.data.key
             const Icon = item.data.icon
@@ -270,21 +272,28 @@ export function Header() {
         </div>
       </div>
 
-      {/* ── Right: notification bell + user avatar ── */}
-      <div className="flex items-center gap-2 shrink-0 ml-auto md:ml-0">
-        <button className="w-9 h-9 rounded-[10px] flex items-center justify-center hover:bg-black/[0.03] transition-colors cursor-pointer relative">
+      {/* ── Right: 通知 → アカウント → 設定 ── */}
+      <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+        {/* 通知 */}
+        <button
+          onClick={() => router.push('/notifications')}
+          className={`w-9 h-9 rounded-[10px] flex items-center justify-center hover:bg-black/[0.03] transition-colors cursor-pointer relative ${
+            pathname === '/notifications' ? 'bg-black/[0.04]' : ''
+          }`}
+        >
           <Bell className="w-[18px] h-[18px] text-text-secondary" strokeWidth={1.5} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-danger" />
         </button>
 
-        <div className="flex items-center gap-2">
+        {/* アカウント */}
+        <div className="flex items-center gap-2 ml-1">
           <div className="w-8 h-8 rounded-full bg-accent-muted text-accent text-[13px] font-semibold flex items-center justify-center cursor-pointer">
             {avatarInitial}
           </div>
           {mounted && currentUser && (
             <div className="hidden md:flex flex-col">
               <span className="text-[12px] font-medium text-text-primary leading-tight">
-                {currentUser.name}
+                {userName}
               </span>
               <span className="text-[10px] text-text-muted leading-tight">
                 {roleLabel}
@@ -292,6 +301,16 @@ export function Header() {
             </div>
           )}
         </div>
+
+        {/* 設定 */}
+        <button
+          onClick={() => router.push('/settings')}
+          className={`w-9 h-9 rounded-[10px] flex items-center justify-center hover:bg-black/[0.03] transition-colors cursor-pointer ${
+            pathname === '/settings' ? 'bg-black/[0.04]' : ''
+          }`}
+        >
+          <Settings className="w-[18px] h-[18px] text-text-secondary" strokeWidth={1.5} />
+        </button>
       </div>
 
       {/* ── Desktop dropdown panel ── */}
