@@ -176,7 +176,7 @@ export default function OperationsPage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-bg-elevated rounded-[10px] w-48 animate-pulse" />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-24 bg-bg-elevated rounded-[16px] animate-pulse" />
           ))}
@@ -205,7 +205,7 @@ export default function OperationsPage() {
       </motion.div>
 
       {/* Stats Row */}
-      <motion.div className="grid grid-cols-4 gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
+      <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
         {[
           { label: '進行中フロー', value: activeFlowCount, color: '#3B82F6' },
           { label: '承認待ち', value: pendingCount, color: '#F59E0B' },
@@ -215,20 +215,20 @@ export default function OperationsPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
+            className="bg-bg-surface border border-border rounded-[16px] p-3 md:p-4 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
-            <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>{s.value}</p>
+            <p className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>{s.value}</p>
             <p className="text-[12px] text-text-muted mt-1">{s.label}</p>
           </motion.div>
         ))}
       </motion.div>
 
       {/* Active Flows + Task Breakdown */}
-      <div className="grid grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 mb-8">
         {/* Active Flows */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
+          className="lg:col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -248,42 +248,68 @@ export default function OperationsPage() {
               <p className="text-[14px] text-text-muted">進行中のフローはありません</p>
             </div>
           ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="bg-bg-base">
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">フロー名</th>
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">種別</th>
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
-                  <th className="px-6 py-3 w-10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {activeFlows.map((flow) => {
-                  const isApproving = flow.status === '承認待ち'
-                  return (
-                    <tr key={flow.id} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer">
-                      <td className="px-6 py-3.5">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${
-                          isApproving
-                            ? 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]'
-                            : 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]'
-                        }`}>
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: isApproving ? '#F59E0B' : '#3B82F6' }} />
-                          {flow.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{flow.title}</td>
-                      <td className="px-6 py-3.5 text-[13px] text-text-muted">{flow.type}</td>
-                      <td className="px-6 py-3.5 text-[13px] text-text-secondary">{flow.assignee}</td>
-                      <td className="px-6 py-3.5">
-                        <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+            <>
+            {/* Desktop table */}
+            <div className="hidden md:block">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-bg-base">
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">フロー名</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">種別</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
+                    <th className="px-6 py-3 w-10"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activeFlows.map((flow) => {
+                    const isApproving = flow.status === '承認待ち'
+                    return (
+                      <tr key={flow.id} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer">
+                        <td className="px-6 py-3.5">
+                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${
+                            isApproving
+                              ? 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]'
+                              : 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]'
+                          }`}>
+                            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: isApproving ? '#F59E0B' : '#3B82F6' }} />
+                            {flow.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{flow.title}</td>
+                        <td className="px-6 py-3.5 text-[13px] text-text-muted">{flow.type}</td>
+                        <td className="px-6 py-3.5 text-[13px] text-text-secondary">{flow.assignee}</td>
+                        <td className="px-6 py-3.5">
+                          <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile cards */}
+            <div className="md:hidden divide-y divide-border">
+              {activeFlows.map((flow) => {
+                const isApproving = flow.status === '承認待ち'
+                return (
+                  <div key={flow.id} className="flex items-center gap-3 px-4 py-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[14px] font-medium text-text-primary truncate">{flow.title}</p>
+                      <p className="text-[12px] text-text-muted mt-0.5">{flow.type} / {flow.assignee}</p>
+                    </div>
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border shrink-0 ${
+                      isApproving
+                        ? 'bg-[rgba(245,158,11,0.08)] text-[#F59E0B] border-[rgba(245,158,11,0.18)]'
+                        : 'bg-[rgba(59,130,246,0.08)] text-[#3B82F6] border-[rgba(59,130,246,0.18)]'
+                    }`}>
+                      {flow.status}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+            </>
           )}
         </motion.div>
 
@@ -326,7 +352,7 @@ export default function OperationsPage() {
       </div>
 
       {/* Approval Queue + Recent Activity */}
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
         {/* Approval Queue */}
         <motion.div
           className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"

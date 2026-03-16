@@ -105,7 +105,7 @@ export default function NotificationsPage() {
 
       {/* Header */}
       <motion.div
-        className="flex items-center justify-between mb-8"
+        className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-8"
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -158,7 +158,7 @@ export default function NotificationsPage() {
                 <div
                   key={n.id}
                   onClick={() => handleNotificationClick(n.id, n.action_url)}
-                  className={`flex items-start gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer ${
+                  className={`flex items-start gap-3 md:gap-4 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer ${
                     !n.is_read
                       ? 'bg-[rgba(79,70,229,0.02)] border-l-[3px] border-l-accent'
                       : 'border-l-[3px] border-l-transparent'

@@ -46,7 +46,7 @@ export default function ApplicationsPage() {
       <div className="animate-pulse space-y-6">
         <div className="h-6 w-48 bg-bg-elevated rounded" />
         <div className="h-10 w-1/3 bg-bg-elevated rounded" />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-20 bg-bg-elevated rounded-[16px]" />
           ))}
@@ -84,9 +84,9 @@ export default function ApplicationsPage() {
       </nav>
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">申請・承認</h1>
+          <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">申請・承認</h1>
           <p className="text-[13px] text-text-secondary mt-1">ワークフロー・承認処理</p>
         </div>
         <Button
@@ -94,6 +94,7 @@ export default function ApplicationsPage() {
           size="sm"
           icon={Plus}
           onClick={() => setCreateOpen(true)}
+          className="min-h-[44px] md:min-h-0"
         >
           新規申請
         </Button>
@@ -149,7 +150,7 @@ export default function ApplicationsPage() {
               <div
                 key={app.id}
                 onClick={() => router.push(`/applications/${app.id}`)}
-                className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
+                className="flex items-center gap-3 md:gap-5 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] font-semibold text-text-primary tracking-tight">{app.title}</p>
@@ -162,7 +163,7 @@ export default function ApplicationsPage() {
                     {formatAmount(app.amount)}
                   </span>
                 )}
-                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
+                <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors shrink-0" strokeWidth={1.75} />
               </div>
             ))}
           </motion.div>
@@ -187,7 +188,7 @@ export default function ApplicationsPage() {
                 <div
                   key={app.id}
                   onClick={() => router.push(`/applications/${app.id}`)}
-                  className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
+                  className="flex items-center gap-3 md:gap-5 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-text-primary tracking-tight">{app.title}</p>
@@ -195,7 +196,7 @@ export default function ApplicationsPage() {
                       <p className="text-[12px] text-danger/70 mt-0.5">{rejectedStep.comment}</p>
                     )}
                   </div>
-                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors" strokeWidth={1.75} />
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors shrink-0" strokeWidth={1.75} />
                 </div>
               )
             })}
@@ -231,7 +232,7 @@ export default function ApplicationsPage() {
               <div
                 key={app.id}
                 onClick={() => router.push(`/applications/${app.id}`)}
-                className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
+                className="flex items-center gap-3 md:gap-5 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
               >
                 <div className="flex-1 min-w-0">
                   <p className="flex-1 text-[14px] text-text-secondary group-hover:text-text-primary transition-colors truncate font-medium tracking-tight">
@@ -246,11 +247,11 @@ export default function ApplicationsPage() {
                   label={APPLICATION_STATUS_LABELS[app.status]}
                 />
                 {app.amount !== null && (
-                  <span className="text-[13px] font-semibold text-text-primary tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
+                  <span className="text-[13px] font-semibold text-text-primary tabular-nums hidden sm:inline" style={{ fontFamily: 'var(--font-inter)' }}>
                     {formatAmount(app.amount)}
                   </span>
                 )}
-                <span className="text-[12px] text-text-muted tabular-nums shrink-0" style={{ fontFamily: 'var(--font-inter)' }}>
+                <span className="text-[12px] text-text-muted tabular-nums shrink-0 hidden sm:block" style={{ fontFamily: 'var(--font-inter)' }}>
                   {formatDateCompact(app.updated_at)}
                 </span>
                 <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors shrink-0" strokeWidth={1.75} />

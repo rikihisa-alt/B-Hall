@@ -2,6 +2,8 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState, useRef, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { X, ChevronRight } from 'lucide-react'
 import { sections, toolItems, getSectionKeyFromPathname } from '@/lib/navigation'
 import { useNavigation } from './sidebar-context'
 import { useAuth } from '@/hooks/use-auth'
@@ -18,6 +20,8 @@ export function Sidebar() {
     subSidebarSection,
     openSubSidebar,
     closeSubSidebar,
+    mobileMenuOpen,
+    setMobileMenuOpen,
   } = useNavigation()
 
   const { currentUser, users, switchUser, mounted } = useAuth()
@@ -54,20 +58,38 @@ export function Sidebar() {
     }
   }, [userPopoverOpen, handleClickOutside])
 
+  // Escape キーでモバイルメニューを閉じる
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false)
+      }
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [mobileMenuOpen, setMobileMenuOpen])
+
   const handleSectionClick = (section: typeof sections[number]) => {
     if (section.directNav) {
-      // 直接遷移 → ページ遷移 + 第2サイドバーを閉じる
       router.push(section.href)
       closeSubSidebar()
+      setMobileMenuOpen(false)
     } else {
-      // 第2サイドバーを開く/トグル
-      openSubSidebar(section.key)
+      // On mobile, navigate directly instead of opening sub-sidebar
+      if (mobileMenuOpen) {
+        router.push(section.href)
+        setMobileMenuOpen(false)
+        closeSubSidebar()
+      } else {
+        openSubSidebar(section.key)
+      }
     }
   }
 
   const handleToolClick = (href: string) => {
     router.push(href)
     closeSubSidebar()
+    setMobileMenuOpen(false)
   }
 
   const handleUserSwitch = (userId: string) => {
@@ -77,8 +99,12 @@ export function Sidebar() {
 
   const avatarInitial = mounted && currentUser ? currentUser.avatar_initial : '田'
 
-  return (
-    <aside className="w-[68px] flex flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
+  /* ────────────────────────────────────────── */
+  /*  Desktop Sidebar                           */
+  /* ────────────────────────────────────────── */
+
+  const desktopSidebar = (
+    <aside className="hidden md:flex w-[68px] flex-col shrink-0 select-none bg-bg-elevated border-r border-border z-[100]">
       {/* ── セクションナビ ── */}
       <nav className="flex-1 overflow-y-auto py-1 flex flex-col">
         <div className="flex-1 space-y-0.5 px-1.5">
@@ -236,5 +262,164 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
+  )
+
+  /* ────────────────────────────────────────── */
+  /*  Mobile Drawer                             */
+  /* ────────────────────────────────────────── */
+
+  const mobileDrawer = (
+    <AnimatePresence>
+      {mobileMenuOpen && (
+        <>
+          {/* ── バックドロップ ── */}
+          <motion.div
+            key="mobile-sidebar-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[250] bg-black/40 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* ── ドロワーパネル ── */}
+          <motion.aside
+            key="mobile-sidebar-panel"
+            initial={{ x: -280 }}
+            animate={{ x: 0 }}
+            exit={{ x: -280 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+            className="fixed left-0 top-0 bottom-0 w-[280px] z-[260] bg-bg-surface flex flex-col shadow-2xl md:hidden"
+          >
+            {/* ── ヘッダー ── */}
+            <div className="flex items-center justify-between px-4 h-14 shrink-0 border-b border-border">
+              <span className="text-[15px] font-semibold text-text-primary">メニュー</span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-[8px] text-text-muted hover:text-text-primary hover:bg-bg-elevated transition-colors cursor-pointer"
+                aria-label="メニューを閉じる"
+              >
+                <X className="w-5 h-5" strokeWidth={1.75} />
+              </button>
+            </div>
+
+            {/* ── セクションナビ ── */}
+            <nav className="flex-1 overflow-y-auto py-2">
+              <div className="space-y-0.5 px-2">
+                {sections.map((section) => {
+                  const Icon = section.icon
+                  const isActive = activeSection === section.key
+
+                  return (
+                    <button
+                      key={section.key}
+                      onClick={() => handleSectionClick(section)}
+                      className={`
+                        w-full flex items-center gap-3 min-h-[44px] py-2.5 px-3 rounded-[10px]
+                        transition-all duration-150 cursor-pointer group text-left
+                        ${isActive
+                          ? 'bg-accent-muted text-accent'
+                          : 'text-text-muted hover:bg-bg-elevated hover:text-text-primary'
+                        }
+                      `}
+                    >
+                      <Icon
+                        className={`w-5 h-5 shrink-0 transition-colors duration-150 ${
+                          isActive ? 'text-accent' : 'text-text-muted group-hover:text-text-primary'
+                        }`}
+                        strokeWidth={1.75}
+                      />
+                      <span className={`text-[14px] font-medium flex-1 ${
+                        isActive ? 'text-accent' : 'text-text-primary'
+                      }`}>
+                        {section.label}
+                      </span>
+                      {!section.directNav && (
+                        <ChevronRight
+                          className={`w-4 h-4 shrink-0 transition-colors ${
+                            isActive ? 'text-accent' : 'text-text-muted'
+                          }`}
+                          strokeWidth={1.75}
+                        />
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* ── ツール（下部セパレータ） ── */}
+              <div className="border-t border-border mt-2 pt-2 px-2 space-y-0.5">
+                {toolItems.map((tool) => {
+                  const Icon = tool.icon
+                  const isActive = activeSection === tool.key
+
+                  return (
+                    <button
+                      key={tool.key}
+                      onClick={() => handleToolClick(tool.href)}
+                      className={`
+                        w-full flex items-center gap-3 min-h-[44px] py-2.5 px-3 rounded-[10px]
+                        transition-all duration-150 cursor-pointer group text-left
+                        ${isActive
+                          ? 'bg-accent-muted text-accent'
+                          : 'text-text-muted hover:bg-bg-elevated hover:text-text-primary'
+                        }
+                      `}
+                    >
+                      <div className="relative">
+                        <Icon
+                          className={`w-5 h-5 shrink-0 transition-colors duration-150 ${
+                            isActive ? 'text-accent' : 'text-text-muted group-hover:text-text-primary'
+                          }`}
+                          strokeWidth={1.75}
+                        />
+                        {/* 通知バッジ */}
+                        {tool.count && (
+                          <span className="absolute -top-1 -right-1.5 min-w-[16px] h-[16px] rounded-full bg-danger text-white text-[9px] font-bold flex items-center justify-center px-1">
+                            {tool.count}
+                          </span>
+                        )}
+                      </div>
+                      <span className={`text-[14px] font-medium ${
+                        isActive ? 'text-accent' : 'text-text-primary'
+                      }`}>
+                        {tool.label}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </nav>
+
+            {/* ── ユーザーエリア ── */}
+            {mounted && currentUser && (
+              <div className="border-t border-border p-3">
+                <div className="flex items-center gap-3 px-2">
+                  <div className="w-9 h-9 rounded-full bg-accent text-white text-[12px] font-bold flex items-center justify-center shrink-0">
+                    {avatarInitial}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-medium text-text-primary truncate">
+                      {currentUser.name}
+                    </p>
+                    <p className="text-[11px] text-text-muted truncate">
+                      {USER_ROLE_LABELS[currentUser.role]} / {currentUser.department}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </motion.aside>
+        </>
+      )}
+    </AnimatePresence>
+  )
+
+  return (
+    <>
+      {desktopSidebar}
+      {mobileDrawer}
+    </>
   )
 }

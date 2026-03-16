@@ -108,24 +108,24 @@ export default function AssistantPage() {
 
       {/* Header */}
       <motion.div
-        className="flex items-center gap-3 mb-4"
+        className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4"
         variants={fadeUp}
         initial="hidden"
         animate="show"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[10px] bg-[rgba(79,70,229,0.1)] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-[10px] bg-[rgba(79,70,229,0.1)] flex items-center justify-center shrink-0">
             <Bot className="w-5 h-5 text-accent" strokeWidth={1.75} />
           </div>
           <div>
-            <h1 className="text-[22px] font-bold text-text-primary tracking-tight">ジジロボ</h1>
+            <h1 className="text-xl md:text-[22px] font-bold text-text-primary tracking-tight">ジジロボ</h1>
             <p className="text-[13px] text-text-secondary mt-0.5">AIアシスタント</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="sm:ml-auto flex items-center gap-2 md:gap-3">
           <button
             onClick={clearHistory}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-elevated border border-border text-text-muted text-[12px] font-medium hover:text-text-secondary hover:border-border-hover transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-elevated border border-border text-text-muted text-[12px] font-medium hover:text-text-secondary hover:border-border-hover transition-all min-h-[36px] md:min-h-0"
           >
             <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
             履歴クリア
@@ -206,13 +206,13 @@ export default function AssistantPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="px-4 pt-2 pb-0 flex gap-2 flex-wrap">
+        <div className="px-4 pt-2 pb-0 flex gap-2 overflow-x-auto pb-2">
           {quickActions.map((text) => (
             <button
               key={text}
               onClick={() => handleQuickAction(text)}
               disabled={isTyping}
-              className="px-3 py-1.5 rounded-full bg-[rgba(79,70,229,0.06)] border border-[rgba(79,70,229,0.15)] text-accent text-[12px] font-medium hover:bg-[rgba(79,70,229,0.12)] hover:border-[rgba(79,70,229,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="px-3 py-1.5 rounded-full bg-[rgba(79,70,229,0.06)] border border-[rgba(79,70,229,0.15)] text-accent text-[12px] font-medium hover:bg-[rgba(79,70,229,0.12)] hover:border-[rgba(79,70,229,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0"
             >
               {text}
             </button>

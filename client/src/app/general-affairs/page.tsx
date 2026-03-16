@@ -112,7 +112,7 @@ export default function GeneralAffairsPage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-bg-elevated rounded-[10px] w-48 animate-pulse" />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-24 bg-bg-elevated rounded-[16px] animate-pulse" />
           ))}
@@ -191,23 +191,23 @@ export default function GeneralAffairsPage() {
       </nav>
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">総務・庶務</h1>
+          <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">総務・庶務</h1>
           <p className="text-[13px] text-text-secondary mt-1">備品・設備・施設予約管理</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="secondary" size="sm" icon={Plus} onClick={() => setShowEquipmentModal(true)}>
+        <div className="flex items-center gap-2 md:gap-3">
+          <Button variant="secondary" size="sm" icon={Plus} onClick={() => setShowEquipmentModal(true)} className="min-h-[44px] md:min-h-0">
             備品登録
           </Button>
-          <Button variant="primary" size="sm" icon={Calendar} onClick={() => setShowBookingModal(true)}>
+          <Button variant="primary" size="sm" icon={Calendar} onClick={() => setShowBookingModal(true)} className="min-h-[44px] md:min-h-0">
             施設予約
           </Button>
         </div>
       </div>
 
       {/* Stats */}
-      <motion.div className="grid grid-cols-4 gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
+      <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
         {[
           { label: '備品総数', value: equipmentStats.total, suffix: '件', color: '#4F46E5' },
           { label: '使用中', value: equipmentStats.inUse, suffix: '件', color: '#3B82F6' },
@@ -220,7 +220,7 @@ export default function GeneralAffairsPage() {
             className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
-            <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
+            <p className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
               {s.value}<span className="text-[14px] text-text-muted ml-1">{s.suffix}</span>
             </p>
             <p className="text-[12px] text-text-muted mt-1">{s.label}</p>

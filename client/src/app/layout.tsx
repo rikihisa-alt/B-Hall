@@ -41,7 +41,7 @@ export default function RootLayout({
               <div className="flex flex-1 overflow-hidden">
                 <Sidebar />
                 <main className="flex-1 overflow-y-auto">
-                  <div className="max-w-[1440px] mx-auto px-8 py-8">
+                  <div className="max-w-[1440px] mx-auto px-4 py-4 md:px-8 md:py-8">
                     {children}
                   </div>
                 </main>

@@ -179,9 +179,9 @@ export default function AccountingPage() {
       </nav>
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">経理・財務</h1>
+          <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">経理・財務</h1>
           <p className="text-[13px] text-text-secondary mt-1">経費・請求・支払・資金管理</p>
         </div>
       </div>
@@ -242,24 +242,24 @@ export default function AccountingPage() {
       {/* Quick Actions */}
       <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">クイックアクション</h2>
-        <motion.div variants={fadeUp} className="flex gap-3">
+        <motion.div variants={fadeUp} className="flex overflow-x-auto gap-2 md:gap-3 pb-2 -mx-1 px-1">
           <button
             onClick={() => setTxnModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer flex-shrink-0 min-h-[44px] md:min-h-0"
           >
             <Plus className="w-4 h-4 text-accent" />
             取引登録
           </button>
           <button
             onClick={() => setInvModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer flex-shrink-0 min-h-[44px] md:min-h-0"
           >
             <Plus className="w-4 h-4 text-accent" />
             請求書作成
           </button>
           <button
             onClick={() => setPayModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer flex-shrink-0 min-h-[44px] md:min-h-0"
           >
             <Plus className="w-4 h-4 text-accent" />
             支払登録

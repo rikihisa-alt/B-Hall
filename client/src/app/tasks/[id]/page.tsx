@@ -138,8 +138,8 @@ export default function TaskDetailPage() {
       <div className="animate-pulse space-y-6">
         <div className="h-6 w-32 bg-bg-elevated rounded" />
         <div className="h-10 w-2/3 bg-bg-elevated rounded" />
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
             <div className="h-40 bg-bg-elevated rounded-[16px]" />
             <div className="h-60 bg-bg-elevated rounded-[16px]" />
           </div>
@@ -214,7 +214,7 @@ export default function TaskDetailPage() {
         >
           {/* Title + Status + Priority */}
           <motion.div variants={fadeUp}>
-            <h1 className="text-[24px] font-bold text-text-primary tracking-tight mb-3">
+            <h1 className="text-xl md:text-[24px] font-bold text-text-primary tracking-tight mb-3">
               {task.title}
             </h1>
             <div className="flex items-center gap-2 flex-wrap">
@@ -247,7 +247,7 @@ export default function TaskDetailPage() {
                     <button
                       key={nextStatus}
                       onClick={() => handleStatusChange(nextStatus)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[10px] text-[13px] font-medium bg-bg-base border border-border text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 md:py-1.5 rounded-[10px] text-[13px] font-medium bg-bg-base border border-border text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-all cursor-pointer min-h-[44px] md:min-h-0"
                     >
                       {TASK_STATUS_LABELS[nextStatus]}
                     </button>
@@ -537,7 +537,7 @@ export default function TaskDetailPage() {
                       }
                     }}
                     disabled={!newCommentText.trim()}
-                    className="self-end shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-[13px] font-medium bg-accent text-white hover:bg-accent-hover disabled:opacity-30 transition-colors cursor-pointer disabled:cursor-not-allowed"
+                    className="self-end shrink-0 inline-flex items-center gap-1.5 px-4 py-2 min-h-[44px] md:min-h-0 rounded-[10px] text-[13px] font-medium bg-accent text-white hover:bg-accent-hover disabled:opacity-30 transition-colors cursor-pointer disabled:cursor-not-allowed"
                   >
                     <Send className="w-3.5 h-3.5" />
                     送信
@@ -752,7 +752,7 @@ export default function TaskDetailPage() {
           animate="show"
           transition={{ delay: 0.1 }}
         >
-          <Card className="sticky top-8">
+          <Card className="lg:sticky lg:top-8">
             <div className="space-y-5">
               {/* Assignee */}
               <div>

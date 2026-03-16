@@ -206,7 +206,7 @@ export default function EmployeeListPage() {
 
       {/* 統計カード */}
       <motion.div
-        className="grid grid-cols-3 gap-4 mb-8"
+        className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-8"
         variants={staggerContainer}
         initial="hidden"
         animate="show"
@@ -218,13 +218,13 @@ export default function EmployeeListPage() {
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
-            className="bg-bg-surface border border-border rounded-[16px] shadow-card px-5 py-4"
+            className="bg-bg-surface border border-border rounded-[16px] shadow-card px-4 md:px-5 py-3 md:py-4"
             variants={fadeUp}
           >
             <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">
               {stat.label}
             </p>
-            <p className="text-[28px] font-bold text-text-primary mt-1 tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
+            <p className="text-xl md:text-[28px] font-bold text-text-primary mt-1 tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
               {stat.value}
               <span className="text-[14px] font-normal text-text-muted ml-0.5">{stat.suffix}</span>
             </p>
@@ -233,8 +233,8 @@ export default function EmployeeListPage() {
       </motion.div>
 
       {/* 検索・フィルタ */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="relative flex-1 max-w-[360px]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
+        <div className="relative flex-1 sm:max-w-[360px]">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
           <input
             type="text"
@@ -286,7 +286,7 @@ export default function EmployeeListPage() {
                 key={employee.id}
                 variants={fadeUp}
                 onClick={() => router.push(`/hr/employees/${employee.id}`)}
-                className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
+                className="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
               >
                 {/* アバター */}
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#6366F1] flex items-center justify-center text-white text-[14px] font-bold shrink-0">
@@ -307,7 +307,7 @@ export default function EmployeeListPage() {
 
                 {/* 雇用形態バッジ */}
                 <span
-                  className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold border shrink-0"
+                  className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold border shrink-0 hidden sm:inline-flex"
                   style={{
                     backgroundColor: empType.bg,
                     color: empType.text,
@@ -330,7 +330,7 @@ export default function EmployeeListPage() {
                 </span>
 
                 {/* 入社日 */}
-                <span className="text-[12px] text-text-muted tabular-nums shrink-0 w-[88px] text-right" style={{ fontFamily: 'var(--font-inter)' }}>
+                <span className="text-[12px] text-text-muted tabular-nums shrink-0 w-[88px] text-right hidden md:block" style={{ fontFamily: 'var(--font-inter)' }}>
                   {formatDateShort(employee.hire_date)}
                 </span>
 
@@ -358,7 +358,7 @@ export default function EmployeeListPage() {
         }
       >
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="氏名"
               required
@@ -374,7 +374,7 @@ export default function EmployeeListPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-[13px] font-medium text-text-secondary mb-1.5">
                 部署 <span className="text-accent">*</span>
@@ -397,7 +397,7 @@ export default function EmployeeListPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-[13px] font-medium text-text-secondary mb-1.5">
                 雇用形態 <span className="text-accent">*</span>
@@ -421,7 +421,7 @@ export default function EmployeeListPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="メールアドレス"
               type="email"

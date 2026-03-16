@@ -95,7 +95,7 @@ export default function DepartmentPage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-bg-elevated rounded-[10px] w-48 animate-pulse" />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-24 bg-bg-elevated rounded-[16px] animate-pulse" />
           ))}
@@ -131,7 +131,7 @@ export default function DepartmentPage() {
       </motion.div>
 
       {/* Stats */}
-      <motion.div className="grid grid-cols-4 gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
+      <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
         {[
           { label: 'メンバー', value: deptEmployees.length, suffix: '名', color: '#3B82F6', icon: Users },
           { label: '進行中タスク', value: activeTasks, suffix: '件', color: '#F59E0B', icon: ListChecks },
@@ -141,13 +141,13 @@ export default function DepartmentPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
+            className="bg-bg-surface border border-border rounded-[16px] p-3 md:p-4 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
             <div className="flex items-center gap-2 mb-2">
               <s.icon className="w-4 h-4" style={{ color: s.color }} strokeWidth={1.75} />
             </div>
-            <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
+            <p className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
               {s.value}<span className="text-[14px] text-text-muted ml-1">{s.suffix}</span>
             </p>
             <p className="text-[12px] text-text-muted mt-1">{s.label}</p>
@@ -155,7 +155,7 @@ export default function DepartmentPage() {
         ))}
       </motion.div>
 
-      <div className="grid grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 mb-8">
         {/* Members */}
         <motion.div
           className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
@@ -196,7 +196,7 @@ export default function DepartmentPage() {
 
         {/* Department Tasks */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
+          className="lg:col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -216,58 +216,87 @@ export default function DepartmentPage() {
               <p className="text-[13px] text-text-muted">タスクはありません</p>
             </div>
           ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="bg-bg-base">
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">タスク名</th>
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">優先度</th>
-                  <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
-                  <th className="px-6 py-3 w-10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {deptTasks
-                  .filter((t) => t.status !== 'done' && t.status !== 'cancelled')
-                  .slice(0, 6)
-                  .map((t) => (
-                    <tr key={t.id} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer">
-                      <td className="px-6 py-3.5">
-                        <span
-                          className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border"
-                          style={{
-                            background: `${statusColors[t.status]}10`,
-                            color: statusColors[t.status],
-                            borderColor: `${statusColors[t.status]}25`,
-                          }}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[t.status] }} />
-                          {statusLabels[t.status]}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{t.title}</td>
-                      <td className="px-6 py-3.5">
-                        <span
-                          className="text-[11px] font-semibold"
-                          style={{ color: priorityColors[t.priority] }}
-                        >
-                          {priorityLabels[t.priority]}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3.5 text-[13px] text-text-secondary">{getUserName(t.assignee_id)}</td>
-                      <td className="px-6 py-3.5">
-                        <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <>
+            {/* Desktop table */}
+            <div className="hidden md:block">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-bg-base">
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">タスク名</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">優先度</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
+                    <th className="px-6 py-3 w-10"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {deptTasks
+                    .filter((t) => t.status !== 'done' && t.status !== 'cancelled')
+                    .slice(0, 6)
+                    .map((t) => (
+                      <tr key={t.id} className="border-b border-border hover:bg-[rgba(0,0,0,0.02)] group transition-colors cursor-pointer">
+                        <td className="px-6 py-3.5">
+                          <span
+                            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border"
+                            style={{
+                              background: `${statusColors[t.status]}10`,
+                              color: statusColors[t.status],
+                              borderColor: `${statusColors[t.status]}25`,
+                            }}
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[t.status] }} />
+                            {statusLabels[t.status]}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3.5 text-[14px] font-medium text-text-primary">{t.title}</td>
+                        <td className="px-6 py-3.5">
+                          <span
+                            className="text-[11px] font-semibold"
+                            style={{ color: priorityColors[t.priority] }}
+                          >
+                            {priorityLabels[t.priority]}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3.5 text-[13px] text-text-secondary">{getUserName(t.assignee_id)}</td>
+                        <td className="px-6 py-3.5">
+                          <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile cards */}
+            <div className="md:hidden divide-y divide-border">
+              {deptTasks
+                .filter((t) => t.status !== 'done' && t.status !== 'cancelled')
+                .slice(0, 6)
+                .map((t) => (
+                  <div key={t.id} className="flex items-center gap-3 px-4 py-4">
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ background: statusColors[t.status] }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[14px] font-medium text-text-primary truncate">{t.title}</p>
+                      <p className="text-[12px] text-text-muted mt-0.5">{getUserName(t.assignee_id)}</p>
+                    </div>
+                    <span
+                      className="text-[11px] font-semibold shrink-0"
+                      style={{ color: priorityColors[t.priority] }}
+                    >
+                      {priorityLabels[t.priority]}
+                    </span>
+                  </div>
+                ))}
+            </div>
+            </>
           )}
         </motion.div>
       </div>
 
       {/* Department Apps + Ringis */}
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
         {/* Department Applications */}
         <motion.div
           className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
@@ -305,7 +334,7 @@ export default function DepartmentPage() {
                 }
                 const b = badge[a.status] || badge.draft
                 return (
-                  <div key={a.id} className="flex items-center gap-3 px-6 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer">
+                  <div key={a.id} className="flex items-center gap-3 px-4 md:px-6 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer">
                     <div className="flex-1 min-w-0">
                       <p className="text-[14px] font-medium text-text-primary truncate">{a.title}</p>
                       <p className="text-[12px] text-text-muted">{a.type_label} / {getUserName(a.applicant_id)}</p>
@@ -358,7 +387,7 @@ export default function DepartmentPage() {
                 }
                 const b = badge[r.status] || badge.draft
                 return (
-                  <div key={r.id} className="flex items-center gap-3 px-6 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer">
+                  <div key={r.id} className="flex items-center gap-3 px-4 md:px-6 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer">
                     <div className="flex-1 min-w-0">
                       <p className="text-[14px] font-medium text-text-primary truncate">{r.title}</p>
                       <p className="text-[12px] text-text-muted">

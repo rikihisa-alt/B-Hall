@@ -30,6 +30,10 @@ interface NavigationContextValue {
   subSidebarSection: string | null
   openSubSidebar: (sectionKey: string) => void
   closeSubSidebar: () => void
+
+  // モバイルメニュー
+  mobileMenuOpen: boolean
+  setMobileMenuOpen: (open: boolean) => void
 }
 
 const NavigationContext = createContext<NavigationContextValue | null>(null)
@@ -43,6 +47,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [subSidebarOpen, setSubSidebarOpen] = useState(false)
   const [subSidebarSection, setSubSidebarSection] = useState<string | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // localStorage からサイドバー状態を復元
   useEffect(() => {
@@ -106,6 +111,8 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         subSidebarSection,
         openSubSidebar,
         closeSubSidebar,
+        mobileMenuOpen,
+        setMobileMenuOpen,
       }}
     >
       {children}

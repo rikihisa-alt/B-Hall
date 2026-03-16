@@ -109,7 +109,7 @@ export default function ExecutivePage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-bg-elevated rounded-[10px] w-48 animate-pulse" />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-24 bg-bg-elevated rounded-[16px] animate-pulse" />
           ))}
@@ -138,7 +138,7 @@ export default function ExecutivePage() {
       </motion.div>
 
       {/* KPI Cards */}
-      <motion.div className="grid grid-cols-4 gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
+      <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8" variants={staggerContainer} initial="hidden" animate="show">
         {[
           { label: '要対応', value: totalPending, suffix: '件', color: '#EF4444', icon: Zap },
           { label: 'タスク完了率', value: completionRate, suffix: '%', color: '#22C55E', icon: TrendingUp },
@@ -148,7 +148,7 @@ export default function ExecutivePage() {
           <motion.div
             key={kpi.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card"
+            className="bg-bg-surface border border-border rounded-[16px] p-3 md:p-5 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: kpi.color }}
           >
             <div className="flex items-center justify-between mb-3">
@@ -156,7 +156,7 @@ export default function ExecutivePage() {
                 <kpi.icon className="w-[18px] h-[18px]" style={{ color: kpi.color }} strokeWidth={1.75} />
               </div>
             </div>
-            <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
+            <p className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>
               {kpi.value}<span className="text-[14px] text-text-muted ml-1">{kpi.suffix}</span>
             </p>
             <p className="text-[12px] text-text-muted mt-1">{kpi.label}</p>
@@ -165,10 +165,10 @@ export default function ExecutivePage() {
       </motion.div>
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 mb-8">
         {/* Pending Decisions */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
+          className="lg:col-span-2 bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
           variants={fadeUp}
           initial="hidden"
           animate="show"

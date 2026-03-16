@@ -169,8 +169,8 @@ export default function RingiPage() {
           >
             {pendingApprovals.map((ringi) => (
               <Link key={ringi.id} href={`/ringi/${ringi.id}`}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
-                  <Clock className="w-[18px] h-[18px] text-warning" strokeWidth={1.75} />
+                <div className="flex items-center gap-3 md:gap-5 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
+                  <Clock className="w-[18px] h-[18px] text-warning shrink-0" strokeWidth={1.75} />
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-text-primary tracking-tight">{ringi.title}</p>
                     {ringi.amount !== null && (
@@ -208,8 +208,8 @@ export default function RingiPage() {
           >
             {draftRingis.map((ringi) => (
               <Link key={ringi.id} href={`/ringi/${ringi.id}`}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
-                  <Edit3 className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
+                <div className="flex items-center gap-3 md:gap-5 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
+                  <Edit3 className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-text-primary tracking-tight">{ringi.title}</p>
                     {ringi.amount !== null && (
@@ -315,8 +315,8 @@ export default function RingiPage() {
           >
             {allRingis.map((ringi) => (
               <Link key={ringi.id} href={`/ringi/${ringi.id}`}>
-                <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
-                  <Stamp className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors" strokeWidth={1.75} />
+                <div className="flex items-center gap-3 md:gap-5 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer group">
+                  <Stamp className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0" strokeWidth={1.75} />
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-text-primary tracking-tight">{ringi.title}</p>
                     {ringi.amount !== null && (

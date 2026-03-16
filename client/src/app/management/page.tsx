@@ -66,7 +66,7 @@ function MetricCard({ label, value, suffix, icon: Icon, color, delay }: {
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
+      className="bg-bg-surface border border-border rounded-[16px] p-3 md:p-5 shadow-card transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
       style={{ borderLeftWidth: 3, borderLeftColor: color }}
     >
       <div className="flex items-center justify-between mb-3">
@@ -74,8 +74,8 @@ function MetricCard({ label, value, suffix, icon: Icon, color, delay }: {
           <Icon className="w-[18px] h-[18px]" style={{ color }} strokeWidth={1.75} />
         </div>
       </div>
-      <p className="text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
-        {count}<span className="text-[16px] text-text-muted ml-1">{suffix}</span>
+      <p className="text-2xl md:text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+        {count}<span className="text-[14px] md:text-[16px] text-text-muted ml-1">{suffix}</span>
       </p>
       <p className="text-[13px] text-text-muted">{label}</p>
     </motion.div>
@@ -159,7 +159,7 @@ export default function ManagementPage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-bg-elevated rounded-[10px] w-64 animate-pulse" />
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-32 bg-bg-elevated rounded-[16px] animate-pulse" />
           ))}
@@ -181,12 +181,12 @@ export default function ManagementPage() {
           <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
           <span className="text-text-secondary font-medium">経営</span>
         </nav>
-        <h1 className="text-[28px] font-bold text-text-primary tracking-[-0.02em]">経営ダッシュボード</h1>
+        <h1 className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.02em]">経営ダッシュボード</h1>
         <p className="text-[15px] text-text-secondary mt-1">会社全体の状況を一画面で把握</p>
       </div>
 
       {/* Metrics */}
-      <motion.div className="grid grid-cols-4 gap-5 mb-8" variants={staggerContainer} initial="hidden" animate="show">
+      <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mb-8" variants={staggerContainer} initial="hidden" animate="show">
         <MetricCard label="従業員数" value={employeeCount} suffix="名" icon={Users} color="#3B82F6" delay={0} />
         <MetricCard label="未処理タスク" value={pendingTasks} suffix="件" icon={ListChecks} color="#F59E0B" delay={150} />
         <MetricCard label="承認待ち稟議" value={approvingRingis} suffix="件" icon={FileText} color="#4F46E5" delay={300} />
@@ -194,10 +194,10 @@ export default function ManagementPage() {
       </motion.div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 mb-8">
         {/* Revenue Chart */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
+          className="lg:col-span-2 bg-bg-surface border border-border rounded-[16px] p-4 md:p-6 shadow-card"
           variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.2 }}
         >
           <div className="flex items-center justify-between mb-5">
@@ -258,10 +258,10 @@ export default function ManagementPage() {
       </div>
 
       {/* Department Tasks + High Value Ringis */}
-      <div className="grid grid-cols-2 gap-5 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-8">
         {/* Department Tasks Bar Chart */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
+          className="bg-bg-surface border border-border rounded-[16px] p-4 md:p-6 shadow-card"
           variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.3 }}
         >
           <h2 className="text-[18px] font-bold text-text-primary mb-5">部門別タスク状況</h2>

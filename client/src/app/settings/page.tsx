@@ -219,19 +219,19 @@ export default function SettingsPage() {
       >
         {/* Sidebar Navigation */}
         <motion.div className="lg:w-52 shrink-0" variants={fadeUp}>
-          <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-1.5 space-y-0.5">
+          <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-1.5 flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-0.5">
             {settingsSections.map((item) => (
               <button
                 key={item.section}
                 onClick={() => setActiveSection(item.section)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-left transition-all ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-left transition-all flex-shrink-0 lg:flex-shrink lg:w-full min-h-[44px] lg:min-h-0 ${
                   activeSection === item.section
                     ? 'bg-[rgba(79,70,229,0.08)] text-accent'
                     : 'text-text-muted hover:bg-bg-elevated'
                 }`}
               >
                 <item.icon className="w-4 h-4 flex-shrink-0" strokeWidth={1.75} />
-                <span className="text-[13px] font-semibold">{item.title}</span>
+                <span className="text-[13px] font-semibold whitespace-nowrap">{item.title}</span>
               </button>
             ))}
           </div>
@@ -559,7 +559,7 @@ export default function SettingsPage() {
               <div className="space-y-6">
                 <div>
                   <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">テーマ</h4>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
                       { name: 'Shiraki 白木', active: true, toast: '' },
                       { name: 'ダーク', active: false, toast: 'ダークテーマは今後対応予定です' },

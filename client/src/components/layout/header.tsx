@@ -2,29 +2,42 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Bell } from 'lucide-react'
+import { Bell, Menu } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
+import { useNavigation } from './sidebar-context'
 import { USER_ROLE_LABELS } from '@/lib/constants'
 
 export function Header() {
   const { currentUser, mounted } = useAuth()
+  const { mobileMenuOpen, setMobileMenuOpen } = useNavigation()
 
   const avatarInitial = mounted && currentUser ? currentUser.avatar_initial : '田'
   const roleLabel = mounted && currentUser ? USER_ROLE_LABELS[currentUser.role] : ''
 
   return (
-    <header className="h-16 border-b border-border bg-bg-surface flex items-center px-6 shrink-0 z-[200]">
-      {/* Left side — Logo */}
-      <Link href="/" className="flex items-center gap-2.5 shrink-0">
-        <Image
-          src="/logo.png"
-          alt="B-Hall"
-          width={240}
-          height={40}
-          className="h-[40px] w-auto object-contain"
-          priority
-        />
-      </Link>
+    <header className="h-14 md:h-16 border-b border-border bg-bg-surface flex items-center px-4 md:px-6 shrink-0 z-[200]">
+      {/* Left side — Hamburger (mobile) + Logo */}
+      <div className="flex items-center gap-2 shrink-0">
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden w-9 h-9 rounded-[10px] flex items-center justify-center hover:bg-bg-elevated transition-colors cursor-pointer"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="メニューを開く"
+        >
+          <Menu className="w-5 h-5 text-text-secondary" strokeWidth={1.75} />
+        </button>
+
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <Image
+            src="/logo.png"
+            alt="B-Hall"
+            width={240}
+            height={40}
+            className="h-[32px] md:h-[40px] w-auto object-contain"
+            priority
+          />
+        </Link>
+      </div>
 
       {/* Spacer */}
       <div className="flex-1" />
@@ -43,7 +56,7 @@ export function Header() {
             {avatarInitial}
           </div>
           {mounted && currentUser && (
-            <div className="hidden sm:flex flex-col">
+            <div className="hidden md:flex flex-col">
               <span className="text-[12px] font-medium text-text-primary leading-tight">
                 {currentUser.name}
               </span>

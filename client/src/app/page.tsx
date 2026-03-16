@@ -86,7 +86,7 @@ function MetricCard({ label, value, prefix, suffix, change, up, icon: Icon, colo
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] cursor-default"
+      className="bg-bg-surface border border-border rounded-[16px] p-3 md:p-5 shadow-card transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] cursor-default"
       style={{ borderLeftWidth: 3, borderLeftColor: color }}
     >
       <div className="flex items-center justify-between mb-3">
@@ -100,7 +100,7 @@ function MetricCard({ label, value, prefix, suffix, change, up, icon: Icon, colo
           </div>
         )}
       </div>
-      <p className="text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+      <p className="text-[24px] md:text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
         {prefix}{count}{suffix}
       </p>
       <p className="text-[13px] text-text-muted">{label}</p>
@@ -175,13 +175,13 @@ export default function HomePage() {
       transition={{ type: 'spring' as const, stiffness: 280, damping: 28 }}
     >
       {/* Page Header */}
-      <div className="flex items-end justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6 md:mb-8">
         <div>
           <p className="text-[13px] text-text-muted mb-1">{dateStr}</p>
-          <h1 className="text-[28px] font-bold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
-          <p className="text-[15px] text-text-secondary mt-1">業務全体の状況を確認できます</p>
+          <h1 className="text-2xl md:text-[28px] font-bold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
+          <p className="text-sm md:text-[15px] text-text-secondary mt-1">業務全体の状況を確認できます</p>
         </div>
-        <Link href="/tasks" className="inline-flex items-center gap-2 bg-gradient-to-r from-accent to-[#6366F1] text-white font-semibold px-5 h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(79,70,229,0.25)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200">
+        <Link href="/tasks" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-[#6366F1] text-white font-semibold px-5 h-11 md:h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(79,70,229,0.25)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200">
           <ListTodo className="w-4 h-4" strokeWidth={2} />
           タスク一覧
         </Link>
@@ -189,7 +189,7 @@ export default function HomePage() {
 
       {/* Metric Cards — 4 columns */}
       <motion.div
-        className="grid grid-cols-4 gap-5 mb-8"
+        className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mb-6 md:mb-8"
         variants={staggerContainer}
         initial="hidden"
         animate="show"
@@ -207,15 +207,15 @@ export default function HomePage() {
         animate="show"
         transition={{ delay: 0.15 }}
       >
-        <h2 className="text-[18px] font-bold text-text-primary tracking-tight mb-4">業務メニュー</h2>
+        <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight mb-3 md:mb-4">業務メニュー</h2>
         <SectionLauncher />
       </motion.div>
 
       {/* Chart + Activity — 2 columns */}
-      <div className="grid grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 mb-6 md:mb-8">
         {/* Area Chart */}
         <motion.div
-          className="col-span-2 bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
+          className="lg:col-span-2 bg-bg-surface border border-border rounded-[16px] p-4 md:p-6 shadow-card"
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -249,13 +249,13 @@ export default function HomePage() {
 
         {/* Activity Timeline */}
         <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] p-6 shadow-card"
+          className="bg-bg-surface border border-border rounded-[16px] p-4 md:p-6 shadow-card"
           variants={fadeUp}
           initial="hidden"
           animate="show"
           transition={{ delay: 0.25 }}
         >
-          <h2 className="text-[18px] font-bold text-text-primary tracking-tight mb-5">最近の活動</h2>
+          <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight mb-4 md:mb-5">最近の活動</h2>
           <div className="space-y-4">
             {activities.map((a, i) => {
               const dotColor = a.type === 'success' ? '#22C55E' : a.type === 'warning' ? '#F59E0B' : a.type === 'danger' ? '#EF4444' : '#3B82F6'
@@ -284,15 +284,56 @@ export default function HomePage() {
         animate="show"
         transition={{ delay: 0.3 }}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <h2 className="text-[18px] font-bold text-text-primary tracking-tight">直近のタスク</h2>
+        <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-border">
+          <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight">直近のタスク</h2>
           <Link href="/tasks" className="flex items-center gap-1 text-[13px] font-semibold text-accent hover:text-accent-hover transition-colors">
             すべて表示
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <table className="w-full">
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-border">
+          {mounted && hydrated && recentTasks.length > 0 ? (
+            recentTasks.map((task) => {
+              const statusLabel = TASK_STATUS_LABELS[task.status]
+              const pLabel = priorityLabels[task.priority] || '中'
+              return (
+                <div
+                  key={task.id}
+                  className="px-4 py-3 active:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer"
+                  onClick={() => router.push(`/tasks/${task.id}`)}
+                >
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: statusColors[statusLabel] || 'rgba(28,25,23,0.25)' }} />
+                    <span className="text-[12px] text-text-secondary">{statusLabel}</span>
+                    <span className={`ml-auto inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold border ${priorityStyles[pLabel] || ''}`}>
+                      {pLabel}
+                    </span>
+                  </div>
+                  <p className="text-[14px] font-medium text-text-primary mb-1.5">{task.title}</p>
+                  <div className="flex items-center gap-3 text-[12px] text-text-muted">
+                    <span>{getUserName(task.assignee_id)}</span>
+                    <span style={{ fontFamily: 'var(--font-inter)' }}>
+                      {task.due_date ? formatDateCompact(task.due_date) : '-'}
+                    </span>
+                  </div>
+                </div>
+              )
+            })
+          ) : (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="px-4 py-3 space-y-2">
+                <div className="h-3 w-20 bg-bg-elevated rounded animate-pulse" />
+                <div className="h-4 w-48 bg-bg-elevated rounded animate-pulse" />
+                <div className="h-3 w-32 bg-bg-elevated rounded animate-pulse" />
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <table className="w-full hidden md:table">
           <thead>
             <tr className="bg-bg-base">
               <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
@@ -340,7 +381,6 @@ export default function HomePage() {
                 )
               })
             ) : (
-              // Skeleton rows during hydration
               Array.from({ length: 5 }).map((_, i) => (
                 <tr key={i} className="border-b border-border">
                   <td className="px-6 py-3.5"><div className="h-4 w-16 bg-bg-elevated rounded animate-pulse" /></td>

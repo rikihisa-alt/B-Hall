@@ -197,9 +197,9 @@ export default function TasksPage() {
       <div className="animate-pulse space-y-6">
         <div className="h-6 w-32 bg-bg-elevated rounded" />
         <div className="h-10 w-2/3 bg-bg-elevated rounded" />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-24 bg-bg-elevated rounded-[16px]" />
+            <div key={i} className="h-20 md:h-24 bg-bg-elevated rounded-[16px]" />
           ))}
         </div>
         <div className="h-96 bg-bg-elevated rounded-[16px]" />
@@ -221,16 +221,16 @@ export default function TasksPage() {
       </nav>
 
       {/* Header */}
-      <div className="flex items-end justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6 md:mb-8">
         <motion.div variants={fadeUp} initial="hidden" animate="show">
-          <h1 className="text-[22px] font-bold text-text-primary tracking-tight">タスク</h1>
+          <h1 className="text-xl md:text-[22px] font-bold text-text-primary tracking-tight">タスク</h1>
           <p className="text-[13px] text-text-secondary mt-1">{filteredTasks.length}件のタスク</p>
         </motion.div>
         <div className="flex items-center gap-3">
           <div className="relative" ref={filterRef}>
             <button
               onClick={() => setFilterOpen((v) => !v)}
-              className={`flex items-center gap-2 px-4 h-9 rounded-[10px] border text-[13px] font-medium transition-colors cursor-pointer ${
+              className={`flex items-center gap-2 px-4 h-11 md:h-9 rounded-[10px] border text-[13px] font-medium transition-colors cursor-pointer ${
                 activeFilterCount > 0
                   ? 'bg-[rgba(79,70,229,0.08)] border-accent/30 text-accent'
                   : 'bg-bg-surface border-border text-text-secondary hover:bg-bg-elevated'
@@ -252,7 +252,7 @@ export default function TasksPage() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 4, scale: 0.98 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-[340px] bg-bg-surface border border-border rounded-[16px] shadow-lg z-50 overflow-hidden"
+                  className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] md:w-[340px] max-w-[340px] bg-bg-surface border border-border rounded-[16px] shadow-lg z-50 overflow-hidden"
                 >
                   <div className="flex items-center justify-between px-5 py-3 border-b border-border">
                     <span className="text-[13px] font-semibold text-text-primary">フィルタ</span>
@@ -358,7 +358,7 @@ export default function TasksPage() {
           </div>
           <button
             onClick={() => setCreateOpen(true)}
-            className="flex items-center gap-2 bg-accent text-white font-semibold px-4 h-9 rounded-[10px] text-[13px] shadow-[0_0_12px_rgba(79,70,229,0.2)] hover:-translate-y-[2px] hover:shadow-[0_0_20px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-2 bg-accent text-white font-semibold px-4 h-11 md:h-9 rounded-[10px] text-[13px] shadow-[0_0_12px_rgba(79,70,229,0.2)] hover:-translate-y-[2px] hover:shadow-[0_0_20px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200 cursor-pointer"
           >
             <Plus className="w-4 h-4" strokeWidth={2} />
             新規タスク
@@ -368,7 +368,7 @@ export default function TasksPage() {
 
       {/* Stats Row */}
       <motion.div
-        className="grid grid-cols-4 gap-4 mb-8"
+        className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8"
         variants={staggerContainer}
         initial="hidden"
         animate="show"
@@ -377,7 +377,7 @@ export default function TasksPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className={`bg-bg-surface border rounded-[16px] p-4 shadow-card cursor-pointer transition-all hover:-translate-y-0.5 ${
+            className={`bg-bg-surface border rounded-[16px] p-3 md:p-4 shadow-card cursor-pointer transition-all hover:-translate-y-0.5 ${
               activeFilter === s.filter
                 ? 'border-accent shadow-[0_0_12px_rgba(79,70,229,0.12)]'
                 : 'border-border'
@@ -385,7 +385,7 @@ export default function TasksPage() {
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
             onClick={() => setActiveFilter(s.filter)}
           >
-            <p className="text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>{s.value}</p>
+            <p className="text-[22px] md:text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>{s.value}</p>
             <p className="text-[12px] text-text-muted mt-1">{s.label}</p>
           </motion.div>
         ))}
@@ -434,7 +434,7 @@ export default function TasksPage() {
         transition={{ delay: 0.15 }}
       >
         {/* Search Bar */}
-        <div className="px-6 py-4 border-b border-border flex items-center gap-3">
+        <div className="px-4 md:px-6 py-3 md:py-4 border-b border-border flex items-center gap-3">
           <Search className="w-4 h-4 text-text-muted" strokeWidth={1.75} />
           <input
             type="text"
@@ -445,8 +445,49 @@ export default function TasksPage() {
           />
         </div>
 
-        {/* Table */}
-        <table className="w-full">
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-border">
+          {filteredTasks.length === 0 ? (
+            <div className="px-4 py-12 text-center text-[14px] text-text-muted">
+              {searchQuery || activeFilter !== 'all'
+                ? '条件に一致するタスクがありません'
+                : 'タスクがありません'}
+            </div>
+          ) : (
+            filteredTasks.map((task) => {
+              const statusLabel = TASK_STATUS_LABELS[task.status]
+              const pLabel = priorityLabels[task.priority] || '中'
+              const overdueFlag = isOverdue(task.due_date)
+              return (
+                <div
+                  key={task.id}
+                  className="px-4 py-3 active:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer"
+                  onClick={() => router.push(`/tasks/${task.id}`)}
+                >
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold border ${statusBadge[statusLabel] || ''}`}>
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: statusColors[statusLabel] || 'rgba(28,25,23,0.3)' }} />
+                      {statusLabel}
+                    </span>
+                    <span className={`ml-auto inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold border ${priorityStyles[pLabel] || ''}`}>
+                      {pLabel}
+                    </span>
+                  </div>
+                  <p className="text-[14px] font-medium text-text-primary mb-1.5">{task.title}</p>
+                  <div className="flex items-center gap-3 text-[12px] text-text-muted">
+                    <span>{getUserName(task.assignee_id)}</span>
+                    <span className={`tabular-nums ${overdueFlag ? 'text-danger font-medium' : ''}`} style={{ fontFamily: 'var(--font-inter)' }}>
+                      {task.due_date ? formatDateCompact(task.due_date) : '-'}
+                    </span>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <table className="w-full hidden md:table">
           <thead>
             <tr className="bg-bg-base">
               <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>

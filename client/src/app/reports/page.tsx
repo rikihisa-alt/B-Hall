@@ -133,12 +133,12 @@ export default function ReportsPage() {
       </nav>
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">報告</h1>
+          <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">報告</h1>
           <p className="text-[13px] text-text-secondary mt-1">日報・週報・月報・インシデント</p>
         </div>
-        <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
+        <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="min-h-[44px] md:min-h-0">
           新規報告
         </Button>
       </div>
@@ -178,12 +178,12 @@ export default function ReportsPage() {
       </motion.div>
 
       {/* Type Filter Tabs */}
-      <div className="flex gap-2 flex-wrap mb-6">
+      <div className="flex overflow-x-auto gap-2 pb-2 -mx-1 px-1 mb-6">
         {TYPE_TABS.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all cursor-pointer flex-shrink-0 min-h-[36px] md:min-h-0 ${
               activeTab === tab.value
                 ? 'bg-accent text-white'
                 : 'bg-bg-surface border border-border text-text-secondary hover:text-text-primary hover:border-accent/40'
@@ -221,7 +221,7 @@ export default function ReportsPage() {
               <div
                 key={report.id}
                 onClick={() => setDetailReport(report)}
-                className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
+                className="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
               >
                 <div className="w-9 h-9 rounded-[10px] bg-bg-elevated flex items-center justify-center shrink-0">
                   <FileText className="w-[18px] h-[18px] text-text-muted" strokeWidth={1.75} />

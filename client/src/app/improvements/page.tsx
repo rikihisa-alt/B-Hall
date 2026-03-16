@@ -149,12 +149,12 @@ export default function ImprovementsPage() {
       </nav>
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">改善</h1>
+          <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">改善</h1>
           <p className="text-[13px] text-text-secondary mt-1">提案・目安箱・フィードバック</p>
         </div>
-        <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
+        <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="min-h-[44px] md:min-h-0">
           改善提案
         </Button>
       </div>
@@ -198,12 +198,12 @@ export default function ImprovementsPage() {
 
       {/* Filters */}
       <div className="mb-6 space-y-3">
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex overflow-x-auto gap-2 pb-2 -mx-1 px-1">
           {CATEGORY_TABS.map((tab) => (
             <button
               key={tab.value}
               onClick={() => setActiveCategory(tab.value)}
-              className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all cursor-pointer flex-shrink-0 min-h-[36px] md:min-h-0 ${
                 activeCategory === tab.value
                   ? 'bg-accent text-white'
                   : 'bg-bg-surface border border-border text-text-secondary hover:text-text-primary hover:border-accent/40'
@@ -213,12 +213,12 @@ export default function ImprovementsPage() {
             </button>
           ))}
         </div>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex overflow-x-auto gap-2 pb-2 -mx-1 px-1">
           {STATUS_TABS.map((tab) => (
             <button
               key={tab.value}
               onClick={() => setActiveStatus(tab.value)}
-              className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-all cursor-pointer flex-shrink-0 min-h-[36px] md:min-h-0 ${
                 activeStatus === tab.value
                   ? 'bg-text-primary text-white'
                   : 'bg-bg-surface border border-border text-text-secondary hover:text-text-primary hover:border-text-primary/40'
@@ -273,7 +273,7 @@ export default function ImprovementsPage() {
                     </div>
                     <button
                       onClick={(e) => handleVote(e, imp.id)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-semibold transition-all cursor-pointer ${
+                      className={`flex items-center gap-1.5 px-2.5 py-1 min-h-[36px] md:min-h-0 rounded-full text-[12px] font-semibold transition-all cursor-pointer ${
                         hasVoted
                           ? 'bg-[rgba(239,68,68,0.12)] text-danger'
                           : 'bg-bg-elevated text-text-muted hover:bg-[rgba(239,68,68,0.08)] hover:text-danger'
