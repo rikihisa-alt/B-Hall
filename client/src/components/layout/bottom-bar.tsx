@@ -58,6 +58,50 @@ export function BottomBar() {
   const orderedItems = useMemo(() => getOrderedItems(mobileOrder), [mobileOrder])
   const visibleItems = useMemo(() => orderedItems.slice(0, VISIBLE_COUNT), [orderedItems])
 
+  // ── Track button positions for glass indicator ──
+  const buttonRefs = useRef<Map<number, HTMLButtonElement>>(new Map())
+  const moreButtonRef = useRef<HTMLButtonElement>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const [activeIndicatorX, setActiveIndicatorX] = useState<number | null>(null)
+
+  // Find which visible index is active (or -1 for more)
+  const activeVisibleIndex = useMemo(() => {
+    const idx = visibleItems.findIndex((item) => activeSection === item.data.key)
+    return idx
+  }, [visibleItems, activeSection])
+
+  // Update indicator position when active tab changes
+  useEffect(() => {
+    const updatePosition = () => {
+      if (!navRef.current) return
+      const navRect = navRef.current.getBoundingClientRect()
+
+      if (moreMenuOpen) {
+        // Position on "more" button
+        const el = moreButtonRef.current
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          setActiveIndicatorX(rect.left - navRect.left + rect.width / 2 - 28)
+        }
+        return
+      }
+
+      if (activeVisibleIndex >= 0) {
+        const el = buttonRefs.current.get(activeVisibleIndex)
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          setActiveIndicatorX(rect.left - navRect.left + rect.width / 2 - 28)
+        }
+      } else {
+        setActiveIndicatorX(null)
+      }
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    return () => window.removeEventListener('resize', updatePosition)
+  }, [activeVisibleIndex, moreMenuOpen])
+
   // ── Handle icon click ──
   const handleItemClick = useCallback(
     (item: NavItem) => {
@@ -156,11 +200,25 @@ export function BottomBar() {
     return result
   }, [orderedItems, dragIdx, targetIdx])
 
+  const showGlassIndicator = activeIndicatorX !== null
+
   return (
     <>
       {/* ── Bottom bar ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-border shadow-lg z-[100] flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]">
-        {visibleItems.map((item) => {
+      <nav
+        ref={navRef}
+        className="md:hidden fixed bottom-0 left-0 right-0 h-[68px] bg-white/80 backdrop-blur-xl border-t border-black/[0.06] shadow-[0_-2px_16px_rgba(0,0,0,0.04)] z-[100] flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]"
+      >
+        {/* Glass circle indicator */}
+        {showGlassIndicator && (
+          <motion.div
+            className="absolute -top-3 w-14 h-14 rounded-full bg-white/70 backdrop-blur-xl shadow-[0_2px_16px_rgba(0,0,0,0.1)] border border-white/50 z-[101] pointer-events-none"
+            animate={{ left: activeIndicatorX ?? 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+          />
+        )}
+
+        {visibleItems.map((item, index) => {
           const key = item.data.key
           const Icon = item.data.icon
           const label = item.type === 'section' ? item.data.shortLabel : item.data.label
@@ -170,25 +228,35 @@ export function BottomBar() {
           return (
             <button
               key={key}
+              ref={(el) => {
+                if (el) buttonRefs.current.set(index, el)
+              }}
               onClick={() => handleItemClick(item)}
               className={`
                 flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] px-1 py-1 rounded-[10px]
-                transition-colors duration-150 cursor-pointer
+                transition-colors duration-150 cursor-pointer relative
                 ${isActive
-                  ? 'text-accent bg-accent-muted'
+                  ? 'text-text-primary z-[102]'
                   : 'text-text-muted'
                 }
               `}
             >
               <div className="relative">
-                <Icon className="w-5 h-5" strokeWidth={1.75} />
+                <Icon
+                  className={`shrink-0 transition-all duration-150 ${
+                    isActive ? 'w-[22px] h-[22px]' : 'w-5 h-5'
+                  }`}
+                  strokeWidth={isActive ? 1.75 : 1.5}
+                />
                 {isToolWithCount && (
                   <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] rounded-full bg-danger text-white text-[8px] font-bold flex items-center justify-center px-0.5">
                     {(item.data as NavToolItem).count}
                   </span>
                 )}
               </div>
-              <span className="text-[10px] leading-tight font-medium whitespace-nowrap">
+              <span className={`text-[10px] leading-tight whitespace-nowrap ${
+                isActive ? 'font-medium text-text-primary' : 'font-normal text-text-muted'
+              }`}>
                 {label}
               </span>
             </button>
@@ -197,15 +265,16 @@ export function BottomBar() {
 
         {/* More button */}
         <button
+          ref={moreButtonRef}
           onClick={() => setMoreMenuOpen(true)}
           className={`
             flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] px-1 py-1 rounded-[10px]
-            transition-colors duration-150 cursor-pointer
-            ${moreMenuOpen ? 'text-accent bg-accent-muted' : 'text-text-muted'}
+            transition-colors duration-150 cursor-pointer relative
+            ${moreMenuOpen ? 'text-text-primary z-[102]' : 'text-text-muted'}
           `}
         >
-          <Grid3X3 className="w-5 h-5" strokeWidth={1.75} />
-          <span className="text-[10px] leading-tight font-medium">その他</span>
+          <Grid3X3 className={`shrink-0 ${moreMenuOpen ? 'w-[22px] h-[22px]' : 'w-5 h-5'}`} strokeWidth={moreMenuOpen ? 1.75 : 1.5} />
+          <span className={`text-[10px] leading-tight ${moreMenuOpen ? 'font-medium text-text-primary' : 'font-normal text-text-muted'}`}>その他</span>
         </button>
       </nav>
 
@@ -228,7 +297,7 @@ export function BottomBar() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-              className="fixed bottom-0 left-0 right-0 z-[400] bg-white rounded-t-[20px] shadow-2xl md:hidden max-h-[70vh] flex flex-col"
+              className="fixed bottom-0 left-0 right-0 z-[400] bg-white/90 backdrop-blur-xl rounded-t-[20px] shadow-2xl md:hidden max-h-[70vh] flex flex-col"
             >
               {/* Drag handle */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -236,10 +305,10 @@ export function BottomBar() {
               </div>
 
               {/* Section header */}
-              <div className="flex items-center gap-2.5 px-5 pb-3 border-b border-border">
+              <div className="flex items-center gap-2.5 px-5 pb-3 border-b border-border/60">
                 {(() => {
                   const Icon = currentPanelSection.icon
-                  return <Icon className="w-[18px] h-[18px] text-accent" strokeWidth={1.75} />
+                  return <Icon className="w-[18px] h-[18px] text-text-secondary" strokeWidth={1.5} />
                 })()}
                 <h3 className="text-[15px] font-semibold text-text-primary flex-1">
                   {currentPanelSection.label}
@@ -248,7 +317,7 @@ export function BottomBar() {
                   onClick={closeMobilePanel}
                   className="w-8 h-8 flex items-center justify-center rounded-[8px] text-text-muted hover:text-text-primary transition-colors cursor-pointer"
                 >
-                  <X className="w-4.5 h-4.5" strokeWidth={1.75} />
+                  <X className="w-4.5 h-4.5" strokeWidth={1.5} />
                 </button>
               </div>
 
@@ -260,14 +329,14 @@ export function BottomBar() {
                     <button
                       key={subItem.key}
                       onClick={() => handleSubItemClick(subItem.href)}
-                      className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-bg-elevated transition-colors cursor-pointer group text-left min-h-[48px]"
+                      className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-black/[0.03] transition-colors cursor-pointer group text-left min-h-[48px]"
                     >
                       <SubIcon
-                        className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0"
-                        strokeWidth={1.75}
+                        className="w-[18px] h-[18px] text-text-muted group-hover:text-text-primary transition-colors shrink-0"
+                        strokeWidth={1.5}
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[14px] font-medium text-text-primary group-hover:text-accent transition-colors">
+                        <p className="text-[14px] font-medium text-text-primary group-hover:text-text-primary transition-colors">
                           {subItem.label}
                         </p>
                         {subItem.description && (
@@ -304,7 +373,7 @@ export function BottomBar() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-              className="fixed bottom-0 left-0 right-0 z-[400] bg-white rounded-t-[20px] shadow-2xl md:hidden max-h-[85vh] flex flex-col"
+              className="fixed bottom-0 left-0 right-0 z-[400] bg-white/90 backdrop-blur-xl rounded-t-[20px] shadow-2xl md:hidden max-h-[85vh] flex flex-col"
             >
               {/* Drag handle */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -312,7 +381,7 @@ export function BottomBar() {
               </div>
 
               {/* Header */}
-              <div className="flex items-center justify-between px-5 pb-3 border-b border-border">
+              <div className="flex items-center justify-between px-5 pb-3 border-b border-border/60">
                 <h3 className="text-[15px] font-semibold text-text-primary">
                   メニュー
                 </h3>
@@ -320,7 +389,7 @@ export function BottomBar() {
                   onClick={() => setMoreMenuOpen(false)}
                   className="w-8 h-8 flex items-center justify-center rounded-[8px] text-text-muted hover:text-text-primary transition-colors cursor-pointer"
                 >
-                  <X className="w-4.5 h-4.5" strokeWidth={1.75} />
+                  <X className="w-4.5 h-4.5" strokeWidth={1.5} />
                 </button>
               </div>
 
@@ -357,7 +426,7 @@ export function BottomBar() {
                         onTouchStart={(e) => handleTouchStart(e, index)}
                         className="w-8 h-8 flex items-center justify-center text-text-muted shrink-0 touch-none"
                       >
-                        <GripVertical className="w-4 h-4" strokeWidth={1.75} />
+                        <GripVertical className="w-4 h-4" strokeWidth={1.5} />
                       </div>
 
                       {/* Item button */}
@@ -366,13 +435,13 @@ export function BottomBar() {
                         className={`
                           flex-1 flex items-center gap-3 py-3 pr-3 rounded-[10px]
                           transition-colors duration-150 cursor-pointer group text-left min-h-[44px]
-                          ${isActive ? 'text-accent' : 'text-text-primary'}
+                          ${isActive ? 'text-text-primary' : 'text-text-primary'}
                         `}
                       >
                         <div className="relative">
                           <Icon
-                            className={`w-5 h-5 shrink-0 ${isActive ? 'text-accent' : 'text-text-muted group-hover:text-text-primary'}`}
-                            strokeWidth={1.75}
+                            className={`w-5 h-5 shrink-0 ${isActive ? 'text-text-primary' : 'text-text-muted group-hover:text-text-primary'}`}
+                            strokeWidth={1.5}
                           />
                           {isToolWithCount && (
                             <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] rounded-full bg-danger text-white text-[8px] font-bold flex items-center justify-center px-0.5">
@@ -380,7 +449,7 @@ export function BottomBar() {
                             </span>
                           )}
                         </div>
-                        <span className={`text-[14px] font-medium ${isActive ? 'text-accent' : ''}`}>
+                        <span className={`text-[14px] font-medium ${isActive ? 'text-text-primary' : ''}`}>
                           {label}
                         </span>
                       </button>

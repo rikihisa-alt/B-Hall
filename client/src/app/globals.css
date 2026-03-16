@@ -21,10 +21,13 @@
   --color-text-secondary: #57534E;
   --color-text-muted: #A8A29E;
 
-  /* ── Accent (Indigo) ── */
-  --color-accent: #4F46E5;
-  --color-accent-hover: #6366F1;
-  --color-accent-muted: rgba(79, 70, 229, 0.08);
+  /* ── Accent (Indigo — muted sophistication) ── */
+  --color-accent: oklch(0.52 0.12 275);
+  --color-accent-hover: oklch(0.56 0.14 275);
+  --color-accent-muted: oklch(0.96 0.02 275);
+
+  /* ── Shadows (additional) ── */
+  --shadow-dropdown: 0 4px 24px rgba(0, 0, 0, 0.06);
 
   /* ── Status ── */
   --color-success: #16A34A;

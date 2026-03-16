@@ -107,12 +107,13 @@ export function Header() {
   const handleDragStart = useCallback((e: React.DragEvent, index: number) => {
     setDragIndex(index)
     e.dataTransfer.effectAllowed = 'move'
-    // Use a transparent image as drag ghost
-    const ghost = document.createElement('div')
-    ghost.style.opacity = '0'
-    document.body.appendChild(ghost)
-    e.dataTransfer.setDragImage(ghost, 0, 0)
-    setTimeout(() => document.body.removeChild(ghost), 0)
+    // Use the actual element as drag image
+    const rect = e.currentTarget.getBoundingClientRect()
+    e.dataTransfer.setDragImage(
+      e.currentTarget,
+      rect.width / 2,
+      rect.height / 2
+    )
   }, [])
 
   const handleDragOver = useCallback((e: React.DragEvent, index: number) => {
@@ -185,7 +186,7 @@ export function Header() {
   }, [dropdownOpen, dropdownSection])
 
   return (
-    <header className="h-14 md:h-16 border-b border-border bg-bg-surface flex items-center px-4 md:px-6 shrink-0 z-[200] relative">
+    <header className="h-14 md:h-16 border-b border-border bg-bg-surface/80 backdrop-blur-xl flex items-center px-4 md:px-6 shrink-0 z-[200] relative">
       {/* ── Left: Logo ── */}
       <div className="flex items-center shrink-0">
         <Link href="/" className="flex items-center gap-2.5 shrink-0">
@@ -202,7 +203,7 @@ export function Header() {
 
       {/* ── Center: Desktop nav icons (hidden on mobile) ── */}
       <div className="hidden md:flex flex-1 mx-4 overflow-x-auto overflow-y-hidden" ref={navRowRef}>
-        <div className="flex items-center gap-0.5 mx-auto">
+        <div className="flex items-center gap-1.5 mx-auto">
           {orderedItems.map((item, index) => {
             const key = item.type === 'section' ? item.data.key : item.data.key
             const Icon = item.data.icon
@@ -226,23 +227,23 @@ export function Header() {
                 onDragLeave={handleDragLeave}
                 onClick={() => handleItemClick(item)}
                 className={`
-                  relative flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-[10px]
+                  relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-[10px]
                   transition-all duration-150 cursor-pointer group select-none
                   min-w-[52px]
-                  ${isDragging ? 'opacity-30' : ''}
-                  ${isDragOver ? 'bg-accent-muted/50' : ''}
+                  ${isDragging ? 'opacity-50 scale-95' : ''}
+                  ${isDragOver ? 'before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[2px] before:bg-text-primary/20 before:rounded-full' : ''}
                   ${isActive || isDropdownTarget
-                    ? 'text-accent'
-                    : 'text-text-muted hover:bg-bg-elevated hover:text-text-primary'
+                    ? 'text-text-primary'
+                    : 'text-text-muted hover:bg-black/[0.03] hover:text-text-primary'
                   }
                 `}
               >
                 <div className="relative">
                   <Icon
-                    className={`w-5 h-5 shrink-0 transition-colors duration-150 ${
-                      isActive || isDropdownTarget ? 'text-accent' : 'text-text-muted group-hover:text-text-primary'
+                    className={`w-[18px] h-[18px] shrink-0 transition-colors duration-150 ${
+                      isActive || isDropdownTarget ? 'text-text-primary' : 'text-text-muted group-hover:text-text-primary'
                     }`}
-                    strokeWidth={1.75}
+                    strokeWidth={1.5}
                   />
                   {isToolWithCount && (
                     <span className="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] rounded-full bg-danger text-white text-[8px] font-bold flex items-center justify-center px-0.5">
@@ -250,16 +251,16 @@ export function Header() {
                     </span>
                   )}
                 </div>
-                <span className={`text-[10px] leading-tight font-medium whitespace-nowrap ${
-                  isActive || isDropdownTarget ? 'text-accent' : ''
+                <span className={`text-[9px] leading-tight font-medium whitespace-nowrap ${
+                  isActive || isDropdownTarget ? 'text-text-primary' : 'text-text-muted'
                 }`}>
                   {label}
                 </span>
-                {/* Active underline */}
+                {/* Active underline — subtle thin indicator */}
                 {(isActive || isDropdownTarget) && (
                   <motion.div
                     layoutId="nav-underline"
-                    className="absolute -bottom-[9px] left-2 right-2 h-[2px] rounded-full bg-accent"
+                    className="absolute -bottom-[9px] left-3 right-3 h-[1.5px] rounded-full bg-text-primary/40"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -271,8 +272,8 @@ export function Header() {
 
       {/* ── Right: notification bell + user avatar ── */}
       <div className="flex items-center gap-2 shrink-0 ml-auto md:ml-0">
-        <button className="w-9 h-9 rounded-[10px] flex items-center justify-center hover:bg-bg-elevated transition-colors cursor-pointer relative">
-          <Bell className="w-[18px] h-[18px] text-text-secondary" strokeWidth={1.75} />
+        <button className="w-9 h-9 rounded-[10px] flex items-center justify-center hover:bg-black/[0.03] transition-colors cursor-pointer relative">
+          <Bell className="w-[18px] h-[18px] text-text-secondary" strokeWidth={1.5} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-danger" />
         </button>
 
@@ -303,7 +304,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="fixed top-14 md:top-16 z-[300] bg-white rounded-[16px] shadow-lg border border-border p-3"
+            className="fixed top-14 md:top-16 z-[300] bg-white rounded-[16px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-border/60 p-3"
             style={{
               left: `${dropdownLeft}px`,
               transform: 'translateX(-50%)',
@@ -312,12 +313,12 @@ export function Header() {
             }}
           >
             {/* Section header */}
-            <div className="flex items-center gap-2 px-2 pb-2 mb-1 border-b border-border">
+            <div className="flex items-center gap-2 px-2 pb-2 mb-1 border-b border-border/60">
               {(() => {
                 const Icon = currentDropdownSection.icon
-                return <Icon className="w-4 h-4 text-accent" strokeWidth={1.75} />
+                return <Icon className="w-4 h-4 text-text-secondary" strokeWidth={1.5} />
               })()}
-              <span className="text-[13px] font-semibold text-text-primary">
+              <span className="text-[12px] font-medium text-text-muted tracking-wide uppercase">
                 {currentDropdownSection.label}
               </span>
             </div>
@@ -330,14 +331,14 @@ export function Header() {
                   <button
                     key={subItem.key}
                     onClick={() => handleSubItemClick(subItem.href)}
-                    className="flex items-start gap-2.5 p-2.5 rounded-[12px] hover:bg-bg-elevated transition-colors cursor-pointer group text-left"
+                    className="flex items-start gap-2.5 p-2.5 rounded-[12px] hover:bg-black/[0.03] transition-colors cursor-pointer group text-left"
                   >
                     <SubIcon
-                      className="w-[18px] h-[18px] text-text-muted group-hover:text-accent transition-colors shrink-0 mt-0.5"
-                      strokeWidth={1.75}
+                      className="w-[18px] h-[18px] text-text-muted group-hover:text-text-primary transition-colors shrink-0 mt-0.5"
+                      strokeWidth={1.5}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium text-text-primary group-hover:text-accent transition-colors">
+                      <p className="text-[13px] font-medium text-text-primary group-hover:text-text-primary transition-colors">
                         {subItem.label}
                       </p>
                       {subItem.description && (
@@ -354,10 +355,10 @@ export function Header() {
             {/* View all link */}
             <button
               onClick={() => handleSubItemClick(currentDropdownSection.href)}
-              className="flex items-center gap-1.5 w-full mt-1 pt-2 border-t border-border px-2 text-[12px] text-accent hover:text-accent/80 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 w-full mt-1 pt-2 border-t border-border/60 px-2 text-[12px] text-text-muted hover:text-text-primary transition-colors cursor-pointer"
             >
               <span className="font-medium">{currentDropdownSection.label}を開く</span>
-              <ChevronRight className="w-3.5 h-3.5" strokeWidth={2} />
+              <ChevronRight className="w-3.5 h-3.5" strokeWidth={1.5} />
             </button>
           </motion.div>
         )}
