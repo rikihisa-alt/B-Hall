@@ -60,6 +60,17 @@ type Intent =
   | 'notification'
   | 'greeting'
   | 'dashboard'
+  | 'chat_mood'
+  | 'chat_advice'
+  | 'chat_weather'
+  | 'chat_food'
+  | 'chat_motivation'
+  | 'chat_compliment'
+  | 'chat_tired'
+  | 'chat_thanks'
+  | 'chat_joke'
+  | 'chat_weekend'
+  | 'chat_general'
   | 'unknown'
 
 const INTENT_KEYWORDS: Record<Intent, string[]> = {
@@ -74,8 +85,19 @@ const INTENT_KEYWORDS: Record<Intent, string[]> = {
   knowledge: ['ナレッジ', 'マニュアル', '手順', 'FAQ', 'テンプレート', 'ガイド'],
   general_affairs: ['備品', '施設', '予約', '総務', '会議室', '設備'],
   notification: ['通知', '未読', 'お知らせ'],
-  greeting: ['こんにちは', 'おはよう', 'ありがとう', 'ヘルプ', '使い方', 'はじめまして', 'よろしく', 'おつかれ', 'こんばんは'],
+  greeting: ['こんにちは', 'おはよう', 'ヘルプ', '使い方', 'はじめまして', 'よろしく', 'こんばんは'],
   dashboard: ['概要', 'ダッシュボード', '全体', '状況', 'サマリー', '一覧', 'まとめ'],
+  chat_mood: ['気分', '調子', '元気', '体調', 'しんどい', 'つらい', 'きつい', 'だるい', '憂鬱', 'ゆううつ', '落ち込', 'へこ', '不安'],
+  chat_advice: ['相談', 'アドバイス', '悩み', 'どうしたら', 'どうすれば', 'どう思う', '意見', '迷って', '困って', '教えて'],
+  chat_weather: ['天気', '雨', '晴れ', '暑い', '寒い', '蒸し暑', '台風', '梅雨', '花粉'],
+  chat_food: ['ランチ', '昼ごはん', '昼飯', 'ご飯', '晩ご飯', '夜ご飯', '食べ', '弁当', 'コーヒー', 'カフェ', 'おやつ', '甘い', 'お腹すいた', '腹減'],
+  chat_motivation: ['やる気', 'モチベ', 'がんばれ', '頑張', '応援', '励まし', 'やれる', 'ファイト', '元気出'],
+  chat_compliment: ['すごい', 'さすが', 'えらい', 'できた', '褒めて', 'うまくいった', '成功', 'やった'],
+  chat_tired: ['疲れた', 'おつかれ', 'お疲れ', '帰りたい', '休みたい', '眠い', '寝たい', '限界', 'もう無理'],
+  chat_thanks: ['ありがとう', 'サンキュー', '助かった', '助かる', 'ありがと', 'あざす', 'たすかる'],
+  chat_joke: ['面白い', 'おもしろ', '笑', 'ジョーク', '冗談', 'ネタ', 'ギャグ', 'ウケる', '暇'],
+  chat_weekend: ['休み', '週末', '連休', '休日', '有休', 'ゴールデンウィーク', 'GW', '旅行', '予定'],
+  chat_general: ['なんか', 'ねえ', 'ちょっと', '聞いて', 'やあ', 'ひま', '暇', 'うーん', 'そうだな', 'まあ'],
   unknown: [],
 }
 
@@ -97,6 +119,17 @@ function detectIntent(message: string): Intent {
     'knowledge',
     'general_affairs',
     'notification',
+    'chat_thanks',
+    'chat_tired',
+    'chat_mood',
+    'chat_advice',
+    'chat_weather',
+    'chat_food',
+    'chat_motivation',
+    'chat_compliment',
+    'chat_joke',
+    'chat_weekend',
+    'chat_general',
   ]
 
   for (const intent of intentOrder) {
@@ -459,7 +492,7 @@ function greetingResponse(): string {
   if (hour < 10) greeting = 'おはようございます'
   else if (hour >= 18) greeting = 'おつかれさまです'
 
-  return `${greeting}！ジジロボです。\n\nB-Hallの業務について、以下のようなことをお手伝いできます:\n\n- タスクの状況確認\n- 申請・承認の状況\n- 稟議の進捗\n- 経理・財務サマリー\n- 従業員情報\n- 文書・契約管理\n- 報告の確認\n- 改善提案の状況\n- ナレッジ検索\n- 総務・備品・施設予約\n- 通知の確認\n\n何でも聞いてください！`
+  return `${greeting}！ジジロボです。\n\nB-Hallの業務はもちろん、ちょっとした相談や雑談もできますよ。\n\n【業務サポート】\nタスク・申請・稟議・経理・人事・文書・報告・改善・ナレッジ・総務・通知\n\n【日常会話】\n気分の相談・お悩み相談・励まし・おすすめランチの話・休日の話 などなど\n\n何でも気軽に話しかけてくださいね！`
 }
 
 function dashboardResponse(stores: StoreData): string {
@@ -518,6 +551,176 @@ function dashboardResponse(stores: StoreData): string {
   return response
 }
 
+// ── Daily Chat Responses ──
+
+function pick<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+function chatMoodResponse(message: string): string {
+  const negative = ['しんどい', 'つらい', 'きつい', 'だるい', '憂鬱', 'ゆううつ', '落ち込', 'へこ', '不安'].some((w) => message.includes(w))
+  if (negative) {
+    return pick([
+      'そういう日もありますよね。無理しないでくださいね。ジジロボはいつでもここにいますから。',
+      '大丈夫ですか？少し休憩を取るのも立派な仕事のうちですよ。',
+      'しんどい時は、まず深呼吸。吸って…吐いて…。少しだけ楽になりませんか？',
+      'そんな時は、今日やることを1つだけ決めて、それだけやればOKです。',
+      '気持ちを話してくれてありがとうございます。溜め込まないのが一番大事ですよ。',
+    ])
+  }
+  return pick([
+    '元気そうで何よりです！今日も一緒にがんばりましょう。',
+    '調子が良い日は、ちょっと難しいタスクに挑戦するチャンスかもしれませんね！',
+    'いい感じですね！その調子でいきましょう。',
+  ])
+}
+
+function chatAdviceResponse(): string {
+  return pick([
+    '相談ですね。ジジロボに話してみてください。業務のことでも、それ以外でも、できる範囲でお力になりますよ。',
+    'どんなことで悩んでますか？完璧な答えは出せないかもしれませんが、整理のお手伝いはできますよ。',
+    '迷った時は「一番シンプルな選択肢」を選ぶと、だいたいうまくいくものですよ。何について迷ってますか？',
+    '困りごとですね。まず状況を教えてもらえたら、一緒に考えましょう。',
+  ])
+}
+
+function chatWeatherResponse(message: string): string {
+  if (message.includes('暑い') || message.includes('蒸し暑')) {
+    return pick([
+      '暑いですよね…水分補給は忘れずに！冷たいお茶でも飲みながら仕事しましょう。',
+      'エアコンの温度、大丈夫ですか？快適な環境も生産性のうちですよ。',
+    ])
+  }
+  if (message.includes('寒い')) {
+    return pick([
+      '寒い日は温かい飲み物が最高ですね。ホットコーヒーでもいかがですか？',
+      '冷えは大敵ですよ。ブランケットとか用意してますか？',
+    ])
+  }
+  if (message.includes('雨')) {
+    return pick([
+      '雨の日はちょっと気分が沈みがちですよね。でもオフィスで集中するにはいい日かも。',
+      '傘、忘れてないですか？帰りも降るかもしれませんよ。',
+    ])
+  }
+  if (message.includes('花粉')) {
+    return '花粉つらいですよね…。マスクと目薬は必須アイテムです。お大事にしてください。'
+  }
+  return pick([
+    '天気が気になりますか？窓の外を見て、一息つくのもいいですね。',
+    '天気予報のチェックは大事ですよね。帰り道の天気も確認しておきましょう。',
+  ])
+}
+
+function chatFoodResponse(message: string): string {
+  if (message.includes('お腹すいた') || message.includes('腹減')) {
+    return pick([
+      'お腹空きましたか！あと少しでお昼かも？ちょっとだけ我慢です。',
+      '空腹は集中力の敵ですね。ちょっとしたおやつでも食べて乗り切りましょう。',
+    ])
+  }
+  if (message.includes('コーヒー') || message.includes('カフェ')) {
+    return pick([
+      'コーヒーブレイク、いいですね！一杯飲んでリフレッシュしましょう。',
+      '☕ コーヒーは仕事の友ですよね。ただし飲み過ぎには気をつけて！',
+    ])
+  }
+  if (message.includes('ランチ') || message.includes('昼ごはん') || message.includes('昼飯')) {
+    return pick([
+      'ランチ何にします？たまにはいつもと違うお店を開拓するのもいいですよ。',
+      'お昼ですね！しっかり食べて午後もがんばりましょう。',
+      'ランチタイムは大事な休憩時間。ゆっくり味わって食べてくださいね。',
+    ])
+  }
+  return pick([
+    'ご飯の話ですね！食は大事。しっかり食べて、いい仕事しましょう。',
+    '美味しいもの食べると幸せになりますよね。今日は何が食べたいですか？',
+  ])
+}
+
+function chatMotivationResponse(): string {
+  return pick([
+    'あなたなら大丈夫。一歩ずつ進めば、必ず形になりますよ。応援してます！',
+    '大きな目標も、小さなタスクの積み重ね。今日の1つを片付けたら、もう前進です。',
+    'やる気が出ない時は「5分だけやる」って決めてみてください。不思議と続けられますよ。',
+    '迷ったら動く。動いたら見える。見えたら進める。ファイトです！',
+    '今日ここまでやってきたこと、十分すごいですよ。自信持ってください。',
+    'モチベーションは待つものじゃなくて、動いてるうちに湧いてくるものですよ。まず1つ、やってみましょう。',
+  ])
+}
+
+function chatComplimentResponse(): string {
+  return pick([
+    'すごい！よくやりましたね！その調子でどんどんいきましょう。',
+    'さすがですね。努力が結果に繋がってますよ。',
+    'おめでとうございます！成功体験を積み重ねるの、大事です。',
+    'いいですね！自分を褒めてあげてください。ジジロボも褒めます。えらい！',
+    'やりましたね！こういう達成感があると、次もがんばれますよね。',
+  ])
+}
+
+function chatTiredResponse(): string {
+  return pick([
+    'おつかれさまです！今日もよくがんばりました。無理しないでくださいね。',
+    '疲れた時は無理しない。それが長く続ける秘訣ですよ。',
+    'おつかれさまです。あと少しですよ！でも本当にきつかったら、今日はここまでにしましょう。',
+    '今日一日おつかれさまでした。ゆっくり休んで、明日に備えてくださいね。',
+    '眠い時は15分だけ仮眠するとスッキリするらしいですよ。試してみます？',
+    '限界を感じたら、それは体からのサインです。しっかり休みましょう。',
+  ])
+}
+
+function chatThanksResponse(): string {
+  return pick([
+    'いえいえ！お役に立てて嬉しいです。また何でも聞いてくださいね。',
+    'どういたしまして！ジジロボはいつでもここにいますよ。',
+    'こちらこそ、頼ってもらえて嬉しいです！',
+    'お役に立てたなら何よりです。困ったことがあればいつでもどうぞ。',
+    'ありがとうって言ってもらえると、ジジロボも嬉しいです！',
+  ])
+}
+
+function chatJokeResponse(): string {
+  return pick([
+    'バックオフィスで一番忙しい人は？…承認ボタンを押し続ける部長です。',
+    '経費精算のコツ知ってます？…レシートをなくさないこと。これに尽きます。',
+    'なぜ稟議書は旅が好き？…いろんな人の机を巡るから。',
+    '「急ぎでお願い」って言われた仕事の8割は、次の日まで誰も確認しない説。',
+    'ジジロボにギャグのセンスを求めるのは、経理にデザインを頼むようなものですよ…でもがんばります。',
+    '会議室の予約が取れない時の裏技？…早起きです。夢のない答えですみません。',
+    '「後で確認します」は「忘れます」の丁寧語…なんてことはないですよね？',
+  ])
+}
+
+function chatWeekendResponse(message: string): string {
+  if (message.includes('旅行')) {
+    return pick([
+      '旅行いいですね！どこに行くんですか？リフレッシュして戻ってきたらまた一緒にがんばりましょう。',
+      '旅行の計画を立てるのも楽しいですよね。素敵な時間を過ごしてください！',
+    ])
+  }
+  if (message.includes('有休')) {
+    return 'お休み取るの大事です！しっかりリフレッシュしてくださいね。有休は権利ですから。'
+  }
+  return pick([
+    '休日の予定ですか？しっかり休んでリフレッシュするのも仕事のうちですよ。',
+    '週末が待ち遠しいですか？あと少しです、がんばりましょう！',
+    '休みの日は仕事のことを忘れてゆっくりしてくださいね。ON/OFFの切り替え大事です。',
+    '連休ですか？うらやましい！…ジジロボは年中無休ですけどね。',
+  ])
+}
+
+function chatGeneralResponse(): string {
+  return pick([
+    'はい、聞いてますよ！何かありましたか？',
+    'ジジロボです。何でも話してくださいね。業務のことでも、雑談でも。',
+    'うんうん、どうしました？',
+    'ちょっとした雑談もいいですね。何か気になることありますか？',
+    'ジジロボ、暇な時もスタンバイしてますよ。何かお手伝いできることはありますか？',
+    'なんでしょう？気になること、聞きたいこと、何でもどうぞ。',
+  ])
+}
+
 // ── Main Function ──
 
 export function generateJijiRoboResponse(message: string, stores: StoreData): string {
@@ -550,7 +753,33 @@ export function generateJijiRoboResponse(message: string, stores: StoreData): st
       return greetingResponse()
     case 'dashboard':
       return dashboardResponse(stores)
+    case 'chat_mood':
+      return chatMoodResponse(message)
+    case 'chat_advice':
+      return chatAdviceResponse()
+    case 'chat_weather':
+      return chatWeatherResponse(message)
+    case 'chat_food':
+      return chatFoodResponse(message)
+    case 'chat_motivation':
+      return chatMotivationResponse()
+    case 'chat_compliment':
+      return chatComplimentResponse()
+    case 'chat_tired':
+      return chatTiredResponse()
+    case 'chat_thanks':
+      return chatThanksResponse()
+    case 'chat_joke':
+      return chatJokeResponse()
+    case 'chat_weekend':
+      return chatWeekendResponse(message)
+    case 'chat_general':
+      return chatGeneralResponse()
     default:
-      return '申し訳ありませんが、その内容についてはまだ対応できません。タスク、申請、稟議、経理、人事、文書、報告、改善、ナレッジ、総務について質問できます。'
+      return pick([
+        'うーん、ちょっとわからなかったです。もう少し詳しく教えてもらえますか？業務のことでも雑談でも大丈夫ですよ。',
+        'すみません、うまく理解できませんでした。タスク・申請・経理などの業務や、ちょっとした相談もできますよ！',
+        'ごめんなさい、その話題はまだ勉強中です…。他のことなら何でも聞いてくださいね。',
+      ])
   }
 }
