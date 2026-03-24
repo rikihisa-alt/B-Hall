@@ -14,6 +14,8 @@ import {
   Inbox,
   EyeOff,
   X,
+  Pencil,
+  Trash2,
 } from 'lucide-react'
 import { useReportStore } from '@/stores/report-store'
 import { useAuth } from '@/hooks/use-auth'
@@ -46,12 +48,24 @@ export default function ReportsPage() {
   const [activeTab, setActiveTab] = useState<ReportType | 'all'>('all')
   const [createOpen, setCreateOpen] = useState(false)
   const [detailReport, setDetailReport] = useState<Report | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+
+  // Edit form state for detail modal
+  const [editTitle, setEditTitle] = useState('')
+  const [editContent, setEditContent] = useState('')
+  const [editType, setEditType] = useState<ReportType>('daily')
+  const [editPeriodStart, setEditPeriodStart] = useState('')
+  const [editPeriodEnd, setEditPeriodEnd] = useState('')
 
   const { currentUser, getUserName } = useAuth()
   const { addToast } = useToast()
   const getReports = useReportStore((s) => s.getReports)
   const getReportsByType = useReportStore((s) => s.getReportsByType)
   const addReport = useReportStore((s) => s.addReport)
+  const updateReport = useReportStore((s) => s.updateReport)
+  const deleteReport = useReportStore((s) => s.deleteReport)
+  const reviewReport = useReportStore((s) => s.reviewReport)
   const hydrated = useReportStore((s) => s._hydrated)
 
   // Create form state
@@ -121,6 +135,46 @@ export default function ReportsPage() {
     setFormPeriodStart('')
     setFormPeriodEnd('')
     setFormAnonymous(false)
+  }
+
+  const startEditing = (report: Report) => {
+    setEditTitle(report.title)
+    setEditContent(report.content)
+    setEditType(report.type)
+    setEditPeriodStart(report.period_start ? report.period_start.split('T')[0] : '')
+    setEditPeriodEnd(report.period_end ? report.period_end.split('T')[0] : '')
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = () => {
+    if (!detailReport || !editTitle.trim()) return
+    updateReport(detailReport.id, {
+      title: editTitle,
+      content: editContent,
+      type: editType,
+      period_start: editPeriodStart || detailReport.period_start,
+      period_end: editPeriodEnd || detailReport.period_end,
+    })
+    const updated = { ...detailReport, title: editTitle, content: editContent, type: editType, period_start: editPeriodStart || detailReport.period_start, period_end: editPeriodEnd || detailReport.period_end }
+    setDetailReport(updated)
+    setIsEditing(false)
+    addToast('success', '報告を更新しました')
+  }
+
+  const handleDelete = () => {
+    if (!detailReport) return
+    deleteReport(detailReport.id)
+    setDetailReport(null)
+    setDeleteConfirm(false)
+    setIsEditing(false)
+    addToast('success', '報告を削除しました')
+  }
+
+  const handleReview = () => {
+    if (!detailReport || !currentUser) return
+    reviewReport(detailReport.id, currentUser.id)
+    setDetailReport({ ...detailReport, status: 'reviewed' })
+    addToast('success', 'レビュー済にしました')
   }
 
   return (
@@ -340,15 +394,53 @@ export default function ReportsPage() {
       {/* Detail Modal */}
       <Modal
         open={!!detailReport}
-        onClose={() => setDetailReport(null)}
+        onClose={() => { setDetailReport(null); setIsEditing(false); setDeleteConfirm(false) }}
         title="報告詳細"
         size="lg"
         footer={
-          <Button variant="ghost" onClick={() => setDetailReport(null)}>閉じる</Button>
+          isEditing ? (
+            <>
+              <Button variant="ghost" onClick={() => setIsEditing(false)}>キャンセル</Button>
+              <Button variant="primary" onClick={handleSaveEdit} disabled={!editTitle.trim()}>保存</Button>
+            </>
+          ) : (
+            <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-2">
+                {detailReport && detailReport.status === 'submitted' && (
+                  <Button variant="primary" size="sm" onClick={handleReview}>
+                    レビュー済にする
+                  </Button>
+                )}
+                <Button variant="ghost" size="sm" icon={Pencil} onClick={() => detailReport && startEditing(detailReport)}>
+                  編集
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={Trash2}
+                  onClick={() => setDeleteConfirm(true)}
+                  className="text-danger hover:bg-danger/10"
+                >
+                  削除
+                </Button>
+              </div>
+              <div className="flex-1" />
+              <Button variant="ghost" onClick={() => { setDetailReport(null); setIsEditing(false); setDeleteConfirm(false) }}>閉じる</Button>
+            </div>
+          )
         }
       >
-        {detailReport && (
+        {detailReport && !isEditing && (
           <div className="space-y-5">
+            {deleteConfirm && (
+              <div className="bg-danger/5 border border-danger/20 rounded-[12px] p-4">
+                <p className="text-[14px] text-danger font-medium mb-3">この報告を削除しますか？</p>
+                <div className="flex items-center gap-2">
+                  <Button variant="primary" size="sm" onClick={handleDelete} className="!bg-danger hover:!bg-danger/90">削除する</Button>
+                  <Button variant="ghost" size="sm" onClick={() => setDeleteConfirm(false)}>キャンセル</Button>
+                </div>
+              </div>
+            )}
             <div>
               <h3 className="text-[18px] font-bold text-text-primary mb-2">{detailReport.title}</h3>
               <div className="flex items-center gap-2 flex-wrap">
@@ -401,6 +493,57 @@ export default function ReportsPage() {
               <div className="bg-bg-base rounded-[12px] p-4">
                 <p className="text-[14px] text-text-primary leading-relaxed whitespace-pre-wrap">{detailReport.content}</p>
               </div>
+            </div>
+          </div>
+        )}
+        {detailReport && isEditing && (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[14px] font-medium text-text-secondary mb-1.5">
+                報告種別 <span className="text-accent">*</span>
+              </label>
+              <select
+                value={editType}
+                onChange={(e) => setEditType(e.target.value as ReportType)}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              >
+                {Object.entries(REPORT_TYPE_LABELS).map(([key, label]) => (
+                  <option key={key} value={key}>{label}</option>
+                ))}
+              </select>
+            </div>
+            <Input
+              label="タイトル"
+              required
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              placeholder="報告のタイトル"
+            />
+            <div>
+              <label className="block text-[14px] font-medium text-text-secondary mb-1.5">
+                内容 <span className="text-accent">*</span>
+              </label>
+              <textarea
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                placeholder="報告内容を入力..."
+                rows={8}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label="期間（開始）"
+                type="date"
+                value={editPeriodStart}
+                onChange={(e) => setEditPeriodStart(e.target.value)}
+              />
+              <Input
+                label="期間（終了）"
+                type="date"
+                value={editPeriodEnd}
+                onChange={(e) => setEditPeriodEnd(e.target.value)}
+              />
             </div>
           </div>
         )}

@@ -10,6 +10,7 @@ import { useToast } from '@/components/ui/toast-provider'
 import { Modal } from '@/components/ui/modal'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import type { EquipmentItem, FacilityBooking } from '@/types'
 import {
   Package,
   Monitor,
@@ -27,6 +28,10 @@ import {
   CheckCircle2,
   XCircle,
   Box,
+  Pencil,
+  Trash2,
+  X,
+  Save,
 } from 'lucide-react'
 
 const categoryIcons: Record<string, typeof Laptop> = {
@@ -61,14 +66,21 @@ export default function GeneralAffairsPage() {
     getEquipment,
     addEquipment,
     updateEquipment,
+    deleteEquipment,
     getBookings,
     getBookingsByDate,
     addBooking,
+    updateBooking,
+    cancelBooking,
   } = useGAStore()
 
   const [activeTab, setActiveTab] = useState<'equipment' | 'bookings'>('equipment')
   const [showEquipmentModal, setShowEquipmentModal] = useState(false)
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showEditEquipmentModal, setShowEditEquipmentModal] = useState(false)
+  const [showEditBookingModal, setShowEditBookingModal] = useState(false)
+  const [editingEquipment, setEditingEquipment] = useState<EquipmentItem | null>(null)
+  const [editingBooking, setEditingBooking] = useState<FacilityBooking | null>(null)
 
   // Equipment form state
   const [eqName, setEqName] = useState('')
@@ -76,12 +88,27 @@ export default function GeneralAffairsPage() {
   const [eqSerial, setEqSerial] = useState('')
   const [eqNotes, setEqNotes] = useState('')
 
+  // Equipment edit form state
+  const [editEqName, setEditEqName] = useState('')
+  const [editEqCategory, setEditEqCategory] = useState('')
+  const [editEqSerial, setEditEqSerial] = useState('')
+  const [editEqNotes, setEditEqNotes] = useState('')
+  const [editEqStatus, setEditEqStatus] = useState<EquipmentItem['status']>('available')
+  const [editEqAssignedTo, setEditEqAssignedTo] = useState('')
+
   // Booking form state
   const [bkFacility, setBkFacility] = useState(FACILITIES[0])
   const [bkDate, setBkDate] = useState('')
   const [bkStartTime, setBkStartTime] = useState('')
   const [bkEndTime, setBkEndTime] = useState('')
   const [bkPurpose, setBkPurpose] = useState('')
+
+  // Booking edit form state
+  const [editBkFacility, setEditBkFacility] = useState('')
+  const [editBkDate, setEditBkDate] = useState('')
+  const [editBkStartTime, setEditBkStartTime] = useState('')
+  const [editBkEndTime, setEditBkEndTime] = useState('')
+  const [editBkPurpose, setEditBkPurpose] = useState('')
 
   const equipment = useMemo(() => (mounted ? getEquipment() : []), [mounted, getEquipment])
   const allBookings = useMemo(() => (mounted ? getBookings() : []), [mounted, getBookings])
@@ -175,6 +202,73 @@ export default function GeneralAffairsPage() {
       updated_by: currentUser?.id || '',
     })
     addToast('success', '備品を返却しました')
+  }
+
+  const openEditEquipment = (item: EquipmentItem) => {
+    setEditingEquipment(item)
+    setEditEqName(item.name)
+    setEditEqCategory(item.category)
+    setEditEqSerial(item.serial_number)
+    setEditEqNotes(item.notes)
+    setEditEqStatus(item.status)
+    setEditEqAssignedTo(item.assigned_to)
+    setShowEditEquipmentModal(true)
+  }
+
+  const handleSaveEquipment = () => {
+    if (!editingEquipment || !editEqName.trim()) return
+    updateEquipment(editingEquipment.id, {
+      name: editEqName,
+      category: editEqCategory,
+      serial_number: editEqSerial,
+      notes: editEqNotes,
+      status: editEqStatus,
+      assigned_to: editEqAssignedTo,
+      updated_by: currentUser?.id || '',
+    })
+    setShowEditEquipmentModal(false)
+    setEditingEquipment(null)
+    addToast('success', '備品情報を更新しました')
+  }
+
+  const handleDeleteEquipment = () => {
+    if (!editingEquipment) return
+    if (!window.confirm(`「${editingEquipment.name}」を削除しますか？`)) return
+    deleteEquipment(editingEquipment.id, currentUser?.id || '')
+    setShowEditEquipmentModal(false)
+    setEditingEquipment(null)
+    addToast('success', '備品を削除しました')
+  }
+
+  const openEditBooking = (booking: FacilityBooking) => {
+    setEditingBooking(booking)
+    setEditBkFacility(booking.facility_name)
+    setEditBkDate(booking.date)
+    setEditBkStartTime(booking.start_time)
+    setEditBkEndTime(booking.end_time)
+    setEditBkPurpose(booking.purpose)
+    setShowEditBookingModal(true)
+  }
+
+  const handleSaveBooking = () => {
+    if (!editingBooking || !editBkDate || !editBkStartTime || !editBkEndTime || !editBkPurpose.trim()) return
+    updateBooking(editingBooking.id, {
+      facility_name: editBkFacility,
+      date: editBkDate,
+      start_time: editBkStartTime,
+      end_time: editBkEndTime,
+      purpose: editBkPurpose,
+      updated_by: currentUser?.id || '',
+    })
+    setShowEditBookingModal(false)
+    setEditingBooking(null)
+    addToast('success', '予約を更新しました')
+  }
+
+  const handleCancelBooking = (bookingId: string) => {
+    if (!window.confirm('この予約をキャンセルしますか？')) return
+    cancelBooking(bookingId, currentUser?.id || '')
+    addToast('success', '予約をキャンセルしました')
   }
 
   return (
@@ -274,7 +368,8 @@ export default function GeneralAffairsPage() {
                   <motion.div
                     key={item.id}
                     variants={fadeUp}
-                    className="bg-bg-surface border border-border rounded-[16px] shadow-card p-5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all"
+                    className="bg-bg-surface border border-border rounded-[16px] shadow-card p-5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all cursor-pointer"
+                    onClick={() => openEditEquipment(item)}
                   >
                     <div className="flex items-start gap-4">
                       <div
@@ -317,7 +412,7 @@ export default function GeneralAffairsPage() {
                         <div className="flex items-center gap-2 mt-3">
                           {item.status === 'available' && (
                             <button
-                              onClick={() => handleAssign(item.id)}
+                              onClick={(e) => { e.stopPropagation(); handleAssign(item.id) }}
                               className="flex items-center gap-1 px-2.5 py-1 rounded-[6px] text-[11px] font-semibold text-accent bg-[rgba(79,70,229,0.08)] hover:bg-[rgba(79,70,229,0.14)] transition-colors"
                             >
                               <User className="w-3 h-3" />
@@ -326,13 +421,20 @@ export default function GeneralAffairsPage() {
                           )}
                           {item.status === 'in_use' && item.assigned_to === currentUser?.id && (
                             <button
-                              onClick={() => handleReturn(item.id)}
+                              onClick={(e) => { e.stopPropagation(); handleReturn(item.id) }}
                               className="flex items-center gap-1 px-2.5 py-1 rounded-[6px] text-[11px] font-semibold text-[#F59E0B] bg-[rgba(245,158,11,0.08)] hover:bg-[rgba(245,158,11,0.14)] transition-colors"
                             >
                               <Package className="w-3 h-3" />
                               返却
                             </button>
                           )}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); openEditEquipment(item) }}
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-[6px] text-[11px] font-semibold text-text-muted bg-[rgba(0,0,0,0.04)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                          >
+                            <Pencil className="w-3 h-3" />
+                            編集
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -378,6 +480,22 @@ export default function GeneralAffairsPage() {
                         </p>
                         <p className="text-[12px] text-text-muted">{getUserName(booking.booked_by)}</p>
                       </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={() => openEditBooking(booking)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-[6px] text-[11px] font-semibold text-text-muted bg-[rgba(0,0,0,0.04)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                        >
+                          <Pencil className="w-3 h-3" />
+                          編集
+                        </button>
+                        <button
+                          onClick={() => handleCancelBooking(booking.id)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-[6px] text-[11px] font-semibold text-[#EF4444] bg-[rgba(239,68,68,0.06)] hover:bg-[rgba(239,68,68,0.12)] transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                          取消
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -420,6 +538,22 @@ export default function GeneralAffairsPage() {
                       </div>
                       <div className="text-[12px] text-text-muted shrink-0">
                         {getUserName(booking.booked_by)}
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={() => openEditBooking(booking)}
+                          className="flex items-center gap-1 px-2 py-1 rounded-[6px] text-[11px] font-semibold text-text-muted bg-[rgba(0,0,0,0.04)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                        >
+                          <Pencil className="w-3 h-3" />
+                          編集
+                        </button>
+                        <button
+                          onClick={() => handleCancelBooking(booking.id)}
+                          className="flex items-center gap-1 px-2 py-1 rounded-[6px] text-[11px] font-semibold text-[#EF4444] bg-[rgba(239,68,68,0.06)] hover:bg-[rgba(239,68,68,0.12)] transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                          取消
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -509,6 +643,126 @@ export default function GeneralAffairsPage() {
             <Input label="終了時間" required type="time" value={bkEndTime} onChange={(e) => setBkEndTime(e.target.value)} />
           </div>
           <Input label="目的" required value={bkPurpose} onChange={(e) => setBkPurpose(e.target.value)} placeholder="例: プロジェクト進捗会議" />
+        </div>
+      </Modal>
+
+      {/* Equipment Edit Modal */}
+      <Modal
+        open={showEditEquipmentModal}
+        onClose={() => { setShowEditEquipmentModal(false); setEditingEquipment(null) }}
+        title="備品詳細・編集"
+        footer={
+          <div className="flex items-center justify-between w-full">
+            <button
+              onClick={handleDeleteEquipment}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-[8px] text-[13px] font-semibold text-[#EF4444] bg-[rgba(239,68,68,0.06)] hover:bg-[rgba(239,68,68,0.12)] transition-colors"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              削除
+            </button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => { setShowEditEquipmentModal(false); setEditingEquipment(null) }}>
+                キャンセル
+              </Button>
+              <Button variant="primary" size="sm" icon={Save} onClick={handleSaveEquipment} disabled={!editEqName.trim()}>
+                保存
+              </Button>
+            </div>
+          </div>
+        }
+      >
+        <div className="space-y-4">
+          <Input label="備品名" required value={editEqName} onChange={(e) => setEditEqName(e.target.value)} />
+          <div>
+            <label className="block text-[13px] font-medium text-text-secondary mb-1.5">
+              カテゴリ <span className="text-accent">*</span>
+            </label>
+            <select
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              value={editEqCategory}
+              onChange={(e) => setEditEqCategory(e.target.value)}
+            >
+              {EQUIPMENT_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+          <Input label="シリアル番号" value={editEqSerial} onChange={(e) => setEditEqSerial(e.target.value)} />
+          <div>
+            <label className="block text-[13px] font-medium text-text-secondary mb-1.5">
+              ステータス <span className="text-accent">*</span>
+            </label>
+            <select
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              value={editEqStatus}
+              onChange={(e) => setEditEqStatus(e.target.value as EquipmentItem['status'])}
+            >
+              <option value="available">利用可能</option>
+              <option value="in_use">使用中</option>
+              <option value="maintenance">メンテナンス中</option>
+              <option value="disposed">廃棄済</option>
+            </select>
+            <div className="mt-2">
+              <span
+                className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold border"
+                style={{
+                  background: `${statusColors[editEqStatus]}10`,
+                  color: statusColors[editEqStatus],
+                  borderColor: `${statusColors[editEqStatus]}25`,
+                }}
+              >
+                {statusLabels[editEqStatus]}
+              </span>
+            </div>
+          </div>
+          <Input label="使用者ID" value={editEqAssignedTo} onChange={(e) => setEditEqAssignedTo(e.target.value)} placeholder="例: user-1" />
+          <Input label="備考" value={editEqNotes} onChange={(e) => setEditEqNotes(e.target.value)} placeholder="備品に関するメモ" />
+        </div>
+      </Modal>
+
+      {/* Booking Edit Modal */}
+      <Modal
+        open={showEditBookingModal}
+        onClose={() => { setShowEditBookingModal(false); setEditingBooking(null) }}
+        title="予約編集"
+        footer={
+          <>
+            <Button variant="ghost" size="sm" onClick={() => { setShowEditBookingModal(false); setEditingBooking(null) }}>
+              キャンセル
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              icon={Save}
+              onClick={handleSaveBooking}
+              disabled={!editBkDate || !editBkStartTime || !editBkEndTime || !editBkPurpose.trim()}
+            >
+              保存
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-[13px] font-medium text-text-secondary mb-1.5">
+              施設 <span className="text-accent">*</span>
+            </label>
+            <select
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              value={editBkFacility}
+              onChange={(e) => setEditBkFacility(e.target.value)}
+            >
+              {FACILITIES.map((f) => (
+                <option key={f} value={f}>{f}</option>
+              ))}
+            </select>
+          </div>
+          <Input label="日付" required type="date" value={editBkDate} onChange={(e) => setEditBkDate(e.target.value)} />
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="開始時間" required type="time" value={editBkStartTime} onChange={(e) => setEditBkStartTime(e.target.value)} />
+            <Input label="終了時間" required type="time" value={editBkEndTime} onChange={(e) => setEditBkEndTime(e.target.value)} />
+          </div>
+          <Input label="目的" required value={editBkPurpose} onChange={(e) => setEditBkPurpose(e.target.value)} placeholder="例: プロジェクト進捗会議" />
         </div>
       </Modal>
     </motion.div>

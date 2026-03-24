@@ -121,7 +121,9 @@ interface KnowledgeState {
 interface KnowledgeActions {
   addArticle: (data: Partial<KnowledgeArticle>) => KnowledgeArticle
   updateArticle: (id: string, data: Partial<KnowledgeArticle>) => void
+  deleteArticle: (id: string) => void
   publishArticle: (id: string) => void
+  togglePublish: (id: string) => void
   incrementViewCount: (id: string) => void
   getArticles: () => KnowledgeArticle[]
   searchArticles: (query: string) => KnowledgeArticle[]
@@ -170,10 +172,26 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
         }))
       },
 
+      deleteArticle: (id: string) => {
+        set((state) => ({
+          articles: state.articles.map((a) =>
+            a.id === id ? { ...a, deleted_at: today() } : a
+          ),
+        }))
+      },
+
       publishArticle: (id: string) => {
         set((state) => ({
           articles: state.articles.map((a) =>
             a.id === id ? { ...a, is_published: true, updated_at: today() } : a
+          ),
+        }))
+      },
+
+      togglePublish: (id: string) => {
+        set((state) => ({
+          articles: state.articles.map((a) =>
+            a.id === id ? { ...a, is_published: !a.is_published, updated_at: today() } : a
           ),
         }))
       },

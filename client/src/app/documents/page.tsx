@@ -16,6 +16,8 @@ import {
   Tag,
   X,
   Inbox,
+  Pencil,
+  Trash2,
 } from 'lucide-react'
 import { useDocumentStore } from '@/stores/document-store'
 import { useAuth } from '@/hooks/use-auth'
@@ -67,6 +69,8 @@ export default function DocumentsPage() {
   const getDocumentsByCategory = useDocumentStore((s) => s.getDocumentsByCategory)
   const searchDocuments = useDocumentStore((s) => s.searchDocuments)
   const addDocument = useDocumentStore((s) => s.addDocument)
+  const updateDocument = useDocumentStore((s) => s.updateDocument)
+  const deleteDocument = useDocumentStore((s) => s.deleteDocument)
   const hydrated = useDocumentStore((s) => s._hydrated)
 
   // Create form state
@@ -77,9 +81,28 @@ export default function DocumentsPage() {
   const [formTags, setFormTags] = useState('')
   const [formFileName, setFormFileName] = useState('')
 
+  // Edit mode state
+  const [editMode, setEditMode] = useState(false)
+  const [editTitle, setEditTitle] = useState('')
+  const [editDescription, setEditDescription] = useState('')
+  const [editCategory, setEditCategory] = useState<DocumentCategory>('contract')
+  const [editStatus, setEditStatus] = useState<'active' | 'expired' | 'archived'>('active')
+  const [editVersion, setEditVersion] = useState(1)
+  const [editExpiryDate, setEditExpiryDate] = useState('')
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const [statusDropdownId, setStatusDropdownId] = useState<string | null>(null)
+
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Close status dropdown when clicking outside
+  useEffect(() => {
+    if (!statusDropdownId) return
+    const handler = () => setStatusDropdownId(null)
+    document.addEventListener('click', handler)
+    return () => document.removeEventListener('click', handler)
+  }, [statusDropdownId])
 
   const filteredDocuments = useMemo(() => {
     if (searchQuery.trim()) {
@@ -139,6 +162,53 @@ export default function DocumentsPage() {
     setFormDescription('')
     setFormTags('')
     setFormFileName('')
+  }
+
+  const enterEditMode = (doc: Document) => {
+    setEditTitle(doc.title)
+    setEditDescription(doc.description)
+    setEditCategory(doc.category)
+    setEditStatus(doc.status)
+    setEditVersion(doc.version)
+    setEditExpiryDate(doc.expiry_date || '')
+    setEditMode(true)
+    setDeleteConfirm(false)
+  }
+
+  const handleSaveEdit = () => {
+    if (!detailDoc || !editTitle.trim()) return
+    updateDocument(detailDoc.id, {
+      title: editTitle,
+      description: editDescription,
+      category: editCategory,
+      status: editStatus,
+      version: editVersion,
+      expiry_date: editExpiryDate || null,
+      updated_by: currentUser?.id || '',
+    })
+    // Refresh detailDoc with updated data
+    const updated = getDocuments().find((d) => d.id === detailDoc.id)
+    if (updated) setDetailDoc(updated)
+    setEditMode(false)
+    addToast('success', '文書を更新しました')
+  }
+
+  const handleDelete = () => {
+    if (!detailDoc) return
+    deleteDocument(detailDoc.id)
+    setDetailDoc(null)
+    setEditMode(false)
+    setDeleteConfirm(false)
+    addToast('success', '文書を削除しました')
+  }
+
+  const handleQuickStatusChange = (docId: string, newStatus: 'active' | 'expired' | 'archived') => {
+    updateDocument(docId, {
+      status: newStatus,
+      updated_by: currentUser?.id || '',
+    })
+    setStatusDropdownId(null)
+    addToast('success', `ステータスを「${DOCUMENT_STATUS_LABELS[newStatus]}」に変更しました`)
   }
 
   const allDocs = getDocuments()
@@ -258,7 +328,7 @@ export default function DocumentsPage() {
               <div
                 key={doc.id}
                 onClick={() => setDetailDoc(doc)}
-                className="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group"
+                className="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group relative"
               >
                 <div className="w-9 h-9 rounded-[10px] bg-bg-elevated flex items-center justify-center shrink-0">
                   <FileText className="w-[18px] h-[18px] text-text-muted" strokeWidth={1.75} />
@@ -287,10 +357,71 @@ export default function DocumentsPage() {
                     </span>
                   ))}
                 </div>
+                {/* Status badge with quick-change dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setStatusDropdownId(statusDropdownId === doc.id ? null : doc.id)
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <Badge
+                      variant={DOCUMENT_STATUS_COLORS[doc.status] as 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'processing'}
+                      label={DOCUMENT_STATUS_LABELS[doc.status]}
+                    />
+                  </button>
+                  {statusDropdownId === doc.id && (
+                    <div
+                      className="absolute right-0 top-full mt-1 z-50 bg-bg-surface border border-border rounded-[10px] shadow-lg py-1 min-w-[120px]"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {(['active', 'expired', 'archived'] as const).map((s) => (
+                        <button
+                          key={s}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleQuickStatusChange(doc.id, s)
+                          }}
+                          className={`w-full text-left px-3 py-2 text-[13px] hover:bg-bg-elevated transition-colors cursor-pointer ${
+                            doc.status === s ? 'text-accent font-semibold' : 'text-text-secondary'
+                          }`}
+                        >
+                          {DOCUMENT_STATUS_LABELS[s]}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <Badge
                   variant={DOCUMENT_CATEGORY_COLORS[doc.category] as 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'processing'}
                   label={DOCUMENT_CATEGORY_LABELS[doc.category]}
                 />
+                {/* Edit / Delete hover actions */}
+                <div className="hidden md:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setDetailDoc(doc)
+                      setTimeout(() => enterEditMode(doc), 0)
+                    }}
+                    className="p-1.5 rounded-[8px] hover:bg-bg-elevated text-text-muted hover:text-accent transition-colors cursor-pointer"
+                    title="編集"
+                  >
+                    <Pencil className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setDetailDoc(doc)
+                      setDeleteConfirm(true)
+                    }}
+                    className="p-1.5 rounded-[8px] hover:bg-red-50 text-text-muted hover:text-danger transition-colors cursor-pointer"
+                    title="削除"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  </button>
+                </div>
                 <span className="text-[12px] text-text-muted tabular-nums shrink-0 hidden sm:block" style={{ fontFamily: 'var(--font-inter)' }}>
                   {formatDateCompact(doc.updated_at)}
                 </span>
@@ -378,14 +509,120 @@ export default function DocumentsPage() {
       {/* Detail Modal */}
       <Modal
         open={!!detailDoc}
-        onClose={() => setDetailDoc(null)}
-        title="文書詳細"
+        onClose={() => { setDetailDoc(null); setEditMode(false); setDeleteConfirm(false) }}
+        title={editMode ? '文書を編集' : '文書詳細'}
         size="lg"
         footer={
-          <Button variant="ghost" onClick={() => setDetailDoc(null)}>閉じる</Button>
+          editMode ? (
+            <>
+              <Button variant="ghost" onClick={() => setEditMode(false)}>キャンセル</Button>
+              <Button variant="primary" onClick={handleSaveEdit} disabled={!editTitle.trim()}>保存</Button>
+            </>
+          ) : deleteConfirm ? (
+            <>
+              <Button variant="ghost" onClick={() => setDeleteConfirm(false)}>キャンセル</Button>
+              <Button variant="danger" onClick={handleDelete}>削除する</Button>
+            </>
+          ) : (
+            <div className="flex items-center justify-between w-full">
+              <Button variant="danger" size="sm" icon={Trash2} onClick={() => setDeleteConfirm(true)}>
+                削除
+              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" onClick={() => { setDetailDoc(null); setEditMode(false) }}>閉じる</Button>
+                <Button variant="secondary" size="sm" icon={Pencil} onClick={() => detailDoc && enterEditMode(detailDoc)}>
+                  編集
+                </Button>
+              </div>
+            </div>
+          )
         }
       >
-        {detailDoc && (
+        {detailDoc && deleteConfirm && !editMode && (
+          <div className="flex flex-col items-center py-4">
+            <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4">
+              <Trash2 className="w-6 h-6 text-danger" strokeWidth={1.75} />
+            </div>
+            <p className="text-[16px] font-semibold text-text-primary mb-2">この文書を削除しますか？</p>
+            <p className="text-[13px] text-text-secondary text-center max-w-[320px]">
+              「{detailDoc.title}」を削除します。この操作は取り消せません。
+            </p>
+          </div>
+        )}
+        {detailDoc && editMode && (
+          <div className="space-y-4">
+            <Input
+              label="タイトル"
+              required
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              placeholder="文書のタイトル"
+            />
+            <div>
+              <label className="block text-[13px] font-medium text-text-secondary mb-1.5">説明</label>
+              <textarea
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="文書の説明"
+                rows={3}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[13px] font-medium text-text-secondary mb-1.5">カテゴリ</label>
+                <select
+                  value={editCategory}
+                  onChange={(e) => setEditCategory(e.target.value as DocumentCategory)}
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                >
+                  {Object.entries(DOCUMENT_CATEGORY_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[13px] font-medium text-text-secondary mb-1.5">ステータス</label>
+                <select
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value as 'active' | 'expired' | 'archived')}
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                >
+                  {Object.entries(DOCUMENT_STATUS_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-bg-base rounded-[12px] p-3">
+                <label className="block text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">バージョン</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={editVersion}
+                  onChange={(e) => setEditVersion(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full bg-transparent text-[14px] text-text-primary focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                />
+              </div>
+              <div className="bg-bg-base rounded-[12px] p-3">
+                <label className="block text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5 flex items-center gap-1">
+                  <Calendar className="w-3 h-3" strokeWidth={2} />
+                  有効期限
+                </label>
+                <input
+                  type="date"
+                  value={editExpiryDate ? editExpiryDate.split('T')[0] : ''}
+                  onChange={(e) => setEditExpiryDate(e.target.value ? `${e.target.value}T00:00:00` : '')}
+                  className="w-full bg-transparent text-[14px] text-text-primary focus:outline-none"
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {detailDoc && !editMode && !deleteConfirm && (
           <div className="space-y-5">
             <div>
               <h3 className="text-[18px] font-bold text-text-primary mb-2">{detailDoc.title}</h3>
@@ -459,7 +696,6 @@ export default function DocumentsPage() {
                 size="sm"
                 icon={Download}
                 onClick={() => {
-                  // Generate a sample file for download
                   const content = `B-Hall 文書管理システム\n\n文書名: ${detailDoc.title}\nファイル名: ${detailDoc.file_name}\nカテゴリ: ${detailDoc.category}\nバージョン: ${detailDoc.version}\n作成日: ${detailDoc.created_at}\n更新日: ${detailDoc.updated_at}\n\nこのファイルはB-Hallからエクスポートされました。`
                   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
                   const url = URL.createObjectURL(blob)

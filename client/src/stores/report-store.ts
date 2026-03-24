@@ -132,6 +132,8 @@ interface ReportState {
 
 interface ReportActions {
   addReport: (data: Partial<Report>) => Report
+  updateReport: (id: string, data: Partial<Report>) => void
+  deleteReport: (id: string) => void
   submitReport: (id: string) => void
   reviewReport: (id: string, reviewerId: string) => void
   getReports: () => Report[]
@@ -173,6 +175,22 @@ export const useReportStore = create<ReportStore>()(
         }
         set((state) => ({ reports: [...state.reports, newReport] }))
         return newReport
+      },
+
+      updateReport: (id: string, data: Partial<Report>) => {
+        set((state) => ({
+          reports: state.reports.map((r) =>
+            r.id === id ? { ...r, ...data, updated_at: today() } : r
+          ),
+        }))
+      },
+
+      deleteReport: (id: string) => {
+        set((state) => ({
+          reports: state.reports.map((r) =>
+            r.id === id ? { ...r, deleted_at: today() } : r
+          ),
+        }))
       },
 
       submitReport: (id: string) => {

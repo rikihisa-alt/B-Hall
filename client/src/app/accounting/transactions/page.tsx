@@ -8,6 +8,9 @@ import { useAccountingStore } from '@/stores/accounting-store'
 import { TransactionCreateModal } from '@/features/accounting/components/transaction-create-modal'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Modal } from '@/components/ui/modal'
+import { useToast } from '@/components/ui/toast-provider'
 import { formatDateShort } from '@/lib/date'
 import {
   TRANSACTION_STATUS_LABELS,
@@ -21,6 +24,8 @@ import {
   TrendingUp,
   TrendingDown,
   ArrowLeftRight,
+  Edit3,
+  Trash2,
 } from 'lucide-react'
 import type { TransactionType, Transaction } from '@/types'
 import { cn } from '@/lib/cn'
@@ -32,8 +37,48 @@ export default function TransactionsPage() {
   const [showCreate, setShowCreate] = useState(false)
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('all')
+  const [editTxn, setEditTxn] = useState<Transaction | null>(null)
+  const [editDesc, setEditDesc] = useState('')
+  const [editAmount, setEditAmount] = useState('')
+  const [editCategory, setEditCategory] = useState('')
+  const [editCounterparty, setEditCounterparty] = useState('')
+  const [editDate, setEditDate] = useState('')
+  const [editType, setEditType] = useState<TransactionType>('expense')
 
   const transactions = useAccountingStore((s) => s.transactions)
+  const updateTransaction = useAccountingStore((s) => s.updateTransaction)
+  const { addToast } = useToast()
+
+  const openEdit = (txn: Transaction) => {
+    setEditTxn(txn)
+    setEditDesc(txn.description)
+    setEditAmount(String(txn.amount))
+    setEditCategory(txn.category)
+    setEditCounterparty(txn.counterparty)
+    setEditDate(txn.date)
+    setEditType(txn.type)
+  }
+
+  const handleSaveEdit = () => {
+    if (!editTxn || !editDesc.trim()) return
+    updateTransaction(editTxn.id, {
+      description: editDesc.trim(),
+      amount: Number(editAmount) || 0,
+      category: editCategory.trim(),
+      counterparty: editCounterparty.trim(),
+      date: editDate,
+      type: editType,
+    })
+    setEditTxn(null)
+    addToast('success', '取引を更新しました')
+  }
+
+  const handleDeleteTxn = () => {
+    if (!editTxn) return
+    updateTransaction(editTxn.id, { deleted_at: new Date().toISOString() })
+    setEditTxn(null)
+    addToast('success', '取引を削除しました')
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -206,9 +251,10 @@ export default function TransactionsPage() {
           ) : (
             <div className="divide-y divide-border">
               {filtered.map((txn) => (
-                <div
+                <button
                   key={txn.id}
-                  className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors"
+                  onClick={() => openEdit(txn)}
+                  className="w-full flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors text-left cursor-pointer"
                 >
                   {/* Type icon */}
                   <div className="w-9 h-9 rounded-[10px] bg-bg-elevated flex items-center justify-center shrink-0">
@@ -252,7 +298,7 @@ export default function TransactionsPage() {
                       {txn.amount.toLocaleString()}
                     </p>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -263,6 +309,50 @@ export default function TransactionsPage() {
       </motion.section>
 
       <TransactionCreateModal open={showCreate} onClose={() => setShowCreate(false)} />
+
+      {/* Edit Modal */}
+      <Modal
+        open={!!editTxn}
+        onClose={() => setEditTxn(null)}
+        title="取引を編集"
+        footer={
+          <div className="flex items-center justify-between w-full">
+            <button
+              onClick={handleDeleteTxn}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-danger bg-[rgba(239,68,68,0.06)] border border-[rgba(239,68,68,0.15)] hover:bg-[rgba(239,68,68,0.12)] transition-all cursor-pointer"
+            >
+              <Trash2 className="w-3 h-3" />
+              削除
+            </button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" onClick={() => setEditTxn(null)}>キャンセル</Button>
+              <Button variant="primary" onClick={handleSaveEdit}>保存</Button>
+            </div>
+          </div>
+        }
+      >
+        {editTxn && (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[12px] font-semibold text-text-muted mb-1.5">種別</label>
+              <select
+                value={editType}
+                onChange={(e) => setEditType(e.target.value as TransactionType)}
+                className="w-full bg-bg-surface border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary focus:border-accent focus:outline-none transition-colors"
+              >
+                <option value="income">収入</option>
+                <option value="expense">支出</option>
+                <option value="transfer">振替</option>
+              </select>
+            </div>
+            <Input label="内容" value={editDesc} onChange={(e) => setEditDesc(e.target.value)} required />
+            <Input label="金額" type="number" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} required />
+            <Input label="日付" type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
+            <Input label="勘定科目" value={editCategory} onChange={(e) => setEditCategory(e.target.value)} />
+            <Input label="取引先" value={editCounterparty} onChange={(e) => setEditCounterparty(e.target.value)} />
+          </div>
+        )}
+      </Modal>
     </motion.div>
   )
 }

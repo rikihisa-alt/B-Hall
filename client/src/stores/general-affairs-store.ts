@@ -211,8 +211,11 @@ interface GAState {
 interface GAActions {
   addEquipment: (data: Partial<EquipmentItem>) => EquipmentItem
   updateEquipment: (id: string, updates: Partial<EquipmentItem>) => void
+  deleteEquipment: (id: string, deletedBy: string) => void
   getEquipment: () => EquipmentItem[]
   addBooking: (data: Partial<FacilityBooking>) => FacilityBooking
+  updateBooking: (id: string, updates: Partial<FacilityBooking>) => void
+  cancelBooking: (id: string, cancelledBy: string) => void
   getBookings: () => FacilityBooking[]
   getBookingsByDate: (date: string) => FacilityBooking[]
   setHydrated: () => void
@@ -260,6 +263,16 @@ export const useGAStore = create<GAStore>()(
         }))
       },
 
+      deleteEquipment: (id: string, deletedBy: string) => {
+        set((state) => ({
+          equipment: state.equipment.map((e) =>
+            e.id === id
+              ? { ...e, deleted_at: today(), updated_at: today(), updated_by: deletedBy }
+              : e
+          ),
+        }))
+      },
+
       getEquipment: () => {
         return get().equipment.filter((e) => !e.deleted_at)
       },
@@ -285,6 +298,26 @@ export const useGAStore = create<GAStore>()(
           facilityBookings: [...state.facilityBookings, newBooking],
         }))
         return newBooking
+      },
+
+      updateBooking: (id: string, updates: Partial<FacilityBooking>) => {
+        set((state) => ({
+          facilityBookings: state.facilityBookings.map((b) =>
+            b.id === id
+              ? { ...b, ...updates, updated_at: today() }
+              : b
+          ),
+        }))
+      },
+
+      cancelBooking: (id: string, cancelledBy: string) => {
+        set((state) => ({
+          facilityBookings: state.facilityBookings.map((b) =>
+            b.id === id
+              ? { ...b, status: 'cancelled' as const, updated_at: today(), updated_by: cancelledBy }
+              : b
+          ),
+        }))
       },
 
       getBookings: () => {

@@ -8,6 +8,8 @@ import { useAccountingStore } from '@/stores/accounting-store'
 import { InvoiceCreateModal } from '@/features/accounting/components/invoice-create-modal'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Modal } from '@/components/ui/modal'
+import { useToast } from '@/components/ui/toast-provider'
 import { formatDateShort } from '@/lib/date'
 import {
   INVOICE_STATUS_LABELS,
@@ -18,6 +20,7 @@ import {
   Search,
   ChevronRight,
   FileText,
+  Trash2,
 } from 'lucide-react'
 import type { Invoice } from '@/types'
 import { cn } from '@/lib/cn'
@@ -29,8 +32,12 @@ export default function InvoicesPage() {
   const [showCreate, setShowCreate] = useState(false)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+  const [editInv, setEditInv] = useState<Invoice | null>(null)
+  const [editStatus, setEditStatus] = useState<Invoice['status']>('draft')
 
   const invoices = useAccountingStore((s) => s.invoices)
+  const updateInvoice = useAccountingStore((s) => s.updateInvoice)
+  const { addToast } = useToast()
 
   useEffect(() => {
     setMounted(true)
@@ -167,10 +174,11 @@ export default function InvoicesPage() {
                 const isOverdue = inv.status === 'overdue'
 
                 return (
-                  <div
+                  <button
                     key={inv.id}
+                    onClick={() => { setEditInv(inv); setEditStatus(inv.status) }}
                     className={cn(
-                      'flex items-center gap-4 px-5 py-4 transition-colors',
+                      'w-full flex items-center gap-4 px-5 py-4 transition-colors text-left cursor-pointer',
                       isOverdue
                         ? 'bg-[rgba(239,68,68,0.03)] hover:bg-[rgba(239,68,68,0.06)]'
                         : 'hover:bg-[rgba(0,0,0,0.02)]'
@@ -229,7 +237,7 @@ export default function InvoicesPage() {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </button>
                 )
               })}
             </div>
@@ -241,6 +249,92 @@ export default function InvoicesPage() {
       </motion.section>
 
       <InvoiceCreateModal open={showCreate} onClose={() => setShowCreate(false)} />
+
+      {/* Edit Modal */}
+      <Modal
+        open={!!editInv}
+        onClose={() => setEditInv(null)}
+        title={`請求書 ${editInv?.invoice_number || ''}`}
+        footer={
+          <div className="flex items-center justify-between w-full">
+            <button
+              onClick={() => {
+                if (!editInv) return
+                updateInvoice(editInv.id, { deleted_at: new Date().toISOString() })
+                setEditInv(null)
+                addToast('success', '請求書を削除しました')
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-danger bg-[rgba(239,68,68,0.06)] border border-[rgba(239,68,68,0.15)] hover:bg-[rgba(239,68,68,0.12)] transition-all cursor-pointer"
+            >
+              <Trash2 className="w-3 h-3" />
+              削除
+            </button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" onClick={() => setEditInv(null)}>閉じる</Button>
+              <Button variant="primary" onClick={() => {
+                if (!editInv) return
+                updateInvoice(editInv.id, { status: editStatus })
+                setEditInv(null)
+                addToast('success', 'ステータスを更新しました')
+              }}>保存</Button>
+            </div>
+          </div>
+        }
+      >
+        {editInv && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-bg-base rounded-[12px] p-3">
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">取引先</p>
+                <p className="text-[14px] text-text-primary font-medium">{editInv.counterparty}</p>
+              </div>
+              <div className="bg-bg-base rounded-[12px] p-3">
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">合計金額</p>
+                <p className="text-[18px] font-bold text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>
+                  ¥{editInv.total_amount.toLocaleString()}
+                </p>
+              </div>
+              <div className="bg-bg-base rounded-[12px] p-3">
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">発行日</p>
+                <p className="text-[14px] text-text-primary">{formatDateShort(editInv.issue_date)}</p>
+              </div>
+              <div className="bg-bg-base rounded-[12px] p-3">
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">支払期限</p>
+                <p className="text-[14px] text-text-primary">{formatDateShort(editInv.due_date)}</p>
+              </div>
+            </div>
+            {editInv.items.length > 0 && (
+              <div>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">明細</p>
+                <div className="space-y-1.5">
+                  {editInv.items.map((item, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-bg-base rounded-[10px] px-3 py-2">
+                      <span className="text-[13px] text-text-primary">{item.description}</span>
+                      <span className="text-[13px] font-medium text-text-primary tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>
+                        ¥{item.amount.toLocaleString()} × {item.quantity}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
+              <label className="block text-[12px] font-semibold text-text-muted mb-1.5">ステータス変更</label>
+              <select
+                value={editStatus}
+                onChange={(e) => setEditStatus(e.target.value as Invoice['status'])}
+                className="w-full bg-bg-surface border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary focus:border-accent focus:outline-none transition-colors"
+              >
+                <option value="draft">下書き</option>
+                <option value="sent">送付済み</option>
+                <option value="paid">入金済み</option>
+                <option value="overdue">期限超過</option>
+                <option value="cancelled">キャンセル</option>
+              </select>
+            </div>
+          </div>
+        )}
+      </Modal>
     </motion.div>
   )
 }

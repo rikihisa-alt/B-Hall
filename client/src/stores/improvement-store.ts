@@ -113,6 +113,8 @@ interface ImprovementState {
 
 interface ImprovementActions {
   addImprovement: (data: Partial<Improvement>) => Improvement
+  updateImprovement: (id: string, data: Partial<Improvement>) => void
+  deleteImprovement: (id: string) => void
   updateStatus: (id: string, status: Improvement['status']) => void
   vote: (id: string, userId: string) => void
   getImprovements: () => Improvement[]
@@ -153,6 +155,22 @@ export const useImprovementStore = create<ImprovementStore>()(
         }
         set((state) => ({ improvements: [...state.improvements, newImprovement] }))
         return newImprovement
+      },
+
+      updateImprovement: (id: string, data: Partial<Improvement>) => {
+        set((state) => ({
+          improvements: state.improvements.map((imp) =>
+            imp.id === id ? { ...imp, ...data, updated_at: today() } : imp
+          ),
+        }))
+      },
+
+      deleteImprovement: (id: string) => {
+        set((state) => ({
+          improvements: state.improvements.map((imp) =>
+            imp.id === id ? { ...imp, deleted_at: today() } : imp
+          ),
+        }))
       },
 
       updateStatus: (id: string, status: Improvement['status']) => {

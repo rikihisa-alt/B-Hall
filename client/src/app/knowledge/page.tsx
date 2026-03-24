@@ -14,6 +14,9 @@ import {
   Inbox,
   ArrowLeft,
   FileText,
+  Pencil,
+  Trash2,
+  EyeOff,
 } from 'lucide-react'
 import { useKnowledgeStore } from '@/stores/knowledge-store'
 import { useAuth } from '@/hooks/use-auth'
@@ -46,6 +49,14 @@ export default function KnowledgePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [createOpen, setCreateOpen] = useState(false)
   const [detailArticle, setDetailArticle] = useState<KnowledgeArticle | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+
+  // Edit form state
+  const [editTitle, setEditTitle] = useState('')
+  const [editContent, setEditContent] = useState('')
+  const [editType, setEditType] = useState<KnowledgeType>('manual')
+  const [editTags, setEditTags] = useState('')
 
   const { currentUser, getUserName } = useAuth()
   const { addToast } = useToast()
@@ -53,6 +64,9 @@ export default function KnowledgePage() {
   const getArticlesByType = useKnowledgeStore((s) => s.getArticlesByType)
   const searchArticles = useKnowledgeStore((s) => s.searchArticles)
   const addArticle = useKnowledgeStore((s) => s.addArticle)
+  const updateArticle = useKnowledgeStore((s) => s.updateArticle)
+  const deleteArticle = useKnowledgeStore((s) => s.deleteArticle)
+  const togglePublish = useKnowledgeStore((s) => s.togglePublish)
   const incrementViewCount = useKnowledgeStore((s) => s.incrementViewCount)
   const hydrated = useKnowledgeStore((s) => s._hydrated)
 
@@ -127,6 +141,46 @@ export default function KnowledgePage() {
   const handleOpenDetail = (article: KnowledgeArticle) => {
     incrementViewCount(article.id)
     setDetailArticle(article)
+    setIsEditing(false)
+    setDeleteConfirm(false)
+  }
+
+  const startEditing = (article: KnowledgeArticle) => {
+    setEditTitle(article.title)
+    setEditContent(article.content)
+    setEditType(article.type)
+    setEditTags(article.tags.join(', '))
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = () => {
+    if (!detailArticle || !editTitle.trim()) return
+    const tags = editTags.split(',').map((t) => t.trim()).filter(Boolean)
+    updateArticle(detailArticle.id, {
+      title: editTitle,
+      content: editContent,
+      type: editType,
+      tags,
+    })
+    setDetailArticle({ ...detailArticle, title: editTitle, content: editContent, type: editType, tags })
+    setIsEditing(false)
+    addToast('success', 'ナレッジを更新しました')
+  }
+
+  const handleDeleteArticle = () => {
+    if (!detailArticle) return
+    deleteArticle(detailArticle.id)
+    setDetailArticle(null)
+    setDeleteConfirm(false)
+    setIsEditing(false)
+    addToast('success', 'ナレッジを削除しました')
+  }
+
+  const handleTogglePublish = () => {
+    if (!detailArticle) return
+    togglePublish(detailArticle.id)
+    setDetailArticle({ ...detailArticle, is_published: !detailArticle.is_published })
+    addToast('success', detailArticle.is_published ? '非公開にしました' : '公開しました')
   }
 
   // Simple markdown-like rendering
@@ -182,68 +236,152 @@ export default function KnowledgePage() {
         <nav className="flex items-center gap-2 text-[13px] mb-4">
           <Link href="/" className="text-text-muted hover:text-text-primary transition-colors">ホーム</Link>
           <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
-          <button onClick={() => setDetailArticle(null)} className="text-text-muted hover:text-text-primary transition-colors cursor-pointer">ナレッジ</button>
+          <button onClick={() => { setDetailArticle(null); setIsEditing(false); setDeleteConfirm(false) }} className="text-text-muted hover:text-text-primary transition-colors cursor-pointer">ナレッジ</button>
           <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
           <span className="text-text-secondary font-medium truncate max-w-[200px]">{detailArticle.title}</span>
         </nav>
 
         <div className="mb-6">
           <button
-            onClick={() => setDetailArticle(null)}
+            onClick={() => { setDetailArticle(null); setIsEditing(false); setDeleteConfirm(false) }}
             className="flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-primary transition-colors mb-4 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" strokeWidth={1.75} />
             一覧に戻る
           </button>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-[22px] font-bold text-text-primary tracking-tight mb-2">{detailArticle.title}</h1>
-              <div className="flex items-center gap-3 flex-wrap">
-                <Badge
-                  variant={KNOWLEDGE_TYPE_COLORS[detailArticle.type] as 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'processing'}
-                  label={KNOWLEDGE_TYPE_LABELS[detailArticle.type]}
-                />
-                {!detailArticle.is_published && (
-                  <Badge variant="warning" label="下書き" />
-                )}
-                <span className="flex items-center gap-1 text-[12px] text-text-muted">
-                  <Eye className="w-3.5 h-3.5" strokeWidth={2} />
-                  <span style={{ fontFamily: 'var(--font-inter)' }}>{detailArticle.view_count}</span>
-                </span>
-                <span className="text-[12px] text-text-muted">
-                  {getUserName(detailArticle.author_id)} · {detailArticle.department}
-                </span>
-                <span className="text-[12px] text-text-muted">
-                  v{detailArticle.version} · {formatRelative(detailArticle.updated_at)}
-                </span>
+          {deleteConfirm && (
+            <div className="bg-danger/5 border border-danger/20 rounded-[12px] p-4 mb-4">
+              <p className="text-[14px] text-danger font-medium mb-3">このナレッジを削除しますか？</p>
+              <div className="flex items-center gap-2">
+                <Button variant="primary" size="sm" onClick={handleDeleteArticle} className="!bg-danger hover:!bg-danger/90">削除する</Button>
+                <Button variant="ghost" size="sm" onClick={() => setDeleteConfirm(false)}>キャンセル</Button>
               </div>
             </div>
-          </div>
+          )}
+
+          {!isEditing ? (
+            <>
+              <div className="flex items-start justify-between">
+                <div>
+                  <h1 className="text-[22px] font-bold text-text-primary tracking-tight mb-2">{detailArticle.title}</h1>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <Badge
+                      variant={KNOWLEDGE_TYPE_COLORS[detailArticle.type] as 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'processing'}
+                      label={KNOWLEDGE_TYPE_LABELS[detailArticle.type]}
+                    />
+                    {!detailArticle.is_published && (
+                      <Badge variant="warning" label="下書き" />
+                    )}
+                    <span className="flex items-center gap-1 text-[12px] text-text-muted">
+                      <Eye className="w-3.5 h-3.5" strokeWidth={2} />
+                      <span style={{ fontFamily: 'var(--font-inter)' }}>{detailArticle.view_count}</span>
+                    </span>
+                    <span className="text-[12px] text-text-muted">
+                      {getUserName(detailArticle.author_id)} · {detailArticle.department}
+                    </span>
+                    <span className="text-[12px] text-text-muted">
+                      v{detailArticle.version} · {formatRelative(detailArticle.updated_at)}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleTogglePublish}
+                    icon={detailArticle.is_published ? EyeOff : Eye}
+                  >
+                    {detailArticle.is_published ? '非公開' : '公開'}
+                  </Button>
+                  <Button variant="ghost" size="sm" icon={Pencil} onClick={() => startEditing(detailArticle)}>
+                    編集
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    icon={Trash2}
+                    onClick={() => setDeleteConfirm(true)}
+                    className="text-danger hover:bg-danger/10"
+                  >
+                    削除
+                  </Button>
+                </div>
+              </div>
+
+              {detailArticle.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {detailArticle.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-bg-elevated text-[12px] text-text-secondary"
+                    >
+                      <Tag className="w-3 h-3" strokeWidth={2} />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6 space-y-4">
+              <Input
+                label="タイトル"
+                required
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                placeholder="ナレッジのタイトル"
+              />
+              <div>
+                <label className="block text-[14px] font-medium text-text-secondary mb-1.5">
+                  種別 <span className="text-accent">*</span>
+                </label>
+                <select
+                  value={editType}
+                  onChange={(e) => setEditType(e.target.value as KnowledgeType)}
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                >
+                  {Object.entries(KNOWLEDGE_TYPE_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[14px] font-medium text-text-secondary mb-1.5">
+                  内容 <span className="text-accent">*</span>
+                </label>
+                <textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  placeholder="Markdown形式で記述できます"
+                  rows={12}
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none font-mono text-[13px]"
+                />
+              </div>
+              <Input
+                label="タグ（カンマ区切り）"
+                value={editTags}
+                onChange={(e) => setEditTags(e.target.value)}
+                placeholder="手順, 経費, マニュアル"
+              />
+              <div className="flex items-center gap-2 pt-2">
+                <Button variant="primary" onClick={handleSaveEdit} disabled={!editTitle.trim()}>保存</Button>
+                <Button variant="ghost" onClick={() => setIsEditing(false)}>キャンセル</Button>
+              </div>
+            </div>
+          )}
         </div>
 
-        {detailArticle.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-6">
-            {detailArticle.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-bg-elevated text-[12px] text-text-secondary"
-              >
-                <Tag className="w-3 h-3" strokeWidth={2} />
-                {tag}
-              </span>
-            ))}
-          </div>
+        {!isEditing && (
+          <motion.div
+            className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6 sm:p-8"
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+          >
+            {renderContent(detailArticle.content)}
+          </motion.div>
         )}
-
-        <motion.div
-          className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6 sm:p-8"
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-        >
-          {renderContent(detailArticle.content)}
-        </motion.div>
       </motion.div>
     )
   }

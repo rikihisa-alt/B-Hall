@@ -15,6 +15,8 @@ import {
   CheckCircle2,
   Clock,
   TrendingUp,
+  Pencil,
+  Trash2,
 } from 'lucide-react'
 import { useImprovementStore } from '@/stores/improvement-store'
 import { useAuth } from '@/hooks/use-auth'
@@ -58,12 +60,23 @@ export default function ImprovementsPage() {
   const [activeStatus, setActiveStatus] = useState<Improvement['status'] | 'all'>('all')
   const [createOpen, setCreateOpen] = useState(false)
   const [detailImp, setDetailImp] = useState<Improvement | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+
+  // Edit form state
+  const [editTitle, setEditTitle] = useState('')
+  const [editDescription, setEditDescription] = useState('')
+  const [editCategory, setEditCategory] = useState<ImprovementCategory>('process')
+  const [editExpectedEffect, setEditExpectedEffect] = useState('')
 
   const { currentUser, getUserName } = useAuth()
   const { addToast } = useToast()
   const getImprovements = useImprovementStore((s) => s.getImprovements)
   const getImprovementsByCategory = useImprovementStore((s) => s.getImprovementsByCategory)
   const addImprovement = useImprovementStore((s) => s.addImprovement)
+  const updateImprovement = useImprovementStore((s) => s.updateImprovement)
+  const deleteImprovement = useImprovementStore((s) => s.deleteImprovement)
+  const updateStatus = useImprovementStore((s) => s.updateStatus)
   const vote = useImprovementStore((s) => s.vote)
   const hydrated = useImprovementStore((s) => s._hydrated)
 
@@ -137,6 +150,43 @@ export default function ImprovementsPage() {
     e.stopPropagation()
     if (!currentUser) return
     vote(impId, currentUser.id)
+  }
+
+  const startEditing = (imp: Improvement) => {
+    setEditTitle(imp.title)
+    setEditDescription(imp.description)
+    setEditCategory(imp.category)
+    setEditExpectedEffect(imp.expected_effect)
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = () => {
+    if (!detailImp || !editTitle.trim()) return
+    updateImprovement(detailImp.id, {
+      title: editTitle,
+      description: editDescription,
+      category: editCategory,
+      expected_effect: editExpectedEffect,
+    })
+    setDetailImp({ ...detailImp, title: editTitle, description: editDescription, category: editCategory, expected_effect: editExpectedEffect })
+    setIsEditing(false)
+    addToast('success', '改善提案を更新しました')
+  }
+
+  const handleDeleteImprovement = () => {
+    if (!detailImp) return
+    deleteImprovement(detailImp.id)
+    setDetailImp(null)
+    setDeleteConfirm(false)
+    setIsEditing(false)
+    addToast('success', '改善提案を削除しました')
+  }
+
+  const handleStatusChange = (newStatus: Improvement['status']) => {
+    if (!detailImp) return
+    updateStatus(detailImp.id, newStatus)
+    setDetailImp({ ...detailImp, status: newStatus })
+    addToast('success', `ステータスを「${IMPROVEMENT_STATUS_LABELS[newStatus]}」に変更しました`)
   }
 
   return (
@@ -394,15 +444,48 @@ export default function ImprovementsPage() {
       {/* Detail Modal */}
       <Modal
         open={!!detailImp}
-        onClose={() => setDetailImp(null)}
+        onClose={() => { setDetailImp(null); setIsEditing(false); setDeleteConfirm(false) }}
         title="提案詳細"
         size="lg"
         footer={
-          <Button variant="ghost" onClick={() => setDetailImp(null)}>閉じる</Button>
+          isEditing ? (
+            <>
+              <Button variant="ghost" onClick={() => setIsEditing(false)}>キャンセル</Button>
+              <Button variant="primary" onClick={handleSaveEdit} disabled={!editTitle.trim()}>保存</Button>
+            </>
+          ) : (
+            <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" icon={Pencil} onClick={() => detailImp && startEditing(detailImp)}>
+                  編集
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={Trash2}
+                  onClick={() => setDeleteConfirm(true)}
+                  className="text-danger hover:bg-danger/10"
+                >
+                  削除
+                </Button>
+              </div>
+              <div className="flex-1" />
+              <Button variant="ghost" onClick={() => { setDetailImp(null); setIsEditing(false); setDeleteConfirm(false) }}>閉じる</Button>
+            </div>
+          )
         }
       >
-        {detailImp && (
+        {detailImp && !isEditing && (
           <div className="space-y-5">
+            {deleteConfirm && (
+              <div className="bg-danger/5 border border-danger/20 rounded-[12px] p-4">
+                <p className="text-[14px] text-danger font-medium mb-3">この改善提案を削除しますか？</p>
+                <div className="flex items-center gap-2">
+                  <Button variant="primary" size="sm" onClick={handleDeleteImprovement} className="!bg-danger hover:!bg-danger/90">削除する</Button>
+                  <Button variant="ghost" size="sm" onClick={() => setDeleteConfirm(false)}>キャンセル</Button>
+                </div>
+              </div>
+            )}
             <div>
               <h3 className="text-[18px] font-bold text-text-primary mb-2">{detailImp.title}</h3>
               <div className="flex items-center gap-2 flex-wrap">
@@ -419,6 +502,22 @@ export default function ImprovementsPage() {
                   <span style={{ fontFamily: 'var(--font-inter)' }}>{detailImp.votes}票</span>
                 </span>
               </div>
+            </div>
+
+            {/* Status change dropdown */}
+            <div>
+              <label className="block text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">ステータス変更</label>
+              <select
+                value={detailImp.status}
+                onChange={(e) => handleStatusChange(e.target.value as Improvement['status'])}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-2.5 text-[14px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              >
+                <option value="proposed">提案中</option>
+                <option value="reviewing">検討中</option>
+                <option value="approved">承認</option>
+                <option value="in_progress">実施中</option>
+                <option value="completed">完了</option>
+              </select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -467,6 +566,53 @@ export default function ImprovementsPage() {
             )}
 
             <p className="text-[12px] text-text-muted">{formatRelative(detailImp.created_at)}</p>
+          </div>
+        )}
+        {detailImp && isEditing && (
+          <div className="space-y-4">
+            <Input
+              label="タイトル"
+              required
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              placeholder="改善提案のタイトル"
+            />
+            <div>
+              <label className="block text-[14px] font-medium text-text-secondary mb-1.5">
+                カテゴリ <span className="text-accent">*</span>
+              </label>
+              <select
+                value={editCategory}
+                onChange={(e) => setEditCategory(e.target.value as ImprovementCategory)}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              >
+                {Object.entries(IMPROVEMENT_CATEGORY_LABELS).map(([key, label]) => (
+                  <option key={key} value={key}>{label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[14px] font-medium text-text-secondary mb-1.5">
+                提案内容 <span className="text-accent">*</span>
+              </label>
+              <textarea
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="現状の課題と改善案を具体的に記載..."
+                rows={5}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-[14px] font-medium text-text-secondary mb-1.5">期待される効果</label>
+              <textarea
+                value={editExpectedEffect}
+                onChange={(e) => setEditExpectedEffect(e.target.value)}
+                placeholder="この改善により期待される効果..."
+                rows={3}
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              />
+            </div>
           </div>
         )}
       </Modal>
