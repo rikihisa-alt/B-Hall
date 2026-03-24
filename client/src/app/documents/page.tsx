@@ -127,10 +127,12 @@ export default function DocumentsPage() {
   if (!mounted || !hydrated) {
     return (
       <div className="animate-pulse space-y-6">
-        <div className="h-6 w-48 bg-bg-elevated rounded" />
-        <div className="h-10 w-1/3 bg-bg-elevated rounded" />
-        <div className="h-12 w-full bg-bg-elevated rounded-[16px]" />
-        <div className="h-48 bg-bg-elevated rounded-[16px]" />
+        <div className="h-6 bg-bg-elevated rounded-[10px] w-32" />
+        <div className="h-8 bg-bg-elevated rounded-[10px] w-48" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[1,2,3,4].map(i => <div key={i} className="h-24 bg-bg-elevated rounded-[16px]" />)}
+        </div>
+        <div className="h-96 bg-bg-elevated rounded-[16px]" />
       </div>
     )
   }
@@ -226,10 +228,10 @@ export default function DocumentsPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">文書管理</h1>
-          <p className="text-[13px] text-text-secondary mt-1">契約書・規程・法定文書</p>
+          <p className="text-[13px] text-text-secondary mt-1">契約書・規程・法定文書の管理</p>
         </div>
         <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="min-h-[44px] md:min-h-0">
-          新規登録
+          新規文書
         </Button>
       </div>
 
@@ -240,11 +242,11 @@ export default function DocumentsPage() {
         initial="hidden"
         animate="show"
       >
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">全文書</p>
           <p className="text-[24px] font-bold text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>{allDocs.length}</p>
         </motion.div>
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <FolderOpen className="w-3 h-3" strokeWidth={2} />
             契約書
@@ -253,7 +255,7 @@ export default function DocumentsPage() {
             {allDocs.filter((d) => d.category === 'contract' || d.category === 'nda').length}
           </p>
         </motion.div>
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <FileText className="w-3 h-3" strokeWidth={2} />
             規程
@@ -262,7 +264,7 @@ export default function DocumentsPage() {
             {allDocs.filter((d) => d.category === 'regulation').length}
           </p>
         </motion.div>
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <AlertTriangle className="w-3 h-3" strokeWidth={2} />
             期限間近
@@ -280,7 +282,7 @@ export default function DocumentsPage() {
             placeholder="文書を検索..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-bg-surface border border-border rounded-[10px] pl-10 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+            className="w-full bg-bg-surface border border-border rounded-[10px] pl-10 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] transition-all"
           />
         </div>
 
@@ -312,10 +314,10 @@ export default function DocumentsPage() {
               <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
-              <p className="text-[15px] font-semibold text-text-primary mb-1">文書が見つかりません</p>
-              <p className="text-[13px] text-text-muted mb-4">新しい文書を登録して始めましょう</p>
+              <p className="text-[15px] font-semibold text-text-primary mb-1">文書はまだありません</p>
+              <p className="text-[13px] text-text-muted mb-4">新しい文書を作成しましょう</p>
               <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
-                新規登録
+                新規文書
               </Button>
             </div>
           </motion.div>
@@ -328,7 +330,7 @@ export default function DocumentsPage() {
               <div
                 key={doc.id}
                 onClick={() => setDetailDoc(doc)}
-                className="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group relative"
+                className="flex items-center gap-4 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group relative"
               >
                 <div className="w-9 h-9 rounded-[10px] bg-bg-elevated flex items-center justify-center shrink-0">
                   <FileText className="w-[18px] h-[18px] text-text-muted" strokeWidth={1.75} />
@@ -459,7 +461,7 @@ export default function DocumentsPage() {
             <select
               value={formCategory}
               onChange={(e) => setFormCategory(e.target.value as DocumentCategory)}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
             >
               {Object.entries(DOCUMENT_CATEGORY_LABELS).map(([key, label]) => (
                 <option key={key} value={key}>{label}</option>
@@ -473,7 +475,7 @@ export default function DocumentsPage() {
             <select
               value={formDepartment}
               onChange={(e) => setFormDepartment(e.target.value)}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
             >
               <option value="">選択してください</option>
               {DEPARTMENTS.map((dept) => (
@@ -488,7 +490,7 @@ export default function DocumentsPage() {
               onChange={(e) => setFormDescription(e.target.value)}
               placeholder="文書の説明"
               rows={3}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
             />
           </div>
           <Input
@@ -565,7 +567,7 @@ export default function DocumentsPage() {
                 onChange={(e) => setEditDescription(e.target.value)}
                 placeholder="文書の説明"
                 rows={3}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -574,7 +576,7 @@ export default function DocumentsPage() {
                 <select
                   value={editCategory}
                   onChange={(e) => setEditCategory(e.target.value as DocumentCategory)}
-                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
                 >
                   {Object.entries(DOCUMENT_CATEGORY_LABELS).map(([key, label]) => (
                     <option key={key} value={key}>{label}</option>
@@ -586,7 +588,7 @@ export default function DocumentsPage() {
                 <select
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value as 'active' | 'expired' | 'archived')}
-                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
                 >
                   {Object.entries(DOCUMENT_STATUS_LABELS).map(([key, label]) => (
                     <option key={key} value={key}>{label}</option>

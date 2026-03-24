@@ -87,7 +87,7 @@ export default function ApplicationsPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">申請・承認</h1>
-          <p className="text-[13px] text-text-secondary mt-1">ワークフロー・承認処理</p>
+          <p className="text-[13px] text-text-secondary mt-1">申請・承認ワークフローの管理</p>
         </div>
         <Button
           variant="primary"
@@ -217,7 +217,7 @@ export default function ApplicationsPage() {
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
               <p className="text-[15px] font-semibold text-text-primary mb-1">申請はまだありません</p>
-              <p className="text-[13px] text-text-muted mb-4">新規申請を作成して始めましょう</p>
+              <p className="text-[13px] text-text-muted mb-4">新しい申請を作成しましょう</p>
               <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
                 新規申請
               </Button>

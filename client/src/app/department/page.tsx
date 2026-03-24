@@ -125,7 +125,7 @@ export default function DepartmentPage() {
           </div>
           <div>
             <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">{myDept || '部門'}</h1>
-            <p className="text-[13px] text-text-secondary">部門の業務状況と構成メンバー</p>
+            <p className="text-[13px] text-text-secondary">部門別業務状況の確認</p>
           </div>
         </div>
       </motion.div>

@@ -288,11 +288,11 @@ export default function GeneralAffairsPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">総務・庶務</h1>
-          <p className="text-[13px] text-text-secondary mt-1">備品・設備・施設予約管理</p>
+          <p className="text-[13px] text-text-secondary mt-1">備品・施設・庶務の管理</p>
         </div>
         <div className="flex items-center gap-2 md:gap-3">
           <Button variant="secondary" size="sm" icon={Plus} onClick={() => setShowEquipmentModal(true)} className="min-h-[44px] md:min-h-0">
-            備品登録
+            新規備品
           </Button>
           <Button variant="primary" size="sm" icon={Calendar} onClick={() => setShowBookingModal(true)} className="min-h-[44px] md:min-h-0">
             施設予約
@@ -568,7 +568,7 @@ export default function GeneralAffairsPage() {
       <Modal
         open={showEquipmentModal}
         onClose={() => setShowEquipmentModal(false)}
-        title="備品登録"
+        title="新規備品"
         footer={
           <>
             <Button variant="ghost" size="sm" onClick={() => setShowEquipmentModal(false)}>
@@ -587,7 +587,7 @@ export default function GeneralAffairsPage() {
               カテゴリ <span className="text-accent">*</span>
             </label>
             <select
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
               value={eqCategory}
               onChange={(e) => setEqCategory(e.target.value)}
             >
@@ -628,7 +628,7 @@ export default function GeneralAffairsPage() {
               施設 <span className="text-accent">*</span>
             </label>
             <select
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
               value={bkFacility}
               onChange={(e) => setBkFacility(e.target.value)}
             >
@@ -678,7 +678,7 @@ export default function GeneralAffairsPage() {
               カテゴリ <span className="text-accent">*</span>
             </label>
             <select
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
               value={editEqCategory}
               onChange={(e) => setEditEqCategory(e.target.value)}
             >
@@ -693,7 +693,7 @@ export default function GeneralAffairsPage() {
               ステータス <span className="text-accent">*</span>
             </label>
             <select
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
               value={editEqStatus}
               onChange={(e) => setEditEqStatus(e.target.value as EquipmentItem['status'])}
             >
@@ -748,7 +748,7 @@ export default function GeneralAffairsPage() {
               施設 <span className="text-accent">*</span>
             </label>
             <select
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
               value={editBkFacility}
               onChange={(e) => setEditBkFacility(e.target.value)}
             >

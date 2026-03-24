@@ -183,10 +183,13 @@ export default function AttendancePage() {
   if (!mounted || !hydrated) {
     return (
       <div className="flex-1 p-6">
-        <div className="space-y-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-32 bg-bg-surface rounded-[16px] animate-pulse" />
-          ))}
+        <div className="animate-pulse space-y-6">
+          <div className="h-6 bg-bg-elevated rounded-[10px] w-32" />
+          <div className="h-8 bg-bg-elevated rounded-[10px] w-48" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1,2,3,4].map(i => <div key={i} className="h-24 bg-bg-elevated rounded-[16px]" />)}
+          </div>
+          <div className="h-96 bg-bg-elevated rounded-[16px]" />
         </div>
       </div>
     )
@@ -212,7 +215,10 @@ export default function AttendancePage() {
 
       {/* Page Title */}
       <div className="flex items-center justify-between">
-        <h1 className="text-[22px] font-semibold text-text-primary">勤怠管理</h1>
+        <div>
+          <h1 className="text-[22px] font-semibold text-text-primary">勤怠管理</h1>
+          <p className="text-[13px] text-text-secondary mt-1">出退勤・勤怠データの管理</p>
+        </div>
         <div className="flex items-center gap-2 text-[14px] text-text-secondary">
           <Calendar className="w-4 h-4" />
           <span>{todayM}月{todayD}日</span>
@@ -299,7 +305,7 @@ export default function AttendancePage() {
         ].map((item) => (
           <motion.div
             key={item.label}
-            className="bg-bg-surface border border-border rounded-[16px] shadow-card p-4"
+            className="bg-bg-surface border border-border rounded-[16px] shadow-card p-5"
             variants={fadeUp}
           >
             <div className="flex items-center gap-2 mb-2">
@@ -392,7 +398,7 @@ export default function AttendancePage() {
                 <div
                   key={dateStr}
                   className={[
-                    'h-16 rounded-lg p-1.5 text-left transition-colors relative',
+                    'h-16 rounded-[10px] p-1.5 text-left transition-colors relative',
                     isToday
                       ? 'bg-accent/10 border border-accent/30'
                       : isWeekend

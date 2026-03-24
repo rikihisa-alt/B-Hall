@@ -221,7 +221,7 @@ export function RingiCreateModal({ open, onClose, templateData }: RingiCreateMod
             value={background}
             onChange={(e) => setBackground(e.target.value)}
             rows={3}
-            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
 
@@ -235,7 +235,7 @@ export function RingiCreateModal({ open, onClose, templateData }: RingiCreateMod
             value={purpose}
             onChange={(e) => setPurpose(e.target.value)}
             rows={2}
-            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
 
@@ -249,7 +249,7 @@ export function RingiCreateModal({ open, onClose, templateData }: RingiCreateMod
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={3}
-            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
 
@@ -271,7 +271,7 @@ export function RingiCreateModal({ open, onClose, templateData }: RingiCreateMod
                 const raw = e.target.value.replace(/[^0-9]/g, '')
                 setAmount(raw ? Number(raw).toLocaleString() : '')
               }}
-              className="w-full bg-bg-base border border-border rounded-[10px] pl-8 pr-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="w-full bg-bg-base border border-border rounded-[10px] pl-8 pr-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
               style={{ fontFamily: 'var(--font-inter)' }}
             />
           </div>
@@ -295,7 +295,7 @@ export function RingiCreateModal({ open, onClose, templateData }: RingiCreateMod
             value={risk}
             onChange={(e) => setRisk(e.target.value)}
             rows={2}
-            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
 
@@ -309,7 +309,7 @@ export function RingiCreateModal({ open, onClose, templateData }: RingiCreateMod
             value={effect}
             onChange={(e) => setEffect(e.target.value)}
             rows={2}
-            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
 

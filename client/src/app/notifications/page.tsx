@@ -112,9 +112,7 @@ export default function NotificationsPage() {
       >
         <div>
           <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">通知</h1>
-          <p className="text-[13px] text-text-secondary mt-1" style={{ fontFamily: 'var(--font-inter)' }}>
-            {unreadCount > 0 ? `${unreadCount}件の未読` : 'すべて既読です'}
-          </p>
+          <p className="text-[13px] text-text-secondary mt-1">通知の確認・管理</p>
         </div>
         {unreadCount > 0 && (
           <button

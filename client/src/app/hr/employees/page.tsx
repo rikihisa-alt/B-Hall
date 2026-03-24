@@ -186,7 +186,7 @@ export default function EmployeeListPage() {
     <motion.div {...pageTransition}>
       <PageHeader
         title="従業員一覧"
-        description={`${stats.total}名が在籍中`}
+        description="従業員情報の管理"
         breadcrumbs={[
           { label: 'ホーム', href: '/' },
           { label: '人事・労務', href: '/hr' },
@@ -238,10 +238,10 @@ export default function EmployeeListPage() {
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
           <input
             type="text"
-            placeholder="名前・メールで検索..."
+            placeholder="従業員を検索..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-bg-base border border-border rounded-[10px] pl-10 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+            className="w-full bg-bg-base border border-border rounded-[10px] pl-10 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
           />
         </div>
         <select
@@ -382,7 +382,7 @@ export default function EmployeeListPage() {
               <select
                 value={form.department}
                 onChange={(e) => setForm((f) => ({ ...f, department: e.target.value }))}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all cursor-pointer"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all cursor-pointer"
               >
                 {DEPARTMENTS.map((dept) => (
                   <option key={dept} value={dept}>{dept}</option>
@@ -405,7 +405,7 @@ export default function EmployeeListPage() {
               <select
                 value={form.employment_type}
                 onChange={(e) => setForm((f) => ({ ...f, employment_type: e.target.value as EmploymentType }))}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all cursor-pointer"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all cursor-pointer"
               >
                 {(Object.entries(EMPLOYMENT_TYPE_LABELS) as [EmploymentType, string][]).map(([val, label]) => (
                   <option key={val} value={val}>{label}</option>

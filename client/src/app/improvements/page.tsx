@@ -202,10 +202,10 @@ export default function ImprovementsPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">改善</h1>
-          <p className="text-[13px] text-text-secondary mt-1">提案・目安箱・フィードバック</p>
+          <p className="text-[13px] text-text-secondary mt-1">改善提案・フィードバックの管理</p>
         </div>
         <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="min-h-[44px] md:min-h-0">
-          改善提案
+          新規提案
         </Button>
       </div>
 
@@ -291,10 +291,10 @@ export default function ImprovementsPage() {
               <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
-              <p className="text-[15px] font-semibold text-text-primary mb-1">改善提案はまだありません</p>
-              <p className="text-[13px] text-text-muted mb-4">新しい提案を作成して始めましょう</p>
+              <p className="text-[15px] font-semibold text-text-primary mb-1">提案はまだありません</p>
+              <p className="text-[13px] text-text-muted mb-4">新しい提案を作成しましょう</p>
               <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
-                改善提案
+                新規提案
               </Button>
             </div>
           </motion.div>
@@ -397,7 +397,7 @@ export default function ImprovementsPage() {
             <select
               value={formCategory}
               onChange={(e) => setFormCategory(e.target.value as ImprovementCategory)}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
             >
               {Object.entries(IMPROVEMENT_CATEGORY_LABELS).map(([key, label]) => (
                 <option key={key} value={key}>{label}</option>
@@ -413,7 +413,7 @@ export default function ImprovementsPage() {
               onChange={(e) => setFormDescription(e.target.value)}
               placeholder="現状の課題と改善案を具体的に記載..."
               rows={4}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
             />
           </div>
           <div>
@@ -423,7 +423,7 @@ export default function ImprovementsPage() {
               onChange={(e) => setFormExpectedEffect(e.target.value)}
               placeholder="この改善により期待される効果..."
               rows={3}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
             />
           </div>
           <label className="flex items-center gap-3 cursor-pointer">
@@ -510,7 +510,7 @@ export default function ImprovementsPage() {
               <select
                 value={detailImp.status}
                 onChange={(e) => handleStatusChange(e.target.value as Improvement['status'])}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-2.5 text-[14px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-2.5 text-[14px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
               >
                 <option value="proposed">提案中</option>
                 <option value="reviewing">検討中</option>
@@ -584,7 +584,7 @@ export default function ImprovementsPage() {
               <select
                 value={editCategory}
                 onChange={(e) => setEditCategory(e.target.value as ImprovementCategory)}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
               >
                 {Object.entries(IMPROVEMENT_CATEGORY_LABELS).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
@@ -600,7 +600,7 @@ export default function ImprovementsPage() {
                 onChange={(e) => setEditDescription(e.target.value)}
                 placeholder="現状の課題と改善案を具体的に記載..."
                 rows={5}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
               />
             </div>
             <div>
@@ -610,7 +610,7 @@ export default function ImprovementsPage() {
                 onChange={(e) => setEditExpectedEffect(e.target.value)}
                 placeholder="この改善により期待される効果..."
                 rows={3}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
               />
             </div>
           </div>

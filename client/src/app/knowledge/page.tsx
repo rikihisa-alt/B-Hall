@@ -339,7 +339,7 @@ export default function KnowledgePage() {
                 <select
                   value={editType}
                   onChange={(e) => setEditType(e.target.value as KnowledgeType)}
-                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
                 >
                   {Object.entries(KNOWLEDGE_TYPE_LABELS).map(([key, label]) => (
                     <option key={key} value={key}>{label}</option>
@@ -355,7 +355,7 @@ export default function KnowledgePage() {
                   onChange={(e) => setEditContent(e.target.value)}
                   placeholder="Markdown形式で記述できます"
                   rows={12}
-                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none font-mono text-[13px]"
+                  className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none font-mono text-[13px]"
                 />
               </div>
               <Input
@@ -399,10 +399,10 @@ export default function KnowledgePage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">ナレッジ</h1>
-          <p className="text-[13px] text-text-secondary mt-1">テンプレート・手順書・FAQ</p>
+          <p className="text-[13px] text-text-secondary mt-1">ナレッジ・マニュアル・FAQの管理</p>
         </div>
         <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="min-h-[44px] md:min-h-0">
-          新規作成
+          新規ナレッジ
         </Button>
       </div>
 
@@ -445,7 +445,7 @@ export default function KnowledgePage() {
             placeholder="ナレッジを検索..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-bg-surface border border-border rounded-[10px] pl-10 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+            className="w-full bg-bg-surface border border-border rounded-[10px] pl-10 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
           />
         </div>
 
@@ -477,10 +477,10 @@ export default function KnowledgePage() {
               <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
-              <p className="text-[15px] font-semibold text-text-primary mb-1">ナレッジが見つかりません</p>
-              <p className="text-[13px] text-text-muted mb-4">新しいナレッジを作成して始めましょう</p>
+              <p className="text-[15px] font-semibold text-text-primary mb-1">ナレッジはまだありません</p>
+              <p className="text-[13px] text-text-muted mb-4">新しいナレッジを作成しましょう</p>
               <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
-                新規作成
+                新規ナレッジ
               </Button>
             </div>
           </motion.div>
@@ -567,7 +567,7 @@ export default function KnowledgePage() {
               <select
                 value={formType}
                 onChange={(e) => setFormType(e.target.value as KnowledgeType)}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
               >
                 {Object.entries(KNOWLEDGE_TYPE_LABELS).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
@@ -581,7 +581,7 @@ export default function KnowledgePage() {
               <select
                 value={formDepartment}
                 onChange={(e) => setFormDepartment(e.target.value)}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
               >
                 <option value="">選択してください</option>
                 {DEPARTMENTS.map((dept) => (
@@ -599,7 +599,7 @@ export default function KnowledgePage() {
               onChange={(e) => setFormContent(e.target.value)}
               placeholder="Markdown形式で記述できます（## 見出し、- リスト、**太字** など）"
               rows={10}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none font-mono text-[13px]"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none font-mono text-[13px]"
             />
           </div>
           <Input

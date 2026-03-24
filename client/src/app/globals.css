@@ -63,6 +63,38 @@
   --font-mono: var(--font-inter), "SF Mono", "Fira Code", monospace;
 }
 
+/* ── Dark Theme Override ── */
+html.dark {
+  --color-bg-base: #0F0F12;
+  --color-bg-surface: #1A1A22;
+  --color-bg-elevated: #25252F;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-text-primary: #F0EDE8;
+  --color-text-secondary: #A8A29E;
+  --color-text-muted: #6B6560;
+  --color-accent: oklch(0.65 0.14 275);
+  --color-accent-hover: oklch(0.70 0.16 275);
+  --color-accent-muted: oklch(0.20 0.04 275);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-dropdown: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+html.dark ::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: #F0EDE8;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--color-bg-base);

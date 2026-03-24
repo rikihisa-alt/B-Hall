@@ -182,7 +182,7 @@ export default function AccountingPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">経理・財務</h1>
-          <p className="text-[13px] text-text-secondary mt-1">経費・請求・支払・資金管理</p>
+          <p className="text-[13px] text-text-secondary mt-1">経理・財務データの管理</p>
         </div>
       </div>
 
@@ -191,7 +191,7 @@ export default function AccountingPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-[8px] bg-[rgba(79,70,229,0.1)] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-[10px] bg-[rgba(79,70,229,0.1)] flex items-center justify-center">
                 <Wallet className="w-4 h-4 text-accent" />
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function AccountingPage() {
 
           <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-[8px] bg-[rgba(34,197,94,0.1)] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-[10px] bg-[rgba(34,197,94,0.1)] flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 text-success" />
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function AccountingPage() {
 
           <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-[8px] bg-[rgba(239,68,68,0.1)] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-[10px] bg-[rgba(239,68,68,0.1)] flex items-center justify-center">
                 <TrendingDown className="w-4 h-4 text-danger" />
               </div>
             </div>
@@ -227,7 +227,7 @@ export default function AccountingPage() {
 
           <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-[8px] bg-[rgba(245,158,11,0.1)] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-[10px] bg-[rgba(245,158,11,0.1)] flex items-center justify-center">
                 <FileText className="w-4 h-4 text-warning" />
               </div>
             </div>
@@ -248,21 +248,21 @@ export default function AccountingPage() {
             className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer flex-shrink-0 min-h-[44px] md:min-h-0"
           >
             <Plus className="w-4 h-4 text-accent" />
-            取引登録
+            新規取引
           </button>
           <button
             onClick={() => setInvModal(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer flex-shrink-0 min-h-[44px] md:min-h-0"
           >
             <Plus className="w-4 h-4 text-accent" />
-            請求書作成
+            新規請求書
           </button>
           <button
             onClick={() => setPayModal(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border rounded-[12px] text-[13px] font-medium text-text-primary hover:border-accent/40 hover:bg-[rgba(79,70,229,0.04)] transition-all cursor-pointer flex-shrink-0 min-h-[44px] md:min-h-0"
           >
             <Plus className="w-4 h-4 text-accent" />
-            支払登録
+            新規支払
           </button>
         </motion.div>
       </motion.section>

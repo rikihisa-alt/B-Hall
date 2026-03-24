@@ -336,7 +336,7 @@ export default function ApplicationDetailPage() {
                                 placeholder="コメント（任意）"
                                 value={approvalComment}
                                 onChange={(e) => setApprovalComment(e.target.value)}
-                                className="flex-1 bg-bg-base border border-border rounded-[10px] px-3 py-2 text-[13px] text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] transition-all"
+                                className="flex-1 bg-bg-base border border-border rounded-[10px] px-3 py-2 text-[13px] text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] transition-all"
                               />
                             </div>
                             <div className="flex items-center gap-2">

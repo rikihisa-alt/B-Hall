@@ -149,7 +149,7 @@ export default function CashflowPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">キャッシュフロー</h1>
-        <p className="text-[13px] text-text-secondary mt-1">月別入出金推移・資金繰り分析</p>
+        <p className="text-[13px] text-text-secondary mt-1">資金繰り・キャッシュフロー分析</p>
       </div>
 
       {/* Monthly Income vs Expense Bar Chart */}

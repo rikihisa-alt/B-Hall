@@ -209,8 +209,8 @@ export default function PayrollPage() {
           {monthSlips.length === 0 && (
             <div className="p-12 text-center">
               <FileText className="w-10 h-10 text-text-muted mx-auto mb-3" strokeWidth={1.25} />
-              <p className="text-[15px] font-semibold text-text-secondary mb-1">給与明細がありません</p>
-              <p className="text-[13px] text-text-muted">選択した月の給与データがありません</p>
+              <p className="text-[15px] font-semibold text-text-secondary mb-1">給与明細はまだありません</p>
+              <p className="text-[13px] text-text-muted">新しい給与明細を作成しましょう</p>
             </div>
           )}
         </div>

@@ -190,7 +190,7 @@ export function InvoiceCreateModal({ open, onClose }: InvoiceCreateModalProps) {
                     placeholder="品目・サービス名"
                     value={item.description}
                     onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                    className="bg-bg-base border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+                    className="bg-bg-base border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
                   />
                 </div>
                 <div className="w-20">
@@ -198,7 +198,7 @@ export function InvoiceCreateModal({ open, onClose }: InvoiceCreateModalProps) {
                     placeholder="数量"
                     value={item.quantity}
                     onChange={(e) => updateItem(item.id, 'quantity', e.target.value.replace(/[^0-9]/g, ''))}
-                    className="bg-bg-base border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none text-right"
+                    className="bg-bg-base border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none text-right"
                   />
                 </div>
                 <div className="w-32">
@@ -206,7 +206,7 @@ export function InvoiceCreateModal({ open, onClose }: InvoiceCreateModalProps) {
                     placeholder="単価"
                     value={item.unit_price}
                     onChange={(e) => updateItem(item.id, 'unit_price', e.target.value.replace(/[^0-9]/g, ''))}
-                    className="bg-bg-base border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none text-right"
+                    className="bg-bg-base border border-border rounded-[10px] px-3 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none text-right"
                   />
                 </div>
                 <div className="w-28 flex items-center justify-end gap-2">
@@ -268,7 +268,7 @@ export function InvoiceCreateModal({ open, onClose }: InvoiceCreateModalProps) {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             rows={2}
-            className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
       </form>

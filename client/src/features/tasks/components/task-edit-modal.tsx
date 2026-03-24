@@ -91,7 +91,7 @@ export function TaskEditModal({ open, onClose, task }: TaskEditModalProps) {
   }
 
   const selectClass =
-    'bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none appearance-none cursor-pointer'
+    'bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none appearance-none cursor-pointer'
 
   return (
     <Modal
@@ -138,7 +138,7 @@ export function TaskEditModal({ open, onClose, task }: TaskEditModalProps) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
 

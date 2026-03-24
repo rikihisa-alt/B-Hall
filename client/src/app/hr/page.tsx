@@ -224,7 +224,7 @@ export default function HRPage() {
 
       <div className="mb-8">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">人事・労務</h1>
-        <p className="text-[13px] text-text-secondary mt-1">従業員・入退社・社保・手続き</p>
+        <p className="text-[13px] text-text-secondary mt-1">従業員・入退社・社保・手続きの管理</p>
       </div>
 
       {/* 今日の処理 */}
@@ -273,7 +273,7 @@ export default function HRPage() {
             {empStats.recentHires.map((emp) => (
               <Link key={emp.id} href={`/hr/employees/${emp.id}`}>
                 <div className="flex items-center gap-5 px-5 py-4 hover:bg-[rgba(0,0,0,0.02)] transition-colors cursor-pointer group">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#6366F1] flex items-center justify-center text-white text-[12px] font-bold shrink-0">{emp.name.charAt(0)}</div>
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#6366F1] flex items-center justify-center text-white text-[12px] font-bold shrink-0">{emp.name.charAt(0)}</div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-semibold text-text-primary tracking-tight">{emp.name}</p>
                     <p className="text-[12px] text-text-secondary mt-0.5">{emp.department} / {emp.position}</p>

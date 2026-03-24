@@ -556,7 +556,7 @@ export default function EmployeeDetailPage() {
               <select
                 value={editForm.department}
                 onChange={(e) => setEditForm((f) => ({ ...f, department: e.target.value }))}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all cursor-pointer"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all cursor-pointer"
               >
                 {DEPARTMENTS.map((dept) => (
                   <option key={dept} value={dept}>{dept}</option>
@@ -577,7 +577,7 @@ export default function EmployeeDetailPage() {
               <select
                 value={editForm.employment_type}
                 onChange={(e) => setEditForm((f) => ({ ...f, employment_type: e.target.value as EmploymentType }))}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all cursor-pointer"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all cursor-pointer"
               >
                 {(Object.entries(EMPLOYMENT_TYPE_LABELS) as [EmploymentType, string][]).map(([val, label]) => (
                   <option key={val} value={val}>{label}</option>

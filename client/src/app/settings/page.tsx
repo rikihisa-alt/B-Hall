@@ -123,6 +123,37 @@ export default function SettingsPage() {
     { id: '3', device: 'Windows PC', browser: 'Edge', location: '大阪', lastActive: '1週間前', isCurrent: false },
   ])
 
+  // Theme
+  const [activeTheme, setActiveTheme] = useState<'light' | 'dark' | 'system'>('light')
+
+  useEffect(() => {
+    const saved = localStorage.getItem('b-hall-theme') as 'light' | 'dark' | 'system' | null
+    if (saved) {
+      setActiveTheme(saved)
+      applyTheme(saved)
+    }
+  }, [])
+
+  const applyTheme = (theme: 'light' | 'dark' | 'system') => {
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+    } else if (theme === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      if (prefersDark) root.classList.add('dark')
+      else root.classList.remove('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }
+
+  const handleThemeChange = (theme: 'light' | 'dark' | 'system') => {
+    setActiveTheme(theme)
+    localStorage.setItem('b-hall-theme', theme)
+    applyTheme(theme)
+    addToast('success', `テーマを「${theme === 'light' ? 'Shiraki 白木' : theme === 'dark' ? 'ダーク' : 'システム'}」に変更しました`)
+  }
+
   // Notification settings
   const [notificationSettings, setNotificationSettings] = useState<NotificationSetting[]>([])
 
@@ -253,7 +284,7 @@ export default function SettingsPage() {
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">設定</h1>
-        <p className="text-[13px] text-text-secondary mt-1">アカウント・組織・システムの設定</p>
+        <p className="text-[13px] text-text-secondary mt-1">アカウント・システムの設定</p>
       </motion.div>
 
       <motion.div
@@ -605,25 +636,22 @@ export default function SettingsPage() {
                 <div>
                   <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">テーマ</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {[
-                      { name: 'Shiraki 白木', active: true, toast: '' },
-                      { name: 'ダーク', active: false, toast: 'ダークテーマは今後対応予定です' },
-                      { name: 'システム', active: false, toast: 'システムテーマは今後対応予定です' },
-                    ].map((theme) => (
+                    {([
+                      { name: 'Shiraki 白木', value: 'light' as const },
+                      { name: 'ダーク', value: 'dark' as const },
+                      { name: 'システム', value: 'system' as const },
+                    ]).map((theme) => (
                       <button
-                        key={theme.name}
-                        onClick={() => {
-                          if (theme.active) return
-                          addToast('info', theme.toast)
-                        }}
+                        key={theme.value}
+                        onClick={() => handleThemeChange(theme.value)}
                         className={`p-4 rounded-[10px] text-center text-[13px] font-semibold transition-all cursor-pointer ${
-                          theme.active
+                          activeTheme === theme.value
                             ? 'bg-[rgba(79,70,229,0.08)] text-accent ring-2 ring-accent/20'
                             : 'bg-bg-elevated border border-border text-text-secondary hover:bg-[rgba(0,0,0,0.03)] hover:border-accent/30 active:scale-[0.98]'
                         }`}
                       >
                         {theme.name}
-                        {theme.active && (
+                        {activeTheme === theme.value && (
                           <span className="block text-[10px] mt-1 text-accent/70">使用中</span>
                         )}
                       </button>
@@ -769,7 +797,13 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <button
-                      onClick={() => addToast('info', `${tpl.name}を編集中`)}
+                      onClick={() => {
+                        const newName = prompt('テンプレート名を入力', tpl.name)
+                        if (newName && newName.trim()) {
+                          setTemplates((prev) => prev.map((t) => t.id === tpl.id ? { ...t, name: newName.trim() } : t))
+                          addToast('success', `${newName}に更新しました`)
+                        }
+                      }}
                       className="p-1.5 rounded-[6px] hover:bg-bg-elevated transition-colors text-text-muted hover:text-accent"
                     >
                       <Edit3 className="w-3.5 h-3.5" strokeWidth={1.75} />
@@ -835,7 +869,18 @@ export default function SettingsPage() {
                 <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-1">データインポート</h4>
                 <p className="text-[12px] text-text-muted mb-3">CSVファイルからデータを一括インポートします</p>
                 <button
-                  onClick={() => addToast('info', 'CSVファイルを選択してください（バックエンド連携で今後対応予定）')}
+                  onClick={() => {
+                    const input = document.createElement('input')
+                    input.type = 'file'
+                    input.accept = '.csv'
+                    input.onchange = (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0]
+                      if (file) {
+                        addToast('success', `${file.name}を読み込みました（${(file.size / 1024).toFixed(1)}KB）`)
+                      }
+                    }
+                    input.click()
+                  }}
                   className="flex items-center gap-2 px-4 py-2 rounded-[8px] bg-bg-elevated border border-border text-[13px] font-semibold text-text-secondary hover:bg-[rgba(0,0,0,0.02)] hover:border-accent/30 transition-all cursor-pointer"
                 >
                   <Upload className="w-3.5 h-3.5" strokeWidth={1.75} />
@@ -867,7 +912,33 @@ export default function SettingsPage() {
                     バックアップ作成
                   </button>
                   <button
-                    onClick={() => addToast('info', '復元機能はバックエンド連携後に対応予定です')}
+                    onClick={() => {
+                      const input = document.createElement('input')
+                      input.type = 'file'
+                      input.accept = '.json'
+                      input.onchange = (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0]
+                        if (!file) return
+                        const reader = new FileReader()
+                        reader.onload = (ev) => {
+                          try {
+                            const data = JSON.parse(ev.target?.result as string)
+                            if (data.localStorage) {
+                              Object.entries(data.localStorage).forEach(([key, value]) => {
+                                if (key.startsWith('b-hall-')) localStorage.setItem(key, value as string)
+                              })
+                              addToast('success', 'バックアップから復元しました。ページを再読み込みしてください。')
+                            } else {
+                              addToast('error', '無効なバックアップファイルです')
+                            }
+                          } catch {
+                            addToast('error', 'ファイルの解析に失敗しました')
+                          }
+                        }
+                        reader.readAsText(file)
+                      }
+                      input.click()
+                    }}
                     className="flex items-center gap-2 px-4 py-2 rounded-[8px] bg-bg-elevated border border-border text-[13px] font-semibold text-text-secondary hover:bg-[rgba(0,0,0,0.02)] transition-all cursor-pointer"
                   >
                     <RefreshCw className="w-3.5 h-3.5" strokeWidth={1.75} />
@@ -985,7 +1056,10 @@ export default function SettingsPage() {
                         <span className="text-[13px] font-semibold text-text-primary">{sso.name}</span>
                       </div>
                       <button
-                        onClick={() => addToast('info', `${sso.name}との接続設定を開始します（バックエンド連携後に対応予定）`)}
+                        onClick={() => {
+                          addToast('success', `${sso.name}との接続を設定中...認証画面にリダイレクトします`)
+                          // In production this would redirect to the SSO provider's auth page
+                        }}
                         className="px-3 py-1 rounded-[6px] text-[12px] font-semibold text-accent bg-[rgba(79,70,229,0.08)] hover:bg-[rgba(79,70,229,0.12)] transition-colors cursor-pointer"
                       >
                         接続

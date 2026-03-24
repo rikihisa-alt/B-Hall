@@ -17,13 +17,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: [
-    'bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white font-semibold',
-    'shadow-[0_0_20px_rgba(37,99,235,0.35)]',
-    'hover:-translate-y-[2px] hover:brightness-110 hover:shadow-[0_0_28px_rgba(37,99,235,0.5)]',
-    'active:translate-y-0 active:shadow-[0_0_12px_rgba(37,99,235,0.2)]',
+    'bg-gradient-to-r from-[#4F46E5] to-[#6366F1] text-white font-semibold',
+    'shadow-[0_0_20px_rgba(79,70,229,0.35)]',
+    'hover:-translate-y-[2px] hover:brightness-110 hover:shadow-[0_0_28px_rgba(79,70,229,0.5)]',
+    'active:translate-y-0 active:shadow-[0_0_12px_rgba(79,70,229,0.2)]',
   ].join(' '),
   secondary: [
-    'bg-transparent border border-[rgba(37,99,235,0.4)] text-accent',
+    'bg-transparent border border-[rgba(79,70,229,0.4)] text-accent',
     'hover:bg-accent-muted hover:border-accent',
   ].join(' '),
   ghost: [

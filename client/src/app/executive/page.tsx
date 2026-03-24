@@ -134,7 +134,7 @@ export default function ExecutivePage() {
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">役員ダッシュボード</h1>
-        <p className="text-[13px] text-text-secondary mt-1">意思決定に必要な情報を集約</p>
+        <p className="text-[13px] text-text-secondary mt-1">経営指標の確認</p>
       </motion.div>
 
       {/* KPI Cards */}

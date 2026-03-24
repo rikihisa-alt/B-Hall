@@ -240,7 +240,7 @@ function ApprovalRouteModal({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={2}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
               />
             </div>
 
@@ -516,7 +516,7 @@ function TemplateModal({
                 value={tmplDescription}
                 onChange={(e) => setTmplDescription(e.target.value)}
                 rows={2}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
               />
             </div>
 
@@ -527,7 +527,7 @@ function TemplateModal({
               <select
                 value={tmplRouteId}
                 onChange={(e) => setTmplRouteId(e.target.value)}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none cursor-pointer"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none cursor-pointer"
               >
                 <option value="">未設定</option>
                 {approvalRoutes.map((route) => (
@@ -560,7 +560,7 @@ function TemplateModal({
                     value={fields.background}
                     onChange={(e) => setFields((f) => ({ ...f, background: e.target.value }))}
                     rows={2}
-                    className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+                    className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
                   />
                 </div>
 
@@ -573,7 +573,7 @@ function TemplateModal({
                     value={fields.purpose}
                     onChange={(e) => setFields((f) => ({ ...f, purpose: e.target.value }))}
                     rows={2}
-                    className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+                    className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
                   />
                 </div>
 
@@ -586,7 +586,7 @@ function TemplateModal({
                     value={fields.content}
                     onChange={(e) => setFields((f) => ({ ...f, content: e.target.value }))}
                     rows={2}
-                    className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+                    className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
                   />
                 </div>
 
@@ -752,7 +752,7 @@ export default function RingiPage() {
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">稟議</h1>
-        <p className="text-[13px] text-text-secondary mt-1">決裁プロセス管理</p>
+        <p className="text-[13px] text-text-secondary mt-1">稟議の起案・承認プロセス管理</p>
       </motion.div>
 
       {/* 今日の処理 */}
@@ -977,7 +977,7 @@ export default function RingiPage() {
             <div className="flex flex-col items-center justify-center text-center">
               <Stamp className="w-10 h-10 text-text-muted opacity-40 mb-4" strokeWidth={1.5} />
               <p className="text-[15px] font-semibold text-text-primary mb-1">稟議はまだありません</p>
-              <p className="text-[13px] text-text-muted mb-4">新しい稟議を起票して承認プロセスを開始しましょう</p>
+              <p className="text-[13px] text-text-muted mb-4">新しい稟議を作成しましょう</p>
               <button
                 onClick={() => setCreateOpen(true)}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] bg-accent text-white text-[13px] font-semibold hover:bg-accent-hover transition-all"

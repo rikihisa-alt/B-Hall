@@ -224,7 +224,7 @@ export default function TasksPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6 md:mb-8">
         <motion.div variants={fadeUp} initial="hidden" animate="show">
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">タスク</h1>
-          <p className="text-[13px] text-text-secondary mt-1">{filteredTasks.length}件のタスク</p>
+          <p className="text-[13px] text-text-secondary mt-1">タスクの管理・進捗確認</p>
         </motion.div>
         <div className="flex items-center gap-3">
           <div className="relative" ref={filterRef}>
@@ -450,8 +450,8 @@ export default function TasksPage() {
           {filteredTasks.length === 0 ? (
             <div className="px-4 py-12 text-center text-[14px] text-text-muted">
               {searchQuery || activeFilter !== 'all'
-                ? '条件に一致するタスクがありません'
-                : 'タスクがありません'}
+                ? '条件に一致するタスクはまだありません'
+                : 'タスクはまだありません'}
             </div>
           ) : (
             filteredTasks.map((task) => {
@@ -504,8 +504,8 @@ export default function TasksPage() {
               <tr>
                 <td colSpan={7} className="px-6 py-16 text-center text-[14px] text-text-muted">
                   {searchQuery || activeFilter !== 'all'
-                    ? '条件に一致するタスクがありません'
-                    : 'タスクがありません'}
+                    ? '条件に一致するタスクはまだありません'
+                    : 'タスクはまだありません'}
                 </td>
               </tr>
             ) : (

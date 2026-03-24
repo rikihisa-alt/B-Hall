@@ -201,7 +201,7 @@ export default function OperationsPage() {
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">業務統制</h1>
-        <p className="text-[13px] text-text-secondary mt-1">フロー・申請・承認の統合管理</p>
+        <p className="text-[13px] text-text-secondary mt-1">業務統制・進捗管理</p>
       </motion.div>
 
       {/* Stats Row */}

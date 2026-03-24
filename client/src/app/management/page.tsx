@@ -182,7 +182,7 @@ export default function ManagementPage() {
           <span className="text-text-secondary font-medium">経営</span>
         </nav>
         <h1 className="text-xl md:text-[28px] font-semibold text-text-primary tracking-[-0.02em]">経営ダッシュボード</h1>
-        <p className="text-[15px] text-text-secondary mt-1">会社全体の状況を一画面で把握</p>
+        <p className="text-[15px] text-text-secondary mt-1">経営状況の可視化・分析</p>
       </div>
 
       {/* Metrics */}

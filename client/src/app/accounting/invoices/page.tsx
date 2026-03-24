@@ -104,10 +104,10 @@ export default function InvoicesPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">請求管理</h1>
-          <p className="text-[13px] text-text-secondary mt-1">請求書の発行・管理・入金確認</p>
+          <p className="text-[13px] text-text-secondary mt-1">請求書の発行・管理</p>
         </div>
         <Button variant="primary" size="sm" icon={Plus} onClick={() => setShowCreate(true)}>
-          請求書作成
+          新規請求書
         </Button>
       </div>
 
@@ -122,7 +122,7 @@ export default function InvoicesPage() {
               placeholder="請求書を検索..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-bg-surface border border-border rounded-[10px] pl-9 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-surface border border-border rounded-[10px] pl-9 pr-4 py-2.5 text-[14px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
             />
           </div>
 

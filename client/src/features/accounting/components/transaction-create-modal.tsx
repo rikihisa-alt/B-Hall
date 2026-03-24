@@ -102,7 +102,7 @@ export function TransactionCreateModal({ open, onClose }: TransactionCreateModal
   }
 
   const selectClass =
-    'bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none appearance-none cursor-pointer'
+    'bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none appearance-none cursor-pointer'
 
   return (
     <Modal
@@ -141,7 +141,7 @@ export function TransactionCreateModal({ open, onClose }: TransactionCreateModal
                 className={cn(
                   'flex-1 py-2.5 rounded-[10px] text-[14px] font-medium transition-all duration-150 cursor-pointer',
                   type === opt.value
-                    ? 'bg-accent text-white shadow-[0_0_12px_rgba(37,99,235,0.3)]'
+                    ? 'bg-accent text-white shadow-[0_0_12px_rgba(79,70,229,0.3)]'
                     : 'bg-bg-base border border-border text-text-secondary hover:border-accent/40'
                 )}
               >
@@ -253,7 +253,7 @@ export function TransactionCreateModal({ open, onClose }: TransactionCreateModal
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             rows={2}
-            className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+            className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
           />
         </div>
       </form>

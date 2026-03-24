@@ -272,7 +272,7 @@ export default function OrgChartPage() {
       <div className="mb-8">
         <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">組織図</h1>
         <p className="text-[13px] text-text-secondary mt-1">
-          部署・チーム構成と従業員の配置
+          部署・チーム構成の可視化
         </p>
       </div>
 
@@ -288,7 +288,7 @@ export default function OrgChartPage() {
           {deptStats.map(([dept, count]) => (
             <div
               key={dept}
-              className="bg-bg-surface border border-border rounded-[16px] shadow-card px-4 py-3"
+              className="bg-bg-surface border border-border rounded-[16px] shadow-card p-5"
             >
               <p className="text-[12px] text-text-muted truncate">{dept}</p>
               <p
@@ -299,7 +299,7 @@ export default function OrgChartPage() {
               </p>
             </div>
           ))}
-          <div className="bg-bg-surface border border-border rounded-[16px] shadow-card px-4 py-3">
+          <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-5">
             <p className="text-[12px] text-text-muted">全社合計</p>
             <p
               className="text-[20px] font-bold text-accent mt-0.5 tabular-nums"
@@ -330,10 +330,10 @@ export default function OrgChartPage() {
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <Users className="w-10 h-10 text-text-muted mb-3" strokeWidth={1.5} />
               <p className="text-[14px] text-text-secondary font-medium">
-                組織データがありません
+                組織データはまだありません
               </p>
               <p className="text-[12px] text-text-muted mt-1">
-                従業員を登録すると組織図が自動生成されます
+                新しい従業員を作成しましょう
               </p>
             </div>
           )}

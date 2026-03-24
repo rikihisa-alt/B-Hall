@@ -295,7 +295,7 @@ export default function LeavePage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">有給休暇管理</h1>
-          <p className="text-[13px] text-text-secondary mt-1">休暇残高・申請・承認の管理</p>
+          <p className="text-[13px] text-text-secondary mt-1">有給休暇の残高・申請管理</p>
         </div>
         <Button icon={Plus} onClick={() => setShowModal(true)}>
           休暇申請
@@ -441,7 +441,7 @@ export default function LeavePage() {
           {filteredRequests.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Calendar className="w-10 h-10 text-text-muted mb-3" strokeWidth={1.5} />
-              <p className="text-[14px] text-text-secondary font-medium">申請がありません</p>
+              <p className="text-[14px] text-text-secondary font-medium">申請はまだありません</p>
             </div>
           ) : (
             <div className="divide-y divide-border">
@@ -451,7 +451,7 @@ export default function LeavePage() {
                 return (
                   <div key={req.id} className="flex items-center gap-4 px-5 py-4">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[12px] font-bold shrink-0"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-white text-[12px] font-bold shrink-0"
                       style={{
                         background: `linear-gradient(135deg, ${EMPLOYEE_COLORS[req.employee_id] || '#64748B'}, ${EMPLOYEE_COLORS[req.employee_id] || '#94A3B8'}dd)`,
                       }}
@@ -689,7 +689,7 @@ export default function LeavePage() {
             <select
               value={formEmployee}
               onChange={(e) => setFormEmployee(e.target.value)}
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
             >
               {employees
                 .filter((e) => !e.deleted_at && e.status !== 'terminated')
@@ -707,7 +707,7 @@ export default function LeavePage() {
             <select
               value={formType}
               onChange={(e) => setFormType(e.target.value as LeaveType)}
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none"
             >
               {(Object.entries(LEAVE_TYPE_LABELS) as [LeaveType, string][]).map(([key, label]) => (
                 <option key={key} value={key}>{label}</option>
@@ -749,7 +749,7 @@ export default function LeavePage() {
               onChange={(e) => setFormReason(e.target.value)}
               rows={3}
               placeholder="休暇の理由を入力..."
-              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none resize-none"
+              className="bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted w-full transition-all duration-150 focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none resize-none"
             />
           </div>
         </div>

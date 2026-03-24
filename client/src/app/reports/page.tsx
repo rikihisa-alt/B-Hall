@@ -190,7 +190,7 @@ export default function ReportsPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">報告</h1>
-          <p className="text-[13px] text-text-secondary mt-1">日報・週報・月報・インシデント</p>
+          <p className="text-[13px] text-text-secondary mt-1">日報・週報・インシデント報告の管理</p>
         </div>
         <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="min-h-[44px] md:min-h-0">
           新規報告
@@ -260,7 +260,7 @@ export default function ReportsPage() {
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
               <p className="text-[15px] font-semibold text-text-primary mb-1">報告はまだありません</p>
-              <p className="text-[13px] text-text-muted mb-4">新しい報告を作成して始めましょう</p>
+              <p className="text-[13px] text-text-muted mb-4">新しい報告を作成しましょう</p>
               <Button variant="primary" size="sm" icon={Plus} onClick={() => setCreateOpen(true)}>
                 新規報告
               </Button>
@@ -334,7 +334,7 @@ export default function ReportsPage() {
             <select
               value={formType}
               onChange={(e) => setFormType(e.target.value as ReportType)}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
             >
               {Object.entries(REPORT_TYPE_LABELS).map(([key, label]) => (
                 <option key={key} value={key}>{label}</option>
@@ -357,7 +357,7 @@ export default function ReportsPage() {
               onChange={(e) => setFormContent(e.target.value)}
               placeholder="報告内容を入力..."
               rows={6}
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -505,7 +505,7 @@ export default function ReportsPage() {
               <select
                 value={editType}
                 onChange={(e) => setEditType(e.target.value as ReportType)}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all"
               >
                 {Object.entries(REPORT_TYPE_LABELS).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
@@ -528,7 +528,7 @@ export default function ReportsPage() {
                 onChange={(e) => setEditContent(e.target.value)}
                 placeholder="報告内容を入力..."
                 rows={8}
-                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all resize-none"
+                className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted focus:border-accent focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] focus:outline-none transition-all resize-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">

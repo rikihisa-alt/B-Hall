@@ -283,7 +283,7 @@ export default function SurveyPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">従業員サーベイ</h1>
-          <p className="text-[13px] text-text-secondary mt-1">エンゲージメント・満足度調査の実施と結果分析</p>
+          <p className="text-[13px] text-text-secondary mt-1">従業員サーベイの実施・分析</p>
         </div>
         <Button icon={Plus} onClick={() => setCreateModal(true)}>
           新規サーベイ
@@ -417,8 +417,8 @@ export default function SurveyPage() {
           {surveys.length === 0 && (
             <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-12 text-center">
               <ClipboardList className="w-10 h-10 text-text-muted mx-auto mb-3" strokeWidth={1.25} />
-              <p className="text-[15px] font-semibold text-text-secondary mb-1">サーベイがありません</p>
-              <p className="text-[13px] text-text-muted mb-4">新規サーベイを作成して従業員の声を集めましょう</p>
+              <p className="text-[15px] font-semibold text-text-secondary mb-1">サーベイはまだありません</p>
+              <p className="text-[13px] text-text-muted mb-4">新しいサーベイを作成しましょう</p>
               <Button size="sm" icon={Plus} onClick={() => setCreateModal(true)}>
                 新規サーベイ作成
               </Button>
@@ -464,7 +464,7 @@ export default function SurveyPage() {
 
                 {q.type === 'text' && (
                   <textarea
-                    className="w-full bg-bg-surface border border-border rounded-[10px] px-4 py-3 text-[14px] text-text-primary placeholder:text-text-muted resize-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+                    className="w-full bg-bg-surface border border-border rounded-[10px] px-4 py-3 text-[14px] text-text-primary placeholder:text-text-muted resize-none focus:border-accent focus:outline-none focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] transition-all"
                     rows={3}
                     placeholder="自由に記入してください..."
                     value={(responseAnswers[q.id] as string) || ''}
@@ -602,7 +602,7 @@ export default function SurveyPage() {
               説明
             </label>
             <textarea
-              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted resize-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(37,99,235,0.15)] focus:outline-none transition-all"
+              className="w-full bg-bg-base border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary placeholder:text-text-muted resize-none focus:border-accent focus:outline-none focus:shadow-[0_0_0_3px_rgba(79,70,229,0.12)] transition-all"
               rows={2}
               placeholder="サーベイの概要を入力..."
               value={newDescription}
