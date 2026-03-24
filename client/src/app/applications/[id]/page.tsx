@@ -35,7 +35,8 @@ import {
   APPLICATION_STATUS_COLORS,
   APPLICATION_TYPE_LABELS,
 } from '@/lib/constants'
-import { formatDate, formatRelative } from '@/lib/date'
+import { formatDate, formatRelative, today } from '@/lib/date'
+import { generateId } from '@/lib/id'
 import { pageTransition, fadeUp, staggerContainer } from '@/lib/animation'
 import type { ApplicationStatus, ApprovalStep } from '@/types'
 
@@ -48,6 +49,8 @@ export default function ApplicationDetailPage() {
   const approveStep = useApplicationStore((s) => s.approveStep)
   const rejectStep = useApplicationStore((s) => s.rejectStep)
   const withdrawApplication = useApplicationStore((s) => s.withdrawApplication)
+  const addAttachment = useApplicationStore((s) => s.addAttachment)
+  const removeAttachment = useApplicationStore((s) => s.removeAttachment)
   const hydrated = useApplicationStore((s) => s._hydrated)
   const users = useAuthStore((s) => s.users)
   const { currentUser, getUserName, mounted } = useAuth()
@@ -487,11 +490,23 @@ export default function ApplicationDetailPage() {
                 </div>
                 <AttachmentList
                   attachments={application.attachments}
-                  onAdd={() => {
-                    addToast('info', 'ファイルアップロードは準備中です')
+                  onAdd={(file: File) => {
+                    const url = URL.createObjectURL(file)
+                    const attachment = {
+                      id: generateId(),
+                      name: file.name,
+                      url,
+                      type: file.type || 'application/octet-stream',
+                      size: file.size,
+                      uploaded_at: today(),
+                      uploaded_by: currentUser?.id || '',
+                    }
+                    addAttachment(application.id, attachment)
+                    addToast('success', `${file.name}を添付しました`)
                   }}
-                  onRemove={() => {
-                    addToast('info', 'ファイル削除は準備中です')
+                  onRemove={(attachmentId: string) => {
+                    removeAttachment(application.id, attachmentId)
+                    addToast('success', 'ファイルを削除しました')
                   }}
                 />
               </div>

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Application, ApprovalStep } from '@/types'
+import type { Application, ApprovalStep, Attachment } from '@/types'
 import { generateId } from '@/lib/id'
 import { today, daysFromNow } from '@/lib/date'
 
@@ -196,6 +196,8 @@ interface ApplicationActions {
   getApplicationsByApplicant: (userId: string) => Application[]
   getPendingApprovals: (userId: string) => Application[]
   getApplication: (id: string) => Application | undefined
+  addAttachment: (applicationId: string, attachment: Attachment) => void
+  removeAttachment: (applicationId: string, attachmentId: string) => void
   setHydrated: () => void
 }
 
@@ -338,6 +340,26 @@ export const useApplicationStore = create<ApplicationStore>()(
 
       getApplication: (id: string) => {
         return get().applications.find((app) => app.id === id && !app.deleted_at)
+      },
+
+      addAttachment: (applicationId: string, attachment: Attachment) => {
+        set((state) => ({
+          applications: state.applications.map((app) =>
+            app.id === applicationId
+              ? { ...app, attachments: [...app.attachments, attachment], updated_at: today() }
+              : app
+          ),
+        }))
+      },
+
+      removeAttachment: (applicationId: string, attachmentId: string) => {
+        set((state) => ({
+          applications: state.applications.map((app) =>
+            app.id === applicationId
+              ? { ...app, attachments: app.attachments.filter((a) => a.id !== attachmentId), updated_at: today() }
+              : app
+          ),
+        }))
       },
 
       setHydrated: () => {
