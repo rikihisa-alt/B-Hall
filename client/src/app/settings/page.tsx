@@ -28,7 +28,17 @@ import {
   Workflow,
   Monitor,
   LogOut,
-  Construction,
+  Plus,
+  Trash2,
+  Edit3,
+  Download,
+  Upload,
+  Copy,
+  RefreshCw,
+  Link2,
+  Lock,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 
 /* ── Types ── */
@@ -115,6 +125,41 @@ export default function SettingsPage() {
 
   // Notification settings
   const [notificationSettings, setNotificationSettings] = useState<NotificationSetting[]>([])
+
+  // Advanced settings modals
+  const [advancedModal, setAdvancedModal] = useState<string | null>(null)
+
+  // Role management
+  const [roles, setRoles] = useState([
+    { id: '1', name: '経営者', permissions: ['全閲覧', '全操作', '経営情報', '金額閲覧', '設定変更'], userCount: 1 },
+    { id: '2', name: '管理者', permissions: ['全閲覧', '承認', '設定変更'], userCount: 1 },
+    { id: '3', name: '部門責任者', permissions: ['部門閲覧', '部門操作', '承認'], userCount: 2 },
+    { id: '4', name: '一般従業員', permissions: ['自分のタスク', '申請', '閲覧'], userCount: 4 },
+  ])
+
+  // Workflow settings
+  const [workflows, setWorkflows] = useState([
+    { id: '1', name: '経費申請フロー', trigger: '経費申請', steps: '申請者 → 部門長 → 経理', enabled: true },
+    { id: '2', name: '稟議承認フロー', trigger: '稟議起案', steps: '起案者 → 部門長 → 経営者', enabled: true },
+    { id: '3', name: '休暇申請フロー', trigger: '休暇申請', steps: '申請者 → 部門長', enabled: true },
+    { id: '4', name: '入社オンボーディング', trigger: '入社イベント', steps: '人事 → 総務 → IT', enabled: false },
+  ])
+
+  // Template management
+  const [templates, setTemplates] = useState([
+    { id: '1', name: '月次経費精算', type: '申請', category: '経理', used: 24 },
+    { id: '2', name: '出張申請', type: '申請', category: '総務', used: 18 },
+    { id: '3', name: 'ツール導入稟議', type: '稟議', category: '経営', used: 6 },
+    { id: '4', name: '新入社員タスク', type: 'タスク', category: '人事', used: 12 },
+    { id: '5', name: '月末締めチェックリスト', type: 'タスク', category: '経理', used: 36 },
+  ])
+
+  // API keys
+  const [apiKeys, setApiKeys] = useState([
+    { id: '1', name: 'Slack連携', key: 'bh_sk_...4f2a', created: '2026-01-15', lastUsed: '2026-03-23', enabled: true },
+    { id: '2', name: 'webhook通知', key: 'bh_sk_...8e1c', created: '2026-02-20', lastUsed: '2026-03-20', enabled: true },
+  ])
+  const [showApiKey, setShowApiKey] = useState<string | null>(null)
 
   useEffect(() => {
     if (currentUser) {
@@ -601,33 +646,356 @@ export default function SettingsPage() {
             className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
             variants={fadeUp}
           >
-            <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">管理者設定</h2>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.08)] text-[10px] font-semibold text-[#F59E0B] border border-[rgba(245,158,11,0.18)]">
-                <Construction className="w-2.5 h-2.5" strokeWidth={2} />
-                準備中
-              </span>
-            </div>
+            <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-4">管理者設定</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {advancedSettings.map((item) => (
-                <div
+                <button
                   key={item.title}
-                  className="relative flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border text-left group"
+                  onClick={() => setAdvancedModal(item.title)}
+                  className="relative flex items-center gap-3 p-4 rounded-[10px] bg-bg-elevated border border-border text-left group hover:bg-[rgba(0,0,0,0.02)] hover:border-accent/30 transition-all cursor-pointer"
                 >
-                  <item.icon className="w-5 h-5 text-text-muted/50 flex-shrink-0" strokeWidth={1.75} />
+                  <item.icon className="w-5 h-5 text-text-muted group-hover:text-accent flex-shrink-0 transition-colors" strokeWidth={1.75} />
                   <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-[14px] font-medium text-text-secondary tracking-tight">{item.title}</h4>
-                    </div>
+                    <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">{item.title}</h4>
                     <p className="text-[12px] text-text-muted">{item.description}</p>
                   </div>
-                  <span className="text-[10px] text-text-muted bg-bg-base px-2 py-0.5 rounded-md shrink-0">
-                    今後対応
-                  </span>
-                </div>
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-secondary transition-colors shrink-0" strokeWidth={1.75} />
+                </button>
               ))}
             </div>
           </motion.div>
+
+          {/* ── ロール・権限管理モーダル ── */}
+          <Modal
+            open={advancedModal === 'ロール・権限管理'}
+            onClose={() => setAdvancedModal(null)}
+            title="ロール・権限管理"
+            footer={<Button variant="ghost" onClick={() => setAdvancedModal(null)}>閉じる</Button>}
+          >
+            <div className="space-y-3">
+              {roles.map((role) => (
+                <div key={role.id} className="p-4 rounded-[12px] bg-bg-base border border-border">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">{role.name}</h4>
+                    <span className="text-[12px] text-text-muted">{role.userCount}名</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {role.permissions.map((perm) => (
+                      <span key={perm} className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium text-text-secondary bg-bg-elevated border border-border">
+                        {perm}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 mt-3">
+                    <button
+                      onClick={() => addToast('success', `${role.name}の権限設定を編集モードにしました`)}
+                      className="text-[12px] font-semibold text-accent hover:text-accent-hover transition-colors"
+                    >
+                      権限を編集
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  const newRole = { id: String(Date.now()), name: '新規ロール', permissions: ['閲覧'], userCount: 0 }
+                  setRoles((prev) => [...prev, newRole])
+                  addToast('success', '新しいロールを作成しました')
+                }}
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-[10px] border border-dashed border-border text-[13px] font-semibold text-text-muted hover:text-accent hover:border-accent/40 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" strokeWidth={1.75} />
+                新規ロール作成
+              </button>
+            </div>
+          </Modal>
+
+          {/* ── ワークフロー設定モーダル ── */}
+          <Modal
+            open={advancedModal === 'ワークフロー設定'}
+            onClose={() => setAdvancedModal(null)}
+            title="ワークフロー設定"
+            footer={<Button variant="ghost" onClick={() => setAdvancedModal(null)}>閉じる</Button>}
+          >
+            <div className="space-y-3">
+              {workflows.map((wf) => (
+                <div key={wf.id} className="p-4 rounded-[12px] bg-bg-base border border-border">
+                  <div className="flex items-center justify-between mb-1">
+                    <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">{wf.name}</h4>
+                    <button
+                      onClick={() => {
+                        setWorkflows((prev) => prev.map((w) => w.id === wf.id ? { ...w, enabled: !w.enabled } : w))
+                        addToast('success', `${wf.name}を${wf.enabled ? '無効' : '有効'}にしました`)
+                      }}
+                      className={`w-8 h-[18px] rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
+                        wf.enabled ? 'bg-accent justify-end' : 'bg-bg-elevated justify-start'
+                      }`}
+                    >
+                      <div className="w-3.5 h-3.5 rounded-full bg-white shadow-sm" />
+                    </button>
+                  </div>
+                  <p className="text-[12px] text-text-muted mb-1">トリガー: {wf.trigger}</p>
+                  <p className="text-[12px] text-text-secondary">{wf.steps}</p>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  const newWf = { id: String(Date.now()), name: '新規ワークフロー', trigger: '未設定', steps: '未設定', enabled: false }
+                  setWorkflows((prev) => [...prev, newWf])
+                  addToast('success', 'ワークフローを作成しました')
+                }}
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-[10px] border border-dashed border-border text-[13px] font-semibold text-text-muted hover:text-accent hover:border-accent/40 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" strokeWidth={1.75} />
+                新規ワークフロー作成
+              </button>
+            </div>
+          </Modal>
+
+          {/* ── テンプレート管理モーダル ── */}
+          <Modal
+            open={advancedModal === 'テンプレート管理'}
+            onClose={() => setAdvancedModal(null)}
+            title="テンプレート管理"
+            footer={<Button variant="ghost" onClick={() => setAdvancedModal(null)}>閉じる</Button>}
+          >
+            <div className="space-y-3">
+              {templates.map((tpl) => (
+                <div key={tpl.id} className="flex items-center gap-3 p-4 rounded-[12px] bg-bg-base border border-border">
+                  <FileText className="w-[18px] h-[18px] text-text-muted shrink-0" strokeWidth={1.75} />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">{tpl.name}</h4>
+                    <p className="text-[12px] text-text-muted">{tpl.type} &middot; {tpl.category} &middot; {tpl.used}回使用</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => addToast('info', `${tpl.name}を編集中`)}
+                      className="p-1.5 rounded-[6px] hover:bg-bg-elevated transition-colors text-text-muted hover:text-accent"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" strokeWidth={1.75} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setTemplates((prev) => prev.filter((t) => t.id !== tpl.id))
+                        addToast('success', `${tpl.name}を削除しました`)
+                      }}
+                      className="p-1.5 rounded-[6px] hover:bg-[rgba(239,68,68,0.06)] transition-colors text-text-muted hover:text-danger"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  const newTpl = { id: String(Date.now()), name: '新規テンプレート', type: 'タスク', category: '未分類', used: 0 }
+                  setTemplates((prev) => [...prev, newTpl])
+                  addToast('success', 'テンプレートを作成しました')
+                }}
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-[10px] border border-dashed border-border text-[13px] font-semibold text-text-muted hover:text-accent hover:border-accent/40 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" strokeWidth={1.75} />
+                新規テンプレート作成
+              </button>
+            </div>
+          </Modal>
+
+          {/* ── データ管理モーダル ── */}
+          <Modal
+            open={advancedModal === 'データ管理'}
+            onClose={() => setAdvancedModal(null)}
+            title="データ管理"
+            footer={<Button variant="ghost" onClick={() => setAdvancedModal(null)}>閉じる</Button>}
+          >
+            <div className="space-y-4">
+              <div className="p-4 rounded-[12px] bg-bg-base border border-border">
+                <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-1">データエクスポート</h4>
+                <p className="text-[12px] text-text-muted mb-3">各モジュールのデータをCSV形式でエクスポートします</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {['タスク', '従業員', '稟議', '申請', '取引', '文書'].map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => {
+                        const csvContent = `data:text/csv;charset=utf-8,ID,名前,ステータス\n1,サンプル${item},アクティブ`
+                        const link = document.createElement('a')
+                        link.href = encodeURI(csvContent)
+                        link.download = `bhall_${item}_export.csv`
+                        link.click()
+                        addToast('success', `${item}データをエクスポートしました`)
+                      }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-[8px] bg-bg-elevated border border-border text-[13px] font-semibold text-text-secondary hover:bg-[rgba(0,0,0,0.02)] hover:border-accent/30 transition-all cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" strokeWidth={1.75} />
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="p-4 rounded-[12px] bg-bg-base border border-border">
+                <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-1">データインポート</h4>
+                <p className="text-[12px] text-text-muted mb-3">CSVファイルからデータを一括インポートします</p>
+                <button
+                  onClick={() => addToast('info', 'CSVファイルを選択してください（バックエンド連携で今後対応予定）')}
+                  className="flex items-center gap-2 px-4 py-2 rounded-[8px] bg-bg-elevated border border-border text-[13px] font-semibold text-text-secondary hover:bg-[rgba(0,0,0,0.02)] hover:border-accent/30 transition-all cursor-pointer"
+                >
+                  <Upload className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  CSVファイルをインポート
+                </button>
+              </div>
+              <div className="p-4 rounded-[12px] bg-bg-base border border-border">
+                <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-1">バックアップ</h4>
+                <p className="text-[12px] text-text-muted mb-3">全データのバックアップを作成・復元します</p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      const allData = {
+                        exportedAt: new Date().toISOString(),
+                        localStorage: { ...localStorage },
+                      }
+                      const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' })
+                      const url = URL.createObjectURL(blob)
+                      const link = document.createElement('a')
+                      link.href = url
+                      link.download = `bhall_backup_${new Date().toISOString().split('T')[0]}.json`
+                      link.click()
+                      URL.revokeObjectURL(url)
+                      addToast('success', 'バックアップファイルをダウンロードしました')
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-[8px] bg-accent text-white text-[13px] font-semibold hover:bg-accent-hover transition-all cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" strokeWidth={1.75} />
+                    バックアップ作成
+                  </button>
+                  <button
+                    onClick={() => addToast('info', '復元機能はバックエンド連携後に対応予定です')}
+                    className="flex items-center gap-2 px-4 py-2 rounded-[8px] bg-bg-elevated border border-border text-[13px] font-semibold text-text-secondary hover:bg-[rgba(0,0,0,0.02)] transition-all cursor-pointer"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" strokeWidth={1.75} />
+                    復元
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal>
+
+          {/* ── API設定モーダル ── */}
+          <Modal
+            open={advancedModal === 'API設定'}
+            onClose={() => setAdvancedModal(null)}
+            title="API設定"
+            footer={<Button variant="ghost" onClick={() => setAdvancedModal(null)}>閉じる</Button>}
+          >
+            <div className="space-y-4">
+              <div className="space-y-3">
+                {apiKeys.map((ak) => (
+                  <div key={ak.id} className="p-4 rounded-[12px] bg-bg-base border border-border">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-[14px] font-semibold text-text-primary tracking-tight">{ak.name}</h4>
+                      <button
+                        onClick={() => {
+                          setApiKeys((prev) => prev.map((k) => k.id === ak.id ? { ...k, enabled: !k.enabled } : k))
+                          addToast('success', `${ak.name}を${ak.enabled ? '無効' : '有効'}にしました`)
+                        }}
+                        className={`w-8 h-[18px] rounded-full flex items-center px-0.5 cursor-pointer transition-colors ${
+                          ak.enabled ? 'bg-accent justify-end' : 'bg-bg-elevated justify-start'
+                        }`}
+                      >
+                        <div className="w-3.5 h-3.5 rounded-full bg-white shadow-sm" />
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <code className="text-[12px] text-text-muted bg-bg-elevated px-2 py-1 rounded font-mono">
+                        {showApiKey === ak.id ? `bh_sk_a1b2c3d4e5f6g7h8i9j0_${ak.id}` : ak.key}
+                      </code>
+                      <button
+                        onClick={() => setShowApiKey(showApiKey === ak.id ? null : ak.id)}
+                        className="p-1 text-text-muted hover:text-text-secondary transition-colors"
+                      >
+                        {showApiKey === ak.id ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(`bh_sk_a1b2c3d4e5f6g7h8i9j0_${ak.id}`)
+                          addToast('success', 'APIキーをコピーしました')
+                        }}
+                        className="p-1 text-text-muted hover:text-text-secondary transition-colors"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-text-muted">作成: {ak.created} &middot; 最終使用: {ak.lastUsed}</p>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => {
+                  const newKey = {
+                    id: String(Date.now()),
+                    name: '新しいAPIキー',
+                    key: `bh_sk_...${Math.random().toString(36).slice(2, 6)}`,
+                    created: new Date().toISOString().split('T')[0],
+                    lastUsed: '未使用',
+                    enabled: true,
+                  }
+                  setApiKeys((prev) => [...prev, newKey])
+                  addToast('success', '新しいAPIキーを生成しました')
+                }}
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-[10px] border border-dashed border-border text-[13px] font-semibold text-text-muted hover:text-accent hover:border-accent/40 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" strokeWidth={1.75} />
+                新しいAPIキーを生成
+              </button>
+            </div>
+          </Modal>
+
+          {/* ── ドメイン・SSOモーダル ── */}
+          <Modal
+            open={advancedModal === 'ドメイン・SSO'}
+            onClose={() => setAdvancedModal(null)}
+            title="ドメイン・SSO設定"
+            footer={<Button variant="ghost" onClick={() => setAdvancedModal(null)}>閉じる</Button>}
+          >
+            <div className="space-y-4">
+              <div className="p-4 rounded-[12px] bg-bg-base border border-border">
+                <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-1">カスタムドメイン</h4>
+                <p className="text-[12px] text-text-muted mb-3">B-Hallに独自ドメインを設定できます</p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 flex items-center gap-2 px-3 py-2 rounded-[8px] bg-bg-elevated border border-border">
+                    <Link2 className="w-3.5 h-3.5 text-text-muted" strokeWidth={1.75} />
+                    <span className="text-[13px] text-text-muted">bhall.backlly.com</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-semibold text-[#22C55E] bg-[rgba(34,197,94,0.08)]">
+                    <Check className="w-3 h-3" />
+                    接続済み
+                  </span>
+                </div>
+              </div>
+              <div className="p-4 rounded-[12px] bg-bg-base border border-border">
+                <h4 className="text-[14px] font-semibold text-text-primary tracking-tight mb-1">シングルサインオン (SSO)</h4>
+                <p className="text-[12px] text-text-muted mb-3">SAML 2.0またはOpenID Connectでの認証連携</p>
+                <div className="space-y-2">
+                  {[
+                    { name: 'Google Workspace', status: '未接続' },
+                    { name: 'Microsoft Entra ID', status: '未接続' },
+                    { name: 'Okta', status: '未接続' },
+                  ].map((sso) => (
+                    <div key={sso.name} className="flex items-center justify-between p-3 rounded-[8px] bg-bg-elevated border border-border">
+                      <div className="flex items-center gap-2">
+                        <Lock className="w-3.5 h-3.5 text-text-muted" strokeWidth={1.75} />
+                        <span className="text-[13px] font-semibold text-text-primary">{sso.name}</span>
+                      </div>
+                      <button
+                        onClick={() => addToast('info', `${sso.name}との接続設定を開始します（バックエンド連携後に対応予定）`)}
+                        className="px-3 py-1 rounded-[6px] text-[12px] font-semibold text-accent bg-[rgba(79,70,229,0.08)] hover:bg-[rgba(79,70,229,0.12)] transition-colors cursor-pointer"
+                      >
+                        接続
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Modal>
         </div>
       </motion.div>
     </motion.div>

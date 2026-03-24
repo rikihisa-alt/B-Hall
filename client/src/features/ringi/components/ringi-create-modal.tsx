@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal } from '@/components/ui/modal'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -9,14 +9,15 @@ import { useAuth } from '@/hooks/use-auth'
 import { useToast } from '@/components/ui/toast-provider'
 import { generateId } from '@/lib/id'
 import { Save, Send, X, Plus } from 'lucide-react'
-import type { ApprovalStep } from '@/types'
+import type { ApprovalStep, RingiTemplate } from '@/types'
 
 interface RingiCreateModalProps {
   open: boolean
   onClose: () => void
+  templateData?: RingiTemplate | null
 }
 
-export function RingiCreateModal({ open, onClose }: RingiCreateModalProps) {
+export function RingiCreateModal({ open, onClose, templateData }: RingiCreateModalProps) {
   const { currentUser, users } = useAuth()
   const createRingi = useRingiStore((s) => s.createRingi)
   const submitRingi = useRingiStore((s) => s.submitRingi)
@@ -33,6 +34,20 @@ export function RingiCreateModal({ open, onClose }: RingiCreateModalProps) {
   const [departments, setDepartments] = useState('')
   const [approverIds, setApproverIds] = useState<string[]>([])
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Pre-fill from template when templateData changes
+  useEffect(() => {
+    if (templateData && open) {
+      setTitle(templateData.fields.title || '')
+      setBackground(templateData.fields.background || '')
+      setPurpose(templateData.fields.purpose || '')
+      setContent(templateData.fields.content || '')
+      if (templateData.fields.amount !== null) {
+        setAmount(templateData.fields.amount.toLocaleString())
+      }
+      setDepartments(templateData.fields.departments.join(', '))
+    }
+  }, [templateData, open])
 
   const resetForm = () => {
     setTitle('')
@@ -144,6 +159,8 @@ export function RingiCreateModal({ open, onClose }: RingiCreateModalProps) {
     (u) => u.id !== currentUser?.id && u.status === 'active'
   )
 
+  const modalTitle = templateData ? `新規稟議（${templateData.name}）` : '新規稟議'
+
   const footer = (
     <>
       <Button variant="ghost" size="sm" onClick={handleClose}>
@@ -162,11 +179,19 @@ export function RingiCreateModal({ open, onClose }: RingiCreateModalProps) {
     <Modal
       open={open}
       onClose={handleClose}
-      title="新規稟議"
+      title={modalTitle}
       size="lg"
       footer={footer}
     >
       <div className="space-y-5 max-h-[60vh] overflow-y-auto pr-1">
+        {templateData && (
+          <div className="px-3 py-2 bg-accent-muted border border-accent/20 rounded-[10px]">
+            <p className="text-[12px] text-accent font-medium">
+              テンプレート「{templateData.name}」からフィールドが自動入力されています。必要に応じて編集してください。
+            </p>
+          </div>
+        )}
+
         {/* 件名 */}
         <Input
           label="件名"

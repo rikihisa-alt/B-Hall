@@ -205,6 +205,44 @@ export interface Ringi extends BaseEntity {
   attachments: Attachment[]
 }
 
+// ── Approval Route (承認ルート) ──
+
+export interface ApprovalRouteStep {
+  order: number
+  role: string
+  approver_name: string
+}
+
+export interface ApprovalRoute {
+  id: string
+  name: string
+  description: string
+  steps: ApprovalRouteStep[]
+  created_at: string
+  updated_at: string
+}
+
+// ── Ringi Template (稟議テンプレート) ──
+
+export interface RingiTemplateFields {
+  title: string
+  background: string
+  purpose: string
+  content: string
+  amount: number | null
+  departments: string[]
+}
+
+export interface RingiTemplate {
+  id: string
+  name: string
+  description: string
+  fields: RingiTemplateFields
+  approval_route_id: string
+  created_at: string
+  updated_at: string
+}
+
 // ── Employee ──
 
 export interface Employee extends BaseEntity {

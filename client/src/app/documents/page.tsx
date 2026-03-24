@@ -459,7 +459,18 @@ export default function DocumentsPage() {
                 size="sm"
                 icon={Download}
                 onClick={() => {
-                  addToast('success', `ダウンロードを開始しました: ${detailDoc.file_name}`)
+                  // Generate a sample file for download
+                  const content = `B-Hall 文書管理システム\n\n文書名: ${detailDoc.title}\nファイル名: ${detailDoc.file_name}\nカテゴリ: ${detailDoc.category}\nバージョン: ${detailDoc.version}\n作成日: ${detailDoc.created_at}\n更新日: ${detailDoc.updated_at}\n\nこのファイルはB-Hallからエクスポートされました。`
+                  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+                  const url = URL.createObjectURL(blob)
+                  const link = document.createElement('a')
+                  link.href = url
+                  link.download = detailDoc.file_name
+                  document.body.appendChild(link)
+                  link.click()
+                  document.body.removeChild(link)
+                  URL.revokeObjectURL(url)
+                  addToast('success', `ダウンロード完了: ${detailDoc.file_name}`)
                 }}
               >
                 ダウンロード
