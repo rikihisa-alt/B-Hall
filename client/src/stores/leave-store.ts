@@ -124,8 +124,8 @@ type LeaveStore = LeaveState & LeaveActions
 export const useLeaveStore = create<LeaveStore>()(
   persist(
     (set, get) => ({
-      balances: SEED_BALANCES,
-      requests: SEED_REQUESTS,
+      balances: [],
+      requests: [],
       _hydrated: false,
 
       getBalance: (employeeId: string) => {

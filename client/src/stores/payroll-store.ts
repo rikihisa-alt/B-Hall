@@ -132,7 +132,7 @@ type PayrollStore = PayrollState & PayrollActions
 export const usePayrollStore = create<PayrollStore>()(
   persist(
     (set, get) => ({
-      paySlips: SEED_PAYSLIPS,
+      paySlips: [],
       _hydrated: false,
 
       getPaySlips: (employeeId?: string) => {

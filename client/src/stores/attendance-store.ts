@@ -184,7 +184,7 @@ export { EMPLOYEE_NAMES }
 export const useAttendanceStore = create<AttendanceStore>()(
   persist(
     (set, get) => ({
-      records: generateSeedRecords(),
+      records: [],
       _hydrated: false,
 
       clockIn: (employeeId: string) => {

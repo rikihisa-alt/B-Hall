@@ -80,7 +80,7 @@ const WELCOME_MESSAGE: ChatMessage = {
 export const useChatStore = create<ChatStore>()(
   persist(
     (set, get) => ({
-      messages: [WELCOME_MESSAGE],
+      messages: [],
       isTyping: false,
       _hydrated: false,
 

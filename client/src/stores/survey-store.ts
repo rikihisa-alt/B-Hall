@@ -160,8 +160,8 @@ type SurveyStore = SurveyState & SurveyActions
 export const useSurveyStore = create<SurveyStore>()(
   persist(
     (set, get) => ({
-      surveys: SEED_SURVEYS,
-      responses: SEED_RESPONSES,
+      surveys: [],
+      responses: [],
       _hydrated: false,
 
       createSurvey: (data) => {
