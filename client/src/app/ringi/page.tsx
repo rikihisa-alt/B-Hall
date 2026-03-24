@@ -539,7 +539,7 @@ function TemplateModal({
             </div>
 
             <div className="border-t border-border pt-4">
-              <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">
+              <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">
                 稟議フィールド（プリセット）
               </p>
 
@@ -751,7 +751,7 @@ export default function RingiPage() {
 
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
-        <h1 className="text-[22px] font-bold text-text-primary tracking-tight">稟議</h1>
+        <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">稟議</h1>
         <p className="text-[13px] text-text-secondary mt-1">決裁プロセス管理</p>
       </motion.div>
 
@@ -975,7 +975,7 @@ export default function RingiPage() {
             variants={fadeUp}
           >
             <div className="flex flex-col items-center justify-center text-center">
-              <Stamp className="w-12 h-12 text-text-muted opacity-40 mb-4" strokeWidth={1.5} />
+              <Stamp className="w-10 h-10 text-text-muted opacity-40 mb-4" strokeWidth={1.5} />
               <p className="text-[15px] font-semibold text-text-primary mb-1">稟議はまだありません</p>
               <p className="text-[13px] text-text-muted mb-4">新しい稟議を起票して承認プロセスを開始しましょう</p>
               <button

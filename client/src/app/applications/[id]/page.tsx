@@ -410,7 +410,7 @@ export default function ApplicationDetailPage() {
             <div className="space-y-5">
               {/* Applicant */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <User className="w-3.5 h-3.5" strokeWidth={1.75} />
                   申請者
                 </div>
@@ -426,7 +426,7 @@ export default function ApplicationDetailPage() {
 
               {/* Application type */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Tag className="w-3.5 h-3.5" strokeWidth={1.75} />
                   申請種別
                 </div>
@@ -438,7 +438,7 @@ export default function ApplicationDetailPage() {
               {/* Amount */}
               {application.amount !== null && (
                 <div>
-                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                     <Banknote className="w-3.5 h-3.5" strokeWidth={1.75} />
                     金額
                   </div>
@@ -450,7 +450,7 @@ export default function ApplicationDetailPage() {
 
               {/* Status */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <FileText className="w-3.5 h-3.5" strokeWidth={1.75} />
                   ステータス
                 </div>
@@ -462,7 +462,7 @@ export default function ApplicationDetailPage() {
 
               {/* Created at */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
                   申請日
                 </div>
@@ -473,7 +473,7 @@ export default function ApplicationDetailPage() {
 
               {/* Updated at */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
                   最終更新
                 </div>
@@ -484,7 +484,7 @@ export default function ApplicationDetailPage() {
 
               {/* Attachments */}
               <div className="pt-4 border-t border-border">
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">
                   <Paperclip className="w-3.5 h-3.5" strokeWidth={1.75} />
                   添付ファイル
                 </div>
@@ -545,7 +545,7 @@ function FormField({
 }) {
   return (
     <div className={fullWidth ? 'col-span-2' : ''}>
-      <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+      <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
         {label}
       </p>
       <p className="text-[14px] text-text-primary font-medium">

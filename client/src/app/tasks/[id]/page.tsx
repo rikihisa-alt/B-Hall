@@ -671,7 +671,7 @@ export default function TaskDetailPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                    <label className="block text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                       ファイル名
                     </label>
                     <input
@@ -702,7 +702,7 @@ export default function TaskDetailPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                    <label className="block text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                       ファイル種別
                     </label>
                     <select
@@ -768,7 +768,7 @@ export default function TaskDetailPage() {
             <div className="space-y-5">
               {/* Assignee */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <User className="w-3.5 h-3.5" strokeWidth={1.75} />
                   担当者
                 </div>
@@ -779,7 +779,7 @@ export default function TaskDetailPage() {
 
               {/* Creator */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Users className="w-3.5 h-3.5" strokeWidth={1.75} />
                   起票者
                 </div>
@@ -790,7 +790,7 @@ export default function TaskDetailPage() {
 
               {/* Department */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Building2 className="w-3.5 h-3.5" strokeWidth={1.75} />
                   部署
                 </div>
@@ -801,7 +801,7 @@ export default function TaskDetailPage() {
 
               {/* Category */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <FolderOpen className="w-3.5 h-3.5" strokeWidth={1.75} />
                   カテゴリ
                 </div>
@@ -812,7 +812,7 @@ export default function TaskDetailPage() {
 
               {/* Due Date */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
                   期限
                 </div>
@@ -832,7 +832,7 @@ export default function TaskDetailPage() {
 
               {/* Created at */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
                   作成日
                 </div>
@@ -843,7 +843,7 @@ export default function TaskDetailPage() {
 
               {/* Updated at */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
                   更新日
                 </div>
@@ -855,7 +855,7 @@ export default function TaskDetailPage() {
               {/* Tags */}
               {task.tags.length > 0 && (
                 <div>
-                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                     <Tag className="w-3.5 h-3.5" strokeWidth={1.75} />
                     タグ
                   </div>

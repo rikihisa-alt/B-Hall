@@ -74,7 +74,7 @@ function MetricCard({ label, value, suffix, icon: Icon, color, delay }: {
           <Icon className="w-[18px] h-[18px]" style={{ color }} strokeWidth={1.75} />
         </div>
       </div>
-      <p className="text-2xl md:text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+      <p className="text-2xl md:text-[28px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
         {count}<span className="text-[14px] md:text-[16px] text-text-muted ml-1">{suffix}</span>
       </p>
       <p className="text-[13px] text-text-muted">{label}</p>
@@ -181,7 +181,7 @@ export default function ManagementPage() {
           <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
           <span className="text-text-secondary font-medium">経営</span>
         </nav>
-        <h1 className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.02em]">経営ダッシュボード</h1>
+        <h1 className="text-xl md:text-[28px] font-semibold text-text-primary tracking-[-0.02em]">経営ダッシュボード</h1>
         <p className="text-[15px] text-text-secondary mt-1">会社全体の状況を一画面で把握</p>
       </div>
 

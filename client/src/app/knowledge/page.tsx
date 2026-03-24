@@ -276,21 +276,21 @@ export default function KnowledgePage() {
         animate="show"
       >
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <BookOpen className="w-3 h-3" strokeWidth={2} />
             全記事
           </p>
           <p className="text-[24px] font-bold text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>{allArticles.length}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <FileText className="w-3 h-3" strokeWidth={2} />
             公開中
           </p>
           <p className="text-[24px] font-bold text-success" style={{ fontFamily: 'var(--font-inter)' }}>{publishedCount}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <Eye className="w-3 h-3" strokeWidth={2} />
             総閲覧数
           </p>
@@ -336,7 +336,7 @@ export default function KnowledgePage() {
             variants={fadeUp}
           >
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-12 h-12 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
               <p className="text-[15px] font-semibold text-text-primary mb-1">ナレッジが見つかりません</p>

@@ -221,7 +221,7 @@ export default function EmployeeListPage() {
             className="bg-bg-surface border border-border rounded-[16px] shadow-card px-4 md:px-5 py-3 md:py-4"
             variants={fadeUp}
           >
-            <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">
+            <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">
               {stat.label}
             </p>
             <p className="text-xl md:text-[28px] font-bold text-text-primary mt-1 tabular-nums" style={{ fontFamily: 'var(--font-inter)' }}>

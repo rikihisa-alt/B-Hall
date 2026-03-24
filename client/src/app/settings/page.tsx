@@ -252,7 +252,7 @@ export default function SettingsPage() {
 
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
-        <h1 className="text-[22px] font-bold text-text-primary tracking-tight">設定</h1>
+        <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">設定</h1>
         <p className="text-[13px] text-text-secondary mt-1">アカウント・組織・システムの設定</p>
       </motion.div>
 
@@ -399,7 +399,7 @@ export default function SettingsPage() {
                 ))}
               </div>
 
-              <h3 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">ユーザー一覧</h3>
+              <h3 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">ユーザー一覧</h3>
               <div className="bg-bg-elevated border border-border rounded-[12px] overflow-hidden">
                 <div className="divide-y divide-border">
                   {users.map((user) => (
@@ -603,7 +603,7 @@ export default function SettingsPage() {
               <h2 className="text-[14px] font-semibold text-text-primary tracking-tight mb-6">表示・テーマ設定</h2>
               <div className="space-y-6">
                 <div>
-                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">テーマ</h4>
+                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">テーマ</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
                       { name: 'Shiraki 白木', active: true, toast: '' },
@@ -631,7 +631,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-3">言語</h4>
+                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">言語</h4>
                   <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 flex items-center justify-between">
                     <span className="text-[14px] font-semibold text-text-primary tracking-tight">日本語</span>
                     <span className="text-[11px] text-text-muted bg-bg-base px-2 py-0.5 rounded-md">デフォルト</span>
@@ -646,7 +646,7 @@ export default function SettingsPage() {
             className="bg-bg-surface border border-border rounded-[16px] shadow-card p-6"
             variants={fadeUp}
           >
-            <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-4">管理者設定</h2>
+            <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">管理者設定</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {advancedSettings.map((item) => (
                 <button

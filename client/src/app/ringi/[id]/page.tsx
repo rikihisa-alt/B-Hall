@@ -527,7 +527,7 @@ export default function RingiDetailPage() {
             <div className="space-y-5">
               {/* 起票者 */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <User className="w-3.5 h-3.5" strokeWidth={1.75} />
                   起票者
                 </div>
@@ -538,7 +538,7 @@ export default function RingiDetailPage() {
 
               {/* 金額 */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <CircleDollarSign className="w-3.5 h-3.5" strokeWidth={1.75} />
                   金額
                 </div>
@@ -553,7 +553,7 @@ export default function RingiDetailPage() {
               {/* 関連部門 */}
               {ringi.departments.length > 0 && (
                 <div>
-                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                     <Building2 className="w-3.5 h-3.5" strokeWidth={1.75} />
                     関連部門
                   </div>
@@ -572,7 +572,7 @@ export default function RingiDetailPage() {
 
               {/* ステータス */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Stamp className="w-3.5 h-3.5" strokeWidth={1.75} />
                   ステータス
                 </div>
@@ -585,7 +585,7 @@ export default function RingiDetailPage() {
               {/* 決裁日 */}
               {ringi.decision_date && (
                 <div>
-                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                  <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                     <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
                     決裁日
                   </div>
@@ -597,7 +597,7 @@ export default function RingiDetailPage() {
 
               {/* 起票日 */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
                   起票日
                 </div>
@@ -608,7 +608,7 @@ export default function RingiDetailPage() {
 
               {/* 添付資料 */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Paperclip className="w-3.5 h-3.5" strokeWidth={1.75} />
                   添付資料
                 </div>

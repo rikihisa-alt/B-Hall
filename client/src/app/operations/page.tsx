@@ -200,7 +200,7 @@ export default function OperationsPage() {
 
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
-        <h1 className="text-[22px] font-bold text-text-primary tracking-tight">業務統制</h1>
+        <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">業務統制</h1>
         <p className="text-[13px] text-text-secondary mt-1">フロー・申請・承認の統合管理</p>
       </motion.div>
 
@@ -254,10 +254,10 @@ export default function OperationsPage() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-bg-base">
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">フロー名</th>
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">種別</th>
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">ステータス</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">フロー名</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">種別</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">担当者</th>
                     <th className="px-6 py-3 w-10"></th>
                   </tr>
                 </thead>
@@ -371,7 +371,7 @@ export default function OperationsPage() {
 
           {pendingCount === 0 ? (
             <div className="px-6 py-8 text-center">
-              <CheckCircle2 className="w-8 h-8 text-[#22C55E] mx-auto mb-2" strokeWidth={1.5} />
+              <CheckCircle2 className="w-10 h-10 text-[#22C55E] mx-auto mb-2" strokeWidth={1.5} />
               <p className="text-[13px] text-text-muted">承認待ちはありません</p>
             </div>
           ) : (

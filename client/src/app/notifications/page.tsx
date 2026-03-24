@@ -111,7 +111,7 @@ export default function NotificationsPage() {
         animate="show"
       >
         <div>
-          <h1 className="text-[22px] font-bold text-text-primary tracking-tight">通知</h1>
+          <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">通知</h1>
           <p className="text-[13px] text-text-secondary mt-1" style={{ fontFamily: 'var(--font-inter)' }}>
             {unreadCount > 0 ? `${unreadCount}件の未読` : 'すべて既読です'}
           </p>
@@ -139,7 +139,7 @@ export default function NotificationsPage() {
             variants={fadeUp}
             className="bg-bg-surface border border-border rounded-[16px] shadow-card p-12 flex flex-col items-center justify-center text-center"
           >
-            <div className="w-12 h-12 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
               <BellOff className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
             </div>
             <p className="text-[15px] font-semibold text-text-primary mb-1">通知はありません</p>

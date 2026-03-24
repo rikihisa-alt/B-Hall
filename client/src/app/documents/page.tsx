@@ -171,11 +171,11 @@ export default function DocumentsPage() {
         animate="show"
       >
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">全文書</p>
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">全文書</p>
           <p className="text-[24px] font-bold text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>{allDocs.length}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <FolderOpen className="w-3 h-3" strokeWidth={2} />
             契約書
           </p>
@@ -184,7 +184,7 @@ export default function DocumentsPage() {
           </p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <FileText className="w-3 h-3" strokeWidth={2} />
             規程
           </p>
@@ -193,7 +193,7 @@ export default function DocumentsPage() {
           </p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <AlertTriangle className="w-3 h-3" strokeWidth={2} />
             期限間近
           </p>
@@ -239,7 +239,7 @@ export default function DocumentsPage() {
             variants={fadeUp}
           >
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-12 h-12 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
               <p className="text-[15px] font-semibold text-text-primary mb-1">文書が見つかりません</p>
@@ -403,20 +403,20 @@ export default function DocumentsPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">部署</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">部署</p>
                 <p className="text-[14px] text-text-primary">{detailDoc.department || '未設定'}</p>
               </div>
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">バージョン</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">バージョン</p>
                 <p className="text-[14px] text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>v{detailDoc.version}</p>
               </div>
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">ファイル</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">ファイル</p>
                 <p className="text-[14px] text-text-primary truncate">{detailDoc.file_name}</p>
                 <p className="text-[12px] text-text-muted">{formatFileSize(detailDoc.file_size)}</p>
               </div>
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1">
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1">
                   <Calendar className="w-3 h-3" strokeWidth={2} />
                   有効期限
                 </p>
@@ -428,14 +428,14 @@ export default function DocumentsPage() {
 
             {detailDoc.description && (
               <div>
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">説明</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">説明</p>
                 <p className="text-[14px] text-text-secondary leading-relaxed">{detailDoc.description}</p>
               </div>
             )}
 
             {detailDoc.tags.length > 0 && (
               <div>
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">タグ</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">タグ</p>
                 <div className="flex flex-wrap gap-1.5">
                   {detailDoc.tags.map((tag) => (
                     <span

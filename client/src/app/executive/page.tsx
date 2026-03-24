@@ -133,7 +133,7 @@ export default function ExecutivePage() {
 
       {/* Header */}
       <motion.div className="mb-8" variants={fadeUp} initial="hidden" animate="show">
-        <h1 className="text-[22px] font-bold text-text-primary tracking-tight">役員ダッシュボード</h1>
+        <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">役員ダッシュボード</h1>
         <p className="text-[13px] text-text-secondary mt-1">意思決定に必要な情報を集約</p>
       </motion.div>
 
@@ -291,7 +291,7 @@ export default function ExecutivePage() {
 
         {urgentTasks.length === 0 ? (
           <div className="px-6 py-8 text-center">
-            <CheckCircle2 className="w-8 h-8 text-[#22C55E] mx-auto mb-2" strokeWidth={1.5} />
+            <CheckCircle2 className="w-10 h-10 text-[#22C55E] mx-auto mb-2" strokeWidth={1.5} />
             <p className="text-[13px] text-text-muted">緊急・重要な未完了タスクはありません</p>
           </div>
         ) : (

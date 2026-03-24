@@ -99,7 +99,7 @@ function MetricCard({ label, value, prefix, suffix, change, up, icon: Icon, colo
           </div>
         )}
       </div>
-      <p className="text-[24px] md:text-[36px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+      <p className="text-[24px] md:text-[28px] font-bold tracking-[-0.03em] leading-none mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
         {prefix}{count}{suffix}
       </p>
       <p className="text-[13px] text-text-muted">{label}</p>
@@ -177,7 +177,7 @@ export default function HomePage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6 md:mb-8">
         <div>
           <p className="text-[13px] text-text-muted mb-1">{dateStr}</p>
-          <h1 className="text-2xl md:text-[28px] font-bold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
+          <h1 className="text-2xl md:text-[28px] font-semibold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
           <p className="text-sm md:text-[15px] text-text-secondary mt-1">業務全体の状況を確認できます</p>
         </div>
         <Link href="/tasks" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-[#6366F1] text-white font-semibold px-5 h-11 md:h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(79,70,229,0.25)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200">
@@ -323,12 +323,12 @@ export default function HomePage() {
         <table className="w-full hidden md:table">
           <thead>
             <tr className="bg-bg-base">
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">タスク名</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">カテゴリ</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">期限</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">優先度</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">ステータス</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">タスク名</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">カテゴリ</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">担当者</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">期限</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">優先度</th>
               <th className="px-6 py-3 w-10"></th>
             </tr>
           </thead>

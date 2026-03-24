@@ -223,7 +223,7 @@ export default function TasksPage() {
       {/* Header */}
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6 md:mb-8">
         <motion.div variants={fadeUp} initial="hidden" animate="show">
-          <h1 className="text-xl md:text-[22px] font-bold text-text-primary tracking-tight">タスク</h1>
+          <h1 className="text-xl md:text-[22px] font-semibold text-text-primary tracking-tight">タスク</h1>
           <p className="text-[13px] text-text-secondary mt-1">{filteredTasks.length}件のタスク</p>
         </motion.div>
         <div className="flex items-center gap-3">
@@ -273,7 +273,7 @@ export default function TasksPage() {
                   <div className="px-5 py-4 space-y-5 max-h-[420px] overflow-y-auto">
                     {/* Status */}
                     <div>
-                      <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">ステータス</p>
+                      <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">ステータス</p>
                       <div className="flex flex-wrap gap-1.5">
                         {filterOptions.statuses.map((s) => (
                           <button
@@ -292,7 +292,7 @@ export default function TasksPage() {
                     </div>
                     {/* Priority */}
                     <div>
-                      <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">優先度</p>
+                      <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">優先度</p>
                       <div className="flex flex-wrap gap-1.5">
                         {filterOptions.priorities.map((p) => (
                           <button
@@ -312,7 +312,7 @@ export default function TasksPage() {
                     {/* Department */}
                     {filterOptions.departments.length > 0 && (
                       <div>
-                        <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">部署</p>
+                        <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">部署</p>
                         <div className="flex flex-wrap gap-1.5">
                           {filterOptions.departments.map((d) => (
                             <button
@@ -333,7 +333,7 @@ export default function TasksPage() {
                     {/* Assignee */}
                     {filterOptions.assignees.length > 0 && (
                       <div>
-                        <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">担当者</p>
+                        <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">担当者</p>
                         <div className="flex flex-wrap gap-1.5">
                           {filterOptions.assignees.map(([id, name]) => (
                             <button
@@ -490,12 +490,12 @@ export default function TasksPage() {
         <table className="w-full hidden md:table">
           <thead>
             <tr className="bg-bg-base">
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">タスク名</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">カテゴリ</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">期限</th>
-              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">優先度</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">ステータス</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">タスク名</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">カテゴリ</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">担当者</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">期限</th>
+              <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">優先度</th>
               <th className="px-6 py-3 w-10"></th>
             </tr>
           </thead>

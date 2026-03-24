@@ -151,25 +151,25 @@ export default function ReportsPage() {
         animate="show"
       >
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">全報告</p>
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">全報告</p>
           <p className="text-[24px] font-bold text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>{allReports.length}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <Clock className="w-3 h-3" strokeWidth={2} />
             下書き
           </p>
           <p className="text-[24px] font-bold text-warning" style={{ fontFamily: 'var(--font-inter)' }}>{draftCount}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <CheckCircle2 className="w-3 h-3" strokeWidth={2} />
             提出済み
           </p>
           <p className="text-[24px] font-bold text-info" style={{ fontFamily: 'var(--font-inter)' }}>{submittedCount}</p>
         </motion.div>
         <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
-          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1 flex items-center gap-1.5">
+          <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <AlertTriangle className="w-3 h-3" strokeWidth={2} />
             事故報告
           </p>
@@ -202,7 +202,7 @@ export default function ReportsPage() {
             variants={fadeUp}
           >
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-12 h-12 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-[12px] bg-bg-elevated flex items-center justify-center mb-4">
                 <Inbox className="w-6 h-6 text-text-muted" strokeWidth={1.75} />
               </div>
               <p className="text-[15px] font-semibold text-text-primary mb-1">報告はまだありません</p>
@@ -365,7 +365,7 @@ export default function ReportsPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">作成者</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">作成者</p>
                 <p className="text-[14px] text-text-primary">
                   {detailReport.is_anonymous ? (
                     <span className="flex items-center gap-1">
@@ -378,18 +378,18 @@ export default function ReportsPage() {
                 </p>
               </div>
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">部署</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">部署</p>
                 <p className="text-[14px] text-text-primary">{detailReport.department || '未設定'}</p>
               </div>
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">期間</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">期間</p>
                 <p className="text-[14px] text-text-primary">
                   {formatDateCompact(detailReport.period_start)}
                   {detailReport.period_start !== detailReport.period_end && ` - ${formatDateCompact(detailReport.period_end)}`}
                 </p>
               </div>
               <div className="bg-bg-base rounded-[12px] p-3">
-                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">レビュアー</p>
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">レビュアー</p>
                 <p className="text-[14px] text-text-primary">
                   {detailReport.reviewer_id ? getUserName(detailReport.reviewer_id) : '未設定'}
                 </p>
@@ -397,7 +397,7 @@ export default function ReportsPage() {
             </div>
 
             <div>
-              <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-2">内容</p>
+              <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-2">内容</p>
               <div className="bg-bg-base rounded-[12px] p-4">
                 <p className="text-[14px] text-text-primary leading-relaxed whitespace-pre-wrap">{detailReport.content}</p>
               </div>

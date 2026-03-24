@@ -354,7 +354,7 @@ export default function GeneralAffairsPage() {
             </h2>
             {todayBookings.length === 0 ? (
               <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-8 text-center">
-                <Calendar className="w-8 h-8 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
+                <Calendar className="w-10 h-10 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
                 <p className="text-[13px] text-text-muted">本日の予約はありません</p>
               </div>
             ) : (
@@ -392,7 +392,7 @@ export default function GeneralAffairsPage() {
             </h2>
             {upcomingBookings.length === 0 ? (
               <div className="bg-bg-surface border border-border rounded-[16px] shadow-card p-8 text-center">
-                <Calendar className="w-8 h-8 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
+                <Calendar className="w-10 h-10 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
                 <p className="text-[13px] text-text-muted">今後の予約はありません</p>
               </div>
             ) : (

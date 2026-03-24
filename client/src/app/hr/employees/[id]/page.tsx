@@ -243,7 +243,7 @@ export default function EmployeeDetailPage() {
                   <div className="flex items-start gap-3 pt-2 border-t border-border">
                     <AlertTriangle className="w-4 h-4 text-text-muted shrink-0 mt-0.5" strokeWidth={1.75} />
                     <div>
-                      <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                      <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                         緊急連絡先
                       </p>
                       <p className="text-[14px] text-text-primary">
@@ -267,7 +267,7 @@ export default function EmployeeDetailPage() {
               </h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                     雇用形態
                   </p>
                   <p className="text-[14px] text-text-primary font-medium">
@@ -275,7 +275,7 @@ export default function EmployeeDetailPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                     入社日
                   </p>
                   <p className="text-[14px] text-text-primary font-medium">
@@ -283,20 +283,20 @@ export default function EmployeeDetailPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                     社会保険
                   </p>
                   <Badge variant={socialIns.variant} label={socialIns.label} />
                 </div>
                 <div>
-                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                  <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                     雇用保険
                   </p>
                   <Badge variant={employmentIns.variant} label={employmentIns.label} />
                 </div>
                 {employee.health_check_date && (
                   <div>
-                    <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                    <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                       最終健康診断
                     </p>
                     <p className="text-[14px] text-text-primary font-medium">
@@ -306,7 +306,7 @@ export default function EmployeeDetailPage() {
                 )}
                 {employee.termination_date && (
                   <div>
-                    <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1">
+                    <p className="text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">
                       退職日
                     </p>
                     <p className="text-[14px] text-danger font-medium">
@@ -432,7 +432,7 @@ export default function EmployeeDetailPage() {
 
               {/* クイック情報 */}
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Building2 className="w-3.5 h-3.5" strokeWidth={1.75} />
                   部署
                 </div>
@@ -442,7 +442,7 @@ export default function EmployeeDetailPage() {
               </div>
 
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Briefcase className="w-3.5 h-3.5" strokeWidth={1.75} />
                   役職
                 </div>
@@ -452,7 +452,7 @@ export default function EmployeeDetailPage() {
               </div>
 
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
                   入社日
                 </div>
@@ -462,7 +462,7 @@ export default function EmployeeDetailPage() {
               </div>
 
               <div>
-                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.08em] mb-1.5">
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1.5">
                   <Shield className="w-3.5 h-3.5" strokeWidth={1.75} />
                   社会保険
                 </div>

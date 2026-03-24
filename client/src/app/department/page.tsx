@@ -124,7 +124,7 @@ export default function DepartmentPage() {
             <Building2 className="w-5 h-5 text-accent" strokeWidth={1.75} />
           </div>
           <div>
-            <h1 className="text-[22px] font-bold text-text-primary tracking-tight">{myDept || '部門'}</h1>
+            <h1 className="text-[22px] font-semibold text-text-primary tracking-tight">{myDept || '部門'}</h1>
             <p className="text-[13px] text-text-secondary">部門の業務状況と構成メンバー</p>
           </div>
         </div>
@@ -169,7 +169,7 @@ export default function DepartmentPage() {
           </div>
           {deptEmployees.length === 0 ? (
             <div className="px-6 py-8 text-center">
-              <Users className="w-8 h-8 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
+              <Users className="w-10 h-10 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
               <p className="text-[13px] text-text-muted">メンバーがいません</p>
             </div>
           ) : (
@@ -212,7 +212,7 @@ export default function DepartmentPage() {
 
           {deptTasks.length === 0 ? (
             <div className="px-6 py-8 text-center">
-              <ListChecks className="w-8 h-8 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
+              <ListChecks className="w-10 h-10 text-text-muted mx-auto mb-2" strokeWidth={1.5} />
               <p className="text-[13px] text-text-muted">タスクはありません</p>
             </div>
           ) : (
@@ -222,10 +222,10 @@ export default function DepartmentPage() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-bg-base">
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">ステータス</th>
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">タスク名</th>
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">優先度</th>
-                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.08em]">担当者</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">ステータス</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">タスク名</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">優先度</th>
+                    <th className="px-6 py-3 text-left text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em]">担当者</th>
                     <th className="px-6 py-3 w-10"></th>
                   </tr>
                 </thead>
