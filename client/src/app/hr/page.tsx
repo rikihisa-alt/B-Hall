@@ -91,9 +91,9 @@ export default function HRPage() {
     return activeEmps.map((e) => ({
       id: e.id,
       name: e.name,
-      healthInsurance: e.social_insurance_enrolled,
-      pensionInsurance: e.social_insurance_enrolled,
-      employmentInsurance: e.employment_insurance_enrolled,
+      healthInsurance: e.social_insurance_status === 'enrolled',
+      pensionInsurance: e.social_insurance_status === 'enrolled',
+      employmentInsurance: e.employment_insurance_status === 'enrolled',
     }))
   }, [employees])
 
