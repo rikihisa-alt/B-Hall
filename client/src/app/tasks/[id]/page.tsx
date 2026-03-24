@@ -599,7 +599,19 @@ export default function TaskDetailPage() {
                         </div>
                         <div className="shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
-                            onClick={() => addToast('info', 'ダウンロードを開始しました')}
+                            onClick={() => {
+                              const content = `B-Hall タスク添付ファイル\n\nファイル名: ${file.name}\nタイプ: ${FILE_TYPE_LABELS[file.fileType]}\nサイズ: ${file.size}\n追加日: ${file.addedAt}\n\nこのファイルはB-Hallからエクスポートされました。`
+                              const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+                              const url = URL.createObjectURL(blob)
+                              const link = document.createElement('a')
+                              link.href = url
+                              link.download = file.name
+                              document.body.appendChild(link)
+                              link.click()
+                              document.body.removeChild(link)
+                              URL.revokeObjectURL(url)
+                              addToast('success', `ダウンロード完了: ${file.name}`)
+                            }}
                             className="p-1.5 rounded-[6px] text-text-muted hover:text-accent hover:bg-bg-elevated transition-colors cursor-pointer"
                             title="ダウンロード"
                           >
