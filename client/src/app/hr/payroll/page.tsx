@@ -306,7 +306,7 @@ export default function PayrollPage() {
               </div>
 
               {/* 差引支給額 */}
-              <div className="p-5 rounded-[12px] bg-gradient-to-r from-[rgba(37,99,235,0.08)] to-[rgba(99,102,241,0.08)] border border-accent/20">
+              <div className="p-5 rounded-[12px] bg-gradient-to-r from-[rgba(79,70,229,0.08)] to-[rgba(99,102,241,0.08)] border border-accent/20">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[12px] text-text-muted mb-0.5">差引支給額</p>

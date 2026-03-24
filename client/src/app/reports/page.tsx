@@ -204,25 +204,25 @@ export default function ReportsPage() {
         initial="hidden"
         animate="show"
       >
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1">全報告</p>
           <p className="text-[24px] font-bold text-text-primary" style={{ fontFamily: 'var(--font-inter)' }}>{allReports.length}</p>
         </motion.div>
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <Clock className="w-3 h-3" strokeWidth={2} />
             下書き
           </p>
           <p className="text-[24px] font-bold text-warning" style={{ fontFamily: 'var(--font-inter)' }}>{draftCount}</p>
         </motion.div>
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <CheckCircle2 className="w-3 h-3" strokeWidth={2} />
             提出済み
           </p>
           <p className="text-[24px] font-bold text-info" style={{ fontFamily: 'var(--font-inter)' }}>{submittedCount}</p>
         </motion.div>
-        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-4">
+        <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5">
           <p className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-1 flex items-center gap-1.5">
             <AlertTriangle className="w-3 h-3" strokeWidth={2} />
             事故報告

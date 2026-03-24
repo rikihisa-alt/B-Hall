@@ -311,7 +311,7 @@ export default function GeneralAffairsPage() {
           <motion.div
             key={s.label}
             variants={fadeUp}
-            className="bg-bg-surface border border-border rounded-[16px] p-4 shadow-card"
+            className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card"
             style={{ borderLeftWidth: 3, borderLeftColor: s.color }}
           >
             <p className="text-xl md:text-[28px] font-bold text-text-primary tracking-[-0.03em]" style={{ fontFamily: 'var(--font-inter)' }}>

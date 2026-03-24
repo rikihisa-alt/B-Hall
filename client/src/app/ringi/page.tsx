@@ -646,7 +646,7 @@ function TemplateSelectModal({
             <button
               key={tmpl.id}
               onClick={() => onSelect(tmpl)}
-              className="w-full text-left bg-bg-elevated border border-border rounded-[12px] p-4 hover:border-accent hover:bg-[rgba(37,99,235,0.03)] transition-all cursor-pointer group"
+              className="w-full text-left bg-bg-elevated border border-border rounded-[12px] p-4 hover:border-accent hover:bg-[rgba(79,70,229,0.03)] transition-all cursor-pointer group"
             >
               <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
