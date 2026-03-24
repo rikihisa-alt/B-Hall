@@ -26,6 +26,7 @@ import { useCountUp } from '@/lib/use-count-up'
 import { fadeUp, staggerContainer } from '@/lib/animation'
 import { useTaskStore } from '@/stores/task-store'
 import { useAuthStore } from '@/stores/auth-store'
+import { useI18n } from '@/stores/i18n-store'
 import {
   TASK_STATUS_LABELS,
   TASK_PRIORITY_LABELS,
@@ -130,6 +131,7 @@ export default function HomePage() {
   const hydrated = useTaskStore((s) => s._hydrated)
   const users = useAuthStore((s) => s.users)
 
+  const { t } = useI18n()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -158,10 +160,10 @@ export default function HomePage() {
   }
 
   const metrics = [
-    { label: '未処理タスク', value: mounted && hydrated ? unprocessedCount : 12, change: -3, up: false, icon: ListTodo, color: '#4F46E5' },
-    { label: '承認待ち', value: 5, change: 2, up: true, icon: Clock, color: '#F59E0B' },
-    { label: '今月の経費', value: 320, prefix: '¥', suffix: '万', change: 8.4, up: true, icon: Wallet, color: '#22C55E' },
-    { label: '未読通知', value: 3, change: 0, up: false, icon: Bell, color: '#3B82F6' },
+    { label: t('pending_tasks'), value: mounted && hydrated ? unprocessedCount : 12, change: -3, up: false, icon: ListTodo, color: '#4F46E5' },
+    { label: t('pending_approvals'), value: 5, change: 2, up: true, icon: Clock, color: '#F59E0B' },
+    { label: t('monthly_expenses'), value: 320, prefix: '\u00A5', suffix: '\u4E07', change: 8.4, up: true, icon: Wallet, color: '#22C55E' },
+    { label: t('unread_notifications'), value: 3, change: 0, up: false, icon: Bell, color: '#3B82F6' },
   ]
 
   const today = new Date()
@@ -177,12 +179,12 @@ export default function HomePage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6 md:mb-8">
         <div>
           <p className="text-[13px] text-text-muted mb-1">{dateStr}</p>
-          <h1 className="text-2xl md:text-[28px] font-semibold text-text-primary tracking-[-0.02em]">ダッシュボード</h1>
-          <p className="text-sm md:text-[15px] text-text-secondary mt-1">業務全体の状況を確認できます</p>
+          <h1 className="text-2xl md:text-[28px] font-semibold text-text-primary tracking-[-0.02em]">{t('dashboard_title')}</h1>
+          <p className="text-sm md:text-[15px] text-text-secondary mt-1">{t('dashboard_description')}</p>
         </div>
         <Link href="/tasks" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-[#6366F1] text-white font-semibold px-5 h-11 md:h-10 rounded-[10px] text-[14px] shadow-[0_0_20px_rgba(79,70,229,0.25)] hover:-translate-y-[2px] hover:shadow-[0_0_28px_rgba(79,70,229,0.35)] active:translate-y-0 transition-all duration-200">
           <ListTodo className="w-4 h-4" strokeWidth={2} />
-          タスク一覧
+          {t('task_list')}
         </Link>
       </div>
 
@@ -209,8 +211,8 @@ export default function HomePage() {
           transition={{ delay: 0.2 }}
         >
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[18px] font-bold text-text-primary tracking-tight">収支推移</h2>
-            <span className="text-[12px] text-text-muted">過去6ヶ月</span>
+            <h2 className="text-[18px] font-bold text-text-primary tracking-tight">{t('revenue_trend')}</h2>
+            <span className="text-[12px] text-text-muted">{t('last_6_months')}</span>
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
@@ -242,7 +244,7 @@ export default function HomePage() {
           animate="show"
           transition={{ delay: 0.25 }}
         >
-          <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight mb-4 md:mb-5">最近の活動</h2>
+          <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight mb-4 md:mb-5">{t('recent_activity')}</h2>
           <div className="space-y-4">
             {activities.map((a, i) => {
               const dotColor = a.type === 'success' ? '#22C55E' : a.type === 'warning' ? '#F59E0B' : a.type === 'danger' ? '#EF4444' : '#3B82F6'
@@ -272,9 +274,9 @@ export default function HomePage() {
         transition={{ delay: 0.3 }}
       >
         <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-border">
-          <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight">直近のタスク</h2>
+          <h2 className="text-[16px] md:text-[18px] font-bold text-text-primary tracking-tight">{t('recent_tasks')}</h2>
           <Link href="/tasks" className="flex items-center gap-1 text-[13px] font-semibold text-accent hover:text-accent-hover transition-colors">
-            すべて表示
+            {t('view_all')}
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>

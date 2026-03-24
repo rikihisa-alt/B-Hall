@@ -7,6 +7,9 @@ import { fadeUp, staggerContainer, pageTransition } from '@/lib/animation'
 import { useAuth } from '@/hooks/use-auth'
 import { useAuthStore } from '@/stores/auth-store'
 import { useToast } from '@/components/ui/toast-provider'
+import { useI18n } from '@/stores/i18n-store'
+import { LOCALES, LOCALE_LABELS, LOCALE_FLAGS } from '@/lib/i18n'
+import type { Locale } from '@/lib/i18n'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/modal'
@@ -103,6 +106,7 @@ const DEFAULT_NOTIFICATION_SETTINGS: NotificationSetting[] = [
 export default function SettingsPage() {
   const { currentUser, users, mounted } = useAuth()
   const { addToast } = useToast()
+  const { locale, setLocale, t } = useI18n()
   const [activeSection, setActiveSection] = useState<SettingsSection>('profile')
 
   // Profile editing
@@ -659,10 +663,32 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">言語</h4>
-                  <div className="bg-bg-elevated border border-border rounded-[10px] px-4 py-3 flex items-center justify-between">
-                    <span className="text-[14px] font-semibold text-text-primary tracking-tight">日本語</span>
-                    <span className="text-[11px] text-text-muted bg-bg-base px-2 py-0.5 rounded-md">デフォルト</span>
+                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-3">言語 / Language</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {LOCALES.map((loc) => (
+                      <button
+                        key={loc}
+                        onClick={() => {
+                          setLocale(loc)
+                          addToast('success', `${t('language_changed')}: ${LOCALE_LABELS[loc]}`)
+                        }}
+                        className={`p-4 rounded-[10px] text-center transition-all cursor-pointer ${
+                          locale === loc
+                            ? 'bg-[rgba(79,70,229,0.08)] ring-2 ring-accent/20'
+                            : 'bg-bg-elevated border border-border hover:bg-[rgba(0,0,0,0.03)] hover:border-accent/30 active:scale-[0.98]'
+                        }`}
+                      >
+                        <span className="block text-[20px] mb-1.5">{LOCALE_FLAGS[loc]}</span>
+                        <span className={`block text-[13px] font-semibold tracking-tight ${
+                          locale === loc ? 'text-accent' : 'text-text-secondary'
+                        }`}>
+                          {LOCALE_LABELS[loc]}
+                        </span>
+                        {locale === loc && (
+                          <span className="block text-[10px] mt-1 text-accent/70">{'\u2713'} Active</span>
+                        )}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>

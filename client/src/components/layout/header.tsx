@@ -9,6 +9,8 @@ import { Bell, ChevronRight, Settings } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
 import { useNavigation } from './sidebar-context'
 import { useNavStore } from '@/stores/nav-store'
+import { useI18n } from '@/stores/i18n-store'
+import { LOCALE_FLAGS } from '@/lib/i18n'
 import { sections, toolItems, getSectionKeyFromPathname } from '@/lib/navigation'
 import type { NavSection, NavToolItem } from '@/lib/navigation'
 import { USER_ROLE_LABELS } from '@/lib/constants'
@@ -59,6 +61,7 @@ export function Header() {
     closeDropdown,
   } = useNavigation()
   const { desktopOrder, setDesktopOrder } = useNavStore()
+  const { t, locale } = useI18n()
 
   const avatarInitial = mounted && currentUser ? currentUser.avatar_initial : '田'
   const userName = mounted && currentUser ? currentUser.name : '田中太郎'
@@ -209,7 +212,8 @@ export function Header() {
           {orderedItems.map((item, index) => {
             const key = item.type === 'section' ? item.data.key : item.data.key
             const Icon = item.data.icon
-            const label = item.type === 'section' ? item.data.shortLabel : item.data.label
+            const labelKey = item.type === 'section' ? item.data.labelKey : item.data.labelKey
+            const label = t(labelKey)
             const isActive = activeSection === key
             const isDropdownTarget = dropdownOpen && dropdownSection === key
             const isDragging = dragIndex === index
@@ -292,8 +296,9 @@ export function Header() {
           </div>
           {mounted && currentUser && (
             <div className="hidden md:flex flex-col">
-              <span className="text-[12px] font-medium text-text-primary leading-tight">
+              <span className="text-[12px] font-medium text-text-primary leading-tight flex items-center gap-1">
                 {userName}
+                <span className="text-[10px] leading-none">{LOCALE_FLAGS[locale]}</span>
               </span>
               <span className="text-[10px] text-text-muted leading-tight">
                 {roleLabel}
@@ -338,7 +343,7 @@ export function Header() {
                 return <Icon className="w-4 h-4 text-text-secondary" strokeWidth={1.5} />
               })()}
               <span className="text-[12px] font-medium text-text-muted tracking-wide uppercase">
-                {currentDropdownSection.label}
+                {t(currentDropdownSection.labelKeyFull)}
               </span>
             </div>
 
@@ -376,7 +381,7 @@ export function Header() {
               onClick={() => handleSubItemClick(currentDropdownSection.href)}
               className="flex items-center gap-1.5 w-full mt-1 pt-2 border-t border-border/60 px-2 text-[12px] text-text-muted hover:text-text-primary transition-colors cursor-pointer"
             >
-              <span className="font-medium">{currentDropdownSection.label}を開く</span>
+              <span className="font-medium">{t(currentDropdownSection.labelKeyFull)} {t('open_section')}</span>
               <ChevronRight className="w-3.5 h-3.5" strokeWidth={1.5} />
             </button>
           </motion.div>

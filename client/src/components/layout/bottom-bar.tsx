@@ -8,6 +8,7 @@ import { sections, toolItems } from '@/lib/navigation'
 import type { NavSection, NavToolItem } from '@/lib/navigation'
 import { useNavigation } from './sidebar-context'
 import { useNavStore } from '@/stores/nav-store'
+import { useI18n } from '@/stores/i18n-store'
 
 /* ────────────────────────────────────────── */
 /*  Helper: get ordered nav items             */
@@ -61,6 +62,7 @@ export function BottomBar() {
     setMoreMenuOpen,
   } = useNavigation()
   const { mobileOrder, setMobileOrder } = useNavStore()
+  const { t } = useI18n()
 
   const orderedItems = useMemo(() => getOrderedItems(mobileOrder), [mobileOrder])
   const visibleItems = useMemo(() => orderedItems.slice(0, VISIBLE_COUNT), [orderedItems])
@@ -176,7 +178,7 @@ export function BottomBar() {
         {visibleItems.map((item) => {
           const key = item.data.key
           const Icon = item.data.icon
-          const label = item.type === 'section' ? item.data.shortLabel : item.data.label
+          const label = t(item.data.labelKey)
           const isActive = effectiveActiveKey === key
           const isToolWithCount = item.type === 'tool' && (item.data as NavToolItem).count
 
@@ -278,7 +280,7 @@ export function BottomBar() {
                   return <Icon className="w-[18px] h-[18px] text-text-secondary" strokeWidth={1.5} />
                 })()}
                 <h3 className="text-[15px] font-semibold text-text-primary flex-1">
-                  {currentPanelSection.label}
+                  {t(currentPanelSection.labelKeyFull)}
                 </h3>
                 <button
                   onClick={closeMobilePanel}
@@ -375,7 +377,8 @@ export function BottomBar() {
                 {displayOrder.map((item, index) => {
                   const key = item.data.key
                   const Icon = item.data.icon
-                  const label = item.type === 'section' ? item.data.label : item.data.label
+                  const labelKey = item.type === 'section' ? item.data.labelKeyFull : item.data.labelKey
+                  const label = t(labelKey)
                   const isActive = activeSection === key
                   const isDragging = dragIdx !== null && displayOrder[index] === orderedItems[dragIdx]
                   const isToolWithCount = item.type === 'tool' && (item.data as NavToolItem).count

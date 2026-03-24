@@ -76,6 +76,8 @@ export interface NavSection {
   key: string
   label: string
   shortLabel: string   // 左サイドバー用の短縮ラベル
+  labelKey: string     // i18n translation key (short)
+  labelKeyFull: string // i18n translation key (full)
   icon: LucideIcon
   href: string          // デフォルトの遷移先
   directNav?: boolean   // true = 第2サイドバーを開かず直接遷移
@@ -85,6 +87,7 @@ export interface NavSection {
 export interface NavToolItem {
   key: string
   label: string
+  labelKey: string   // i18n translation key
   icon: LucideIcon
   href: string
   count?: number
@@ -99,6 +102,8 @@ export const sections: NavSection[] = [
     key: 'home',
     label: 'ホーム',
     shortLabel: 'ホーム',
+    labelKey: 'nav_home',
+    labelKeyFull: 'nav_home_full',
     icon: Home,
     href: '/',
     directNav: true,
@@ -107,6 +112,8 @@ export const sections: NavSection[] = [
     key: 'accounting',
     label: '経理・財務',
     shortLabel: '経理',
+    labelKey: 'nav_accounting',
+    labelKeyFull: 'nav_accounting_full',
     icon: Calculator,
     href: '/accounting',
     subItems: [
@@ -124,6 +131,8 @@ export const sections: NavSection[] = [
     key: 'hr',
     label: '人事・労務',
     shortLabel: '人事',
+    labelKey: 'nav_hr',
+    labelKeyFull: 'nav_hr_full',
     icon: Users,
     href: '/hr',
     subItems: [
@@ -144,6 +153,8 @@ export const sections: NavSection[] = [
     key: 'general-affairs',
     label: '総務',
     shortLabel: '総務',
+    labelKey: 'nav_general_affairs',
+    labelKeyFull: 'nav_general_affairs_full',
     icon: Building2,
     href: '/general-affairs',
     subItems: [
@@ -159,6 +170,8 @@ export const sections: NavSection[] = [
     key: 'documents',
     label: '法務・契約',
     shortLabel: '法務',
+    labelKey: 'nav_legal',
+    labelKeyFull: 'nav_legal_full',
     icon: Scale,
     href: '/documents',
     subItems: [
@@ -174,6 +187,8 @@ export const sections: NavSection[] = [
     key: 'applications',
     label: '申請・承認',
     shortLabel: '申請',
+    labelKey: 'nav_applications',
+    labelKeyFull: 'nav_applications_full',
     icon: FileText,
     href: '/applications',
     subItems: [
@@ -189,6 +204,8 @@ export const sections: NavSection[] = [
     key: 'ringi',
     label: '稟議',
     shortLabel: '稟議',
+    labelKey: 'nav_ringi',
+    labelKeyFull: 'nav_ringi_full',
     icon: Stamp,
     href: '/ringi',
     subItems: [
@@ -203,6 +220,8 @@ export const sections: NavSection[] = [
     key: 'reports',
     label: '日報・報告',
     shortLabel: '報告',
+    labelKey: 'nav_reports',
+    labelKeyFull: 'nav_reports_full',
     icon: ClipboardList,
     href: '/reports',
     subItems: [
@@ -217,6 +236,8 @@ export const sections: NavSection[] = [
     key: 'knowledge',
     label: 'ドキュメント',
     shortLabel: '文書',
+    labelKey: 'nav_knowledge',
+    labelKeyFull: 'nav_knowledge_full',
     icon: BookOpen,
     href: '/knowledge',
     subItems: [
@@ -231,6 +252,8 @@ export const sections: NavSection[] = [
     key: 'management',
     label: '経営管理',
     shortLabel: '経営',
+    labelKey: 'nav_management',
+    labelKeyFull: 'nav_management_full',
     icon: BarChart3,
     href: '/management',
     subItems: [
@@ -245,6 +268,8 @@ export const sections: NavSection[] = [
     key: 'improvements',
     label: '改善',
     shortLabel: '改善',
+    labelKey: 'nav_improvements',
+    labelKeyFull: 'nav_improvements_full',
     icon: Lightbulb,
     href: '/improvements',
     subItems: [
@@ -258,6 +283,8 @@ export const sections: NavSection[] = [
     key: 'assistant',
     label: 'ジジロボ',
     shortLabel: 'ジジロボ',
+    labelKey: 'nav_assistant',
+    labelKeyFull: 'nav_assistant_full',
     icon: Bot,
     href: '/assistant',
     directNav: true,
@@ -269,7 +296,7 @@ export const sections: NavSection[] = [
 /* ────────────────────────────────────────── */
 
 export const toolItems: NavToolItem[] = [
-  { key: 'tasks',         label: 'タスク', icon: CheckSquare, href: '/tasks' },
+  { key: 'tasks',         label: 'タスク', labelKey: 'nav_tasks', icon: CheckSquare, href: '/tasks' },
 ]
 
 // Header-only utility items (not shown in nav tabs)
