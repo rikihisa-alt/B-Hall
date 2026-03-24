@@ -55,6 +55,9 @@ import {
   Eye,
   HelpCircle,
   BookMarked,
+  Network,
+  CalendarDays,
+  Star,
 } from 'lucide-react'
 
 /* ────────────────────────────────────────── */
@@ -130,6 +133,11 @@ export const sections: NavSection[] = [
       { key: 'insurance',    label: '社保・雇保', href: '/hr', icon: Shield,         description: '社会保険・雇用保険' },
       { key: 'health',       label: '健診',       href: '/hr', icon: Heart,          description: '健康診断の管理' },
       { key: 'contracts',    label: '契約更新',   href: '/hr', icon: FileCheck,      description: '雇用契約の更新管理' },
+      { key: 'attendance',   label: '勤怠管理',   href: '/hr/attendance', icon: Clock, description: '出退勤の記録・管理' },
+      { key: 'org-chart',    label: '組織図',     href: '/hr/org-chart', icon: Network,      description: '部署・チーム構成の可視化' },
+      { key: 'leave',        label: '有給管理',   href: '/hr/leave',     icon: CalendarDays, description: '有給休暇の残高・申請管理' },
+      { key: 'surveys',      label: 'サーベイ',   href: '/hr/surveys',   icon: Star,         description: 'エンゲージメント・満足度調査' },
+      { key: 'payroll',      label: '給与管理',   href: '/hr/payroll',   icon: Banknote,     description: '給与明細の管理・配布' },
     ],
   },
   {
