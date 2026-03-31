@@ -26,10 +26,10 @@ type NavItem =
 function getOrderedItems(order: string[]): NavItem[] {
   const sectionMap = new Map(sections.map((s) => [s.key, s]))
   const toolMap = new Map(toolItems.map((t) => [t.key, t]))
+  const orderSet = new Set(order)
 
   const items: NavItem[] = []
   for (const key of order) {
-    // Skip notifications and settings — they're in the header utility area
     if (key === 'notifications' || key === 'settings') continue
     const sec = sectionMap.get(key)
     if (sec) {
@@ -40,6 +40,13 @@ function getOrderedItems(order: string[]): NavItem[] {
     if (tool) {
       items.push({ type: 'tool', data: tool })
     }
+  }
+  // Append any new items not yet in the saved order
+  for (const s of sections) {
+    if (!orderSet.has(s.key)) items.push({ type: 'section', data: s })
+  }
+  for (const t of toolItems) {
+    if (!orderSet.has(t.key)) items.push({ type: 'tool', data: t })
   }
   return items
 }
