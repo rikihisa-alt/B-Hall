@@ -44,6 +44,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     nav_improvements: '改善',
     nav_assistant: 'ジジロボ',
     nav_tasks: 'タスク',
+    nav_tutorial: 'チュートリアル',
 
     // Navigation full labels
     nav_home_full: 'ホーム',
@@ -155,6 +156,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     nav_improvements: 'Improve',
     nav_assistant: 'Assistant',
     nav_tasks: 'Tasks',
+    nav_tutorial: 'Tutorial',
 
     // Navigation full labels
     nav_home_full: 'Home',
@@ -265,6 +267,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     nav_improvements: '改善',
     nav_assistant: '助手',
     nav_tasks: '任务',
+    nav_tutorial: '教程',
 
     nav_home_full: '首页',
     nav_accounting_full: '财务管理',
@@ -345,6 +348,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     nav_improvements: '개선',
     nav_assistant: '어시스턴트',
     nav_tasks: '작업',
+    nav_tutorial: '튜토리얼',
 
     nav_home_full: '홈',
     nav_accounting_full: '회계/재무',
@@ -425,6 +429,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     nav_improvements: 'Cải tiến',
     nav_assistant: 'Trợ lý',
     nav_tasks: 'Công việc',
+    nav_tutorial: 'Hướng dẫn',
 
     nav_home_full: 'Trang chủ',
     nav_accounting_full: 'Kế toán & Tài chính',
@@ -505,6 +510,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     nav_improvements: 'Melhoria',
     nav_assistant: 'Assistente',
     nav_tasks: 'Tarefas',
+    nav_tutorial: 'Tutorial',
 
     nav_home_full: 'Início',
     nav_accounting_full: 'Contabilidade & Finanças',

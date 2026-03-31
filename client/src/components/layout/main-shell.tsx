@@ -7,11 +7,11 @@ import { SetupGuard } from '@/components/setup-guard'
 
 export function MainShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const isSetupPage = pathname === '/setup'
+  const isBlankLayout = pathname === '/setup' || pathname === '/welcome'
 
   return (
     <SetupGuard>
-      {isSetupPage ? (
+      {isBlankLayout ? (
         // Setup wizard gets its own full-screen layout (no header/sidebar/bottombar)
         <>{children}</>
       ) : (

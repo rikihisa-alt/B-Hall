@@ -419,8 +419,8 @@ export default function SetupPage() {
     // Complete setup last
     completeSetup()
 
-    // Navigate to dashboard
-    router.push('/')
+    // Navigate to welcome / tutorial page
+    router.push('/welcome')
   }, [departments, adminData, settings, updateCompany, completeSetup, router])
 
   if (!mounted) return null

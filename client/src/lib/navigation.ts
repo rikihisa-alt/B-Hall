@@ -58,6 +58,7 @@ import {
   Network,
   CalendarDays,
   Star,
+  GraduationCap,
 } from 'lucide-react'
 
 /* ────────────────────────────────────────── */
@@ -296,7 +297,8 @@ export const sections: NavSection[] = [
 /* ────────────────────────────────────────── */
 
 export const toolItems: NavToolItem[] = [
-  { key: 'tasks',         label: 'タスク', labelKey: 'nav_tasks', icon: CheckSquare, href: '/tasks' },
+  { key: 'tasks',         label: 'タスク',         labelKey: 'nav_tasks',    icon: CheckSquare,   href: '/tasks' },
+  { key: 'tutorial',      label: 'チュートリアル', labelKey: 'nav_tutorial', icon: GraduationCap, href: '/tutorial' },
 ]
 
 // Header-only utility items (not shown in nav tabs)
