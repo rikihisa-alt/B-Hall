@@ -449,16 +449,14 @@ export default function SetupPage() {
     <div className="min-h-screen bg-bg-base flex flex-col">
       {/* Header */}
       <header className="flex items-center justify-center py-6 md:py-8">
-        <div className="flex items-center gap-3">
-          <Image
-            src="/icons/bhall-logo.png"
-            alt="B-Hall"
-            width={36}
-            height={36}
-            className="rounded-[8px]"
-          />
-          <span className="text-[20px] font-bold text-text-primary tracking-tight">B-Hall</span>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="B-Hall"
+          width={120}
+          height={40}
+          className="h-[36px] w-auto object-contain"
+          priority
+        />
       </header>
 
       {/* Step Indicator */}
@@ -587,17 +585,15 @@ function StepCompanyInfo({
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="md:col-span-2">
-          <Input
-            label="会社名"
-            required
-            placeholder="株式会社サンプル"
-            value={company.name}
-            onChange={(e) => updateCompany({ name: e.target.value })}
-            error={errors.name}
-          />
-        </div>
+      <div className="space-y-4">
+        <Input
+          label="会社名"
+          required
+          placeholder="株式会社サンプル"
+          value={company.name}
+          onChange={(e) => updateCompany({ name: e.target.value })}
+          error={errors.name}
+        />
 
         <Input
           label="会社名（カナ）"
@@ -665,14 +661,12 @@ function StepCompanyInfo({
           onChange={(e) => updateCompany({ postal_code: e.target.value })}
         />
 
-        <div className="md:col-span-2">
-          <Input
-            label="住所"
-            placeholder="東京都千代田区..."
-            value={company.address}
-            onChange={(e) => updateCompany({ address: e.target.value })}
-          />
-        </div>
+        <Input
+          label="住所"
+          placeholder="東京都千代田区..."
+          value={company.address}
+          onChange={(e) => updateCompany({ address: e.target.value })}
+        />
       </div>
     </div>
   )
