@@ -190,6 +190,7 @@ export default function HomePage() {
 
       {/* Metric Cards — 4 columns */}
       <motion.div
+        data-tutorial="dashboard-metrics"
         className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mb-6 md:mb-8"
         variants={staggerContainer}
         initial="hidden"

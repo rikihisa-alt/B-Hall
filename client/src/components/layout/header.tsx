@@ -284,7 +284,7 @@ export function Header() {
       </div>
 
       {/* ── Right: 通知 → アカウント → 設定 ── */}
-      <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+      <div data-tutorial="header-right" className="flex items-center gap-1.5 shrink-0 ml-auto">
         {/* 通知 */}
         <button
           onClick={() => router.push('/notifications')}

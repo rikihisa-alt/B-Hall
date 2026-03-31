@@ -205,7 +205,7 @@ export default function ApplicationsPage() {
       )}
 
       {/* 全申請一覧 */}
-      <motion.section variants={staggerContainer} initial="hidden" animate="show">
+      <motion.section data-tutorial="application-list" variants={staggerContainer} initial="hidden" animate="show">
         <h2 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.1em] mb-4">全申請</h2>
         {recentApps.length === 0 ? (
           <motion.div

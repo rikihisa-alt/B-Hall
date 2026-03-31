@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { BottomBar } from '@/components/layout/bottom-bar'
 import { SetupGuard } from '@/components/setup-guard'
+import { TutorialOverlay } from '@/components/tutorial/tutorial-overlay'
 
 export function MainShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -26,6 +27,8 @@ export function MainShell({ children }: { children: React.ReactNode }) {
           <BottomBar />
         </div>
       )}
+      {/* Tutorial overlay renders on top of everything when active */}
+      <TutorialOverlay />
     </SetupGuard>
   )
 }

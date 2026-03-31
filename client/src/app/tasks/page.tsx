@@ -368,6 +368,7 @@ export default function TasksPage() {
 
       {/* Stats Row */}
       <motion.div
+        data-tutorial="task-views"
         className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8"
         variants={staggerContainer}
         initial="hidden"
@@ -427,6 +428,7 @@ export default function TasksPage() {
 
       {/* Task Table */}
       <motion.div
+        data-tutorial="task-list"
         className="bg-bg-surface border border-border rounded-[16px] shadow-card overflow-hidden"
         variants={fadeUp}
         initial="hidden"

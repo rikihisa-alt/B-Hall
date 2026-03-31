@@ -187,7 +187,7 @@ export default function AccountingPage() {
       </div>
 
       {/* Metric Cards */}
-      <motion.section variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
+      <motion.section data-tutorial="accounting-metrics" variants={staggerContainer} initial="hidden" animate="show" className="mb-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <motion.div variants={fadeUp} className="bg-bg-surface border border-border rounded-[16px] p-5 shadow-card">
             <div className="flex items-center gap-2 mb-3">
