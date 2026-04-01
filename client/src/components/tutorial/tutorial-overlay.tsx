@@ -171,10 +171,16 @@ export function TutorialOverlay() {
   const isLastStep = currentStep === totalSteps - 1
   const isLastSection = currentSection === sectionCount - 1
 
-  // Calculate tooltip position
+  // Calculate tooltip position — always clamped inside viewport
   const getTooltipStyle = (): React.CSSProperties => {
+    const vw = typeof window !== 'undefined' ? window.innerWidth : 800
+    const vh = typeof window !== 'undefined' ? window.innerHeight : 600
+    const tooltipW = 360
+    const tooltipH = 260 // approximate
+    const pad = 16
+
     // Mobile: fixed at bottom
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    if (vw < 768) {
       return {
         position: 'fixed',
         bottom: '24px',
@@ -185,43 +191,44 @@ export function TutorialOverlay() {
     }
 
     if (!targetRect) {
-      // Center of screen
       return {
         position: 'fixed',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        width: tooltipW,
       }
     }
 
     const pos = step.position ?? 'bottom'
     const gap = 16
-    const style: React.CSSProperties = { position: 'fixed', maxWidth: '360px' }
+    let top = 0
+    let left = 0
 
     switch (pos) {
       case 'bottom':
-        style.top = targetRect.bottom + gap
-        style.left = targetRect.left + targetRect.width / 2
-        style.transform = 'translateX(-50%)'
+        top = targetRect.bottom + gap
+        left = targetRect.left + targetRect.width / 2 - tooltipW / 2
         break
       case 'top':
-        style.bottom = window.innerHeight - targetRect.top + gap
-        style.left = targetRect.left + targetRect.width / 2
-        style.transform = 'translateX(-50%)'
+        top = targetRect.top - gap - tooltipH
+        left = targetRect.left + targetRect.width / 2 - tooltipW / 2
         break
       case 'left':
-        style.top = targetRect.top + targetRect.height / 2
-        style.right = window.innerWidth - targetRect.left + gap
-        style.transform = 'translateY(-50%)'
+        top = targetRect.top + targetRect.height / 2 - tooltipH / 2
+        left = targetRect.left - gap - tooltipW
         break
       case 'right':
-        style.top = targetRect.top + targetRect.height / 2
-        style.left = targetRect.right + gap
-        style.transform = 'translateY(-50%)'
+        top = targetRect.top + targetRect.height / 2 - tooltipH / 2
+        left = targetRect.right + gap
         break
     }
 
-    return style
+    // Clamp to viewport
+    left = Math.max(pad, Math.min(left, vw - tooltipW - pad))
+    top = Math.max(pad, Math.min(top, vh - tooltipH - pad))
+
+    return { position: 'fixed', top, left, width: tooltipW }
   }
 
   return (
